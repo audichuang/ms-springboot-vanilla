@@ -5,6 +5,10 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla) 
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla)
 
+1. Java 23
+2. SpringBoot 3.3.4
+3. Jakarta EE 10 
+
 Cloud-native (or microservice) architecture is an approach to application design in which software is 
 broken down into small, independent services that communicate through lightweight APIs, enabling 
 more agile development, scalability, and resilience. Rather than running a single monolithic codebase, 
