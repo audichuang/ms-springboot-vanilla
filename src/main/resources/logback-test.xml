@@ -9,7 +9,7 @@
 
 	<!-- Define the File Logging -->
 	<appender name="APPLOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/tmp/ms-service-server.log</file>
+		<file>/tmp/logs/ms-service-server.log</file>
 		<!-- <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"> -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
 			<!-- Combines time-based rolling and size-based rolling -->

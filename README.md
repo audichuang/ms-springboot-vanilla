@@ -1,9 +1,52 @@
-# Microservice Vanilla Template
+# Cloud-Native Architecture / Microservice Template (with NFR setups)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla) 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=bugs)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla) 
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla)
+
+Cloud-native (or microservice) architecture is an approach to application design in which software is 
+broken down into small, independent services that communicate through lightweight APIs, enabling 
+more agile development, scalability, and resilience. Rather than running a single monolithic codebase, 
+each microservice can be developed, deployed, and scaled independently. 
+
+This decomposition—often containerized and orchestrated using tools such as Kubernetes—allows teams 
+to quickly iterate on features, take advantage of cloud-native capabilities (like auto-scaling and 
+automated deployments), and release updates with minimal disruption to the entire system. According 
+to the Cloud Native Computing Foundation (CNCF), this approach fosters loosely coupled systems that 
+are resilient, manageable, and observable, combined with robust automation (CNCF, 2023).
+
+Key Features of Microservice (Sources: CNCF, 2023; Fowler, 2014):
+
+1.	Service Independence: Each microservice is autonomous, allowing for separate development, deployment, and scaling without affecting others.
+2. Containerization: Services are commonly packaged in containers (e.g., Docker), providing consistency across different environments and efficient resource utilization.
+3.	Lightweight Communication: Microservices communicate via lightweight protocols (often HTTP/REST or gRPC), reducing overhead and complexity.
+4.	Scalability: Independent scaling of services ensures you can allocate resources exactly where needed, improving performance and cost-efficiency.
+5.	Continuous Delivery and Deployment: Automation enables frequent, reliable releases to production while minimizing disruption.
+6.	Resilience: Failure of one service doesn’t necessarily bring the entire system down, as microservices are loosely coupled and can handle faults gracefully.
+
+References
+
+- CNCF. (2023). What is Cloud Native? https://www.cncf.io/blog/2023/02/03/what-is-cloud-native/ 
+- Fowler, M. (2014). Microservices. https://martinfowler.com/articles/microservices.html
+
+## What the Template Provides out of the box
+
+1. Security Auth/Authorization using AOP and Filters
+2. Exception Handling with Exception Framework using AOP ( ..microservice.adapters.aop)
+3. Log Management using AOP (json and text formats) using Logback  (...adapters.filters)
+4. Standardized REST Responses (...domain.models.StandardResponse)
+5. Security using JWT Tokens / KeyCloak Auth (...microservice.adapters.security, ...microservice.security)
+6. Encrypting Sensitive Data using Encryption Algorithms (...microservice.security)
+7. JPA configurations for H2 and PostgreSQL (...server.config)
+8. Observability Using Micrometer, Prometheus and Open Telemetry.
+9. Database Password Encryption using Jasypt. Checkout the shell programs encrypt and decrypt.
+10. Digital Signatures using Standard Java Cryptography.
+11. Open API based Swagger API Docs (...microservice.adapters.controllers)
+
+## How to Setup and use the template
+
+### Encrypting Database Passwords for the Property Files
 
 This microservice template offers a range of built-in functionalities. To simplify the demonstration of 
 various features, an encrypted password is utilized for connecting to H2 and PostgreSQL databases. 
@@ -25,22 +68,6 @@ properties file, with the encryption key stored externally, outside the applicat
 
 However, quality standards mandate that passwords should be securely stored in a vault, such as
 HashiCorp Vault, for enhanced security.
-
-## What the Template Provides out of the box
-
-### Template Features
-
-1. Security Auth/Authorization using AOP and Filters
-2. Exception Handling with Exception Framework using AOP ( ..microservice.adapters.aop)
-3. Log Management using AOP (json and text formats) using Logback  (...adapters.filters)
-4. Standardized REST Responses (...domain.models.StandardResponse)
-5. Security using JWT Tokens / KeyCloak Auth (...microservice.adapters.security, ...microservice.security)
-6. Encrypting Sensitive Data using Encryption Algorithms (...microservice.security)
-7. JPA configurations for H2 and PostgreSQL (...server.config)
-8. Observability Using Micrometer, Prometheus and Open Telemetry.
-9. Database Password Encryption using Jasypt. Checkout the shell programs encrypt and decrypt.
-10. Digital Signatures using Standard Java Cryptography.
-11. Open API based Swagger Docs (...microservice.adapters.controllers)
 
 ### Microservice Package Structure
 
