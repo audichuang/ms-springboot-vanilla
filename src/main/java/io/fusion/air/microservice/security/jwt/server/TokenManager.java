@@ -21,21 +21,21 @@ import io.fusion.air.microservice.security.jwt.client.JsonWebTokenValidator;
 import io.fusion.air.microservice.security.jwt.core.JsonWebTokenConfig;
 import io.fusion.air.microservice.security.jwt.core.TokenData;
 import io.fusion.air.microservice.security.jwt.core.TokenDataFactory;
-
+import io.fusion.air.microservice.utils.Utils;
 import static io.fusion.air.microservice.security.jwt.core.JsonWebTokenConstants.*;
 // Spring
-import io.jsonwebtoken.Claims;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 // Java
+import io.jsonwebtoken.Claims;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
+import org.slf4j.Logger;
 
 /**
  * @author: Araf Karsh Hamid
@@ -358,7 +358,7 @@ public class TokenManager {
      * @return
      */
     public String printExpiryTime(long expiryTime) {
-        return JsonWebTokenValidator.printExpiryTime(expiryTime);
+        return Utils.printTimeDaysHoursMins(expiryTime);
     }
 
     /**

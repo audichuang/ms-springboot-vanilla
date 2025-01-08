@@ -21,6 +21,7 @@ import io.fusion.air.microservice.domain.exceptions.JWTTokenSubjectException;
 import io.fusion.air.microservice.domain.exceptions.JWTUnDefinedException;
 import io.fusion.air.microservice.security.jwt.core.TokenData;
 import io.fusion.air.microservice.security.jwt.core.JsonWebTokenConstants;
+import io.fusion.air.microservice.utils.Utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -272,9 +273,9 @@ public final class JsonWebTokenValidator {
 	 */
     public static void tokenStats(TokenData token, boolean showClaims, boolean showPayload) {
 		Claims claims = getAllClaims(token);
-		println("-------------- aaa.bbb.ccc ------------------- 1 -");
+		println("-------------- aaa.bbb.ccc ------------------- 1 - ------------");
 		println("Bearer "+token.getToken());
-		println("-------------- ----------- ------------------- 2 -");
+		println("-------------- ----------- ------------------- 2 - ------------");
 		println("Subject  = "+getSubjectFromToken(token));
 		println("Audience = "+getAudienceFromToken(token));
 		println("Issuer   = "+getIssuerFromToken(token));
@@ -283,7 +284,7 @@ public final class JsonWebTokenValidator {
 		println("IssuedAt = "+getIssuedAtFromToken(token));
 		println("Expiry   = "+getExpiryDateFromToken(token));
 		println("Expired  = "+isTokenExpired(token));
-		println("---------------------------------------------- 3 -");
+		println("---------------------------------------------- 3 - ------------");
 		Jws<Claims> jws = getJws(token);
 		println("Header       : " + jws.getHeader());
 		println("Body         : " + jws.getPayload());
@@ -295,10 +296,10 @@ public final class JsonWebTokenValidator {
 				x++;
 			}
 		}
-		println("---------------------------------------------- 4 -");
+		println("---------------------------------------------- 4 - ------------");
 		if(showPayload) {
 			println("Payload=" + getPayload(token));
-			println("---------------------------------------------- 5 -");
+			println("---------------------------------------------- 5 - ------------");
 		}
 
     }
@@ -309,17 +310,6 @@ public final class JsonWebTokenValidator {
 	 * @return
 	 */
 	public static String printExpiryTime(long time) {
-		String ms="0";
-		String hs="0";
-		String ds="0";
-		long m = time / (1000 * 60);
-		long h = time / (1000 * 60 * 60);
-		long d = time / (1000 * 60 * 60 * 24);
-		if(m > 59) { m = m-(h*60); }
-		if(h > 23) { h = h-(d*24);}
-		ms = (m<10) ? ms + m : ""+m;
-		hs = (h<10) ? hs + h : ""+h;
-		ds = (d<10) ? ds + d : ""+d;
-		return ds + ":" + hs + ":" + ms;
+		return Utils.printTimeDaysHoursMins(time);
 	}
 }
