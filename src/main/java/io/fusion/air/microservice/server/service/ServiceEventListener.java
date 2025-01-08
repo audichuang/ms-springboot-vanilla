@@ -188,10 +188,10 @@ public class ServiceEventListener {
 	 */
 	private void printTokenStats(String token, String name, int counter, long expiry) {
 		String jStats = tokenManager.printExpiryTime(expiry);
-		Std.println("---------------------------------------------------");
-		Std.printf("[%s]>> %s Token Expiry in Days:Hours:Mins %s\n", counter, name, jStats);
+		Std.println("---------------------------------------------------------------");
+		Std.printf("[%s]>> %s Token Expiry in Days:Hours:Mins:Seconds %s\n", counter, name, jStats);
 		tokenManager.printTokenStats(token, false, false);
-		Std.printf("[%s]>> %s Token End -------------------------------\n", counter, name);
+		Std.printf("[%s]>> %s Token End -------------------------------------------\n", counter, name);
 	}
 
 	/**
