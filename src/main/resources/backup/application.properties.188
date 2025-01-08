@@ -1,3 +1,8 @@
+# =======================================================================
+# MS-Vanilla Service Properties
+# =======================================================================
+build.number=189
+build.date=Wed Jan 8 12:01:02 IST 2025
 # ------------------------------------------------------------------------
 # Spring Profile
 # ------------------------------------------------------------------------
@@ -21,7 +26,7 @@ service.license.url=https://github.com/arafkarsh/ms-springboot-334-vanilla?tab=A
 # Microservice Server Properties
 # =======================================================================
 server.port=9334
-server.version=0.3.4
+server.version=0.3.3
 server.restart=false
 server.leak.test=3
 server.resources.url=${service.url}${service.api.path}

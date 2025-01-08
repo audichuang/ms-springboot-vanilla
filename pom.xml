@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.fusion.air</groupId>
 	<artifactId>ms-vanilla-service</artifactId>
-	<version>0.3.3</version>
+	<version>0.3.4</version>
 	<packaging>jar</packaging>
 	<name>msVanillaService</name>
 	<description>Microservice Vanilla Template</description>
@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
+		<version>3.4.1</version>
 	</parent>
 	<!-- =================================================================== -->
 	<!-- Properties / Versions -->
@@ -48,15 +48,9 @@
 
 		<!-- Utilities ===================================================== -->
 		<google.guava.version>33.3.1-jre</google.guava.version>
-		<apache.httpclient>5.4</apache.httpclient>
+		<apache.httpclient>5.4.1</apache.httpclient>
 		<apache.commons.version>3.17.0</apache.commons.version>
 		<fasterxml.version>2.18.0</fasterxml.version>
-
-		<!-- Security JWT ================================================== -->
-		<jwt.api.version>0.12.6</jwt.api.version>
-		<bouncycastle.version>1.79</bouncycastle.version>
-		<jasypt.springboot.version>3.0.5</jasypt.springboot.version>
-		<jasypt.version>1.9.3</jasypt.version>
 
 		<!-- Jakarta EE ========================================= ========== -->
 		<javax.bean.validation.version>2.0.1.Final</javax.bean.validation.version>
@@ -75,16 +69,22 @@
 		<h2.version>2.3.232</h2.version>
 		<redis.embedded.version>0.7.3</redis.embedded.version>
 
+		<!-- Security JWT ================================================== -->
+		<jwt.api.version>0.12.6</jwt.api.version>
+		<bouncycastle.version>1.79</bouncycastle.version>
+		<jasypt.springboot.version>3.0.5</jasypt.springboot.version>
+		<jasypt.version>1.9.3</jasypt.version>
+
 		<!-- Spring Libraries ============================================== -->
-		<spring.boot.version>3.3.4</spring.boot.version>
+		<spring.boot.version>3.4.1</spring.boot.version>
 		<spring.cloud.version>2023.0.1</spring.cloud.version>
-		<spring.security.version>6.3.3</spring.security.version>
+		<spring.security.version>6.4.2</spring.security.version>
 
 		<!-- Spring Kafka ================================================= -->
 		<spring.kafka.version>3.2.4</spring.kafka.version>
 
 		<!-- Open API v3 - Swagger UI ===================================== -->
-		<openapi.webmvc.version>2.6.0</openapi.webmvc.version>
+		<openapi.webmvc.version>2.7.0</openapi.webmvc.version>
 		<openapi.common.version>1.8.0</openapi.common.version>
 
 	</properties>
@@ -571,18 +571,27 @@
 		<!-- ================================================================= -->
 		<!-- API Docs - Open API v3.0 (Swagger 3) -->
 		<!-- ================================================================= -->
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${openapi.webmvc.version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-common -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-common</artifactId>
+			<version>${openapi.webmvc.version}</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-common -->
+		<!--
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-common</artifactId>
 			<version>${openapi.common.version}</version>
 		</dependency>
+		-->
 
 		<!-- End of Dependency Definitions -->
 	</dependencies>
