@@ -1,4 +1,5 @@
-# Cloud-Native Architecture / Microservice Template (with NFR setups)
+# Cloud-Native Architecture / Microservice Template
+## Non Functional Requirements Template
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla) 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=bugs)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla)
