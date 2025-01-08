@@ -7,7 +7,7 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=arafkarsh_ms-springboot-334-vanilla&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=arafkarsh_ms-springboot-334-vanilla)
 
 1. Java 23
-2. SpringBoot 3.3.4
+2. SpringBoot 3.4.1
 3. Jakarta EE 10 
 
 Cloud-native (or microservice) architecture is an approach to application design in which software is 
@@ -125,11 +125,11 @@ for more details on this topic.
 5. [Java 23, SpringBoot 3.3.4: Metrics: Micrometer, Prometheus, Actuator — Part 5](https://arafkarsh.medium.com/java-23-springboot-3-3-4-metrics-micrometer-prometheus-actuator-part-5-f67f0581815c)
 6. [Java 23, SpringBoot 3.3.4: Metrics: Micrometer & AOP — Part 6](https://arafkarsh.medium.com/java-23-springboot-3-3-4-metrics-micrometer-aop-part-6-808dcb97dcb7)
 7. [Java 23, SpringBoot 3.3.4: Tracing: OpenTelemetry — Part 7](https://arafkarsh.medium.com/java-23-springboot-3-3-4-tracing-opentelemetry-part-7-937df4867c9c)
-8. Java 23, SpringBoot 3.3.4: Tracing: OpenTelemetry In Action — Part 8 Coming Soon
-9. Java 23, SpringBoot 3.3.4: Filters: Security, Log — Part 9 Coming Soon
-10. Java 23, SpringBoot 3.3.4: AOP: Spring Security — Part 10 Coming Soon
-11. Java 23, SpringBoot 3.3.4: CRUD — Part 11 Coming Soon
-12. Java 23, SpringBoot 3.3.4: CRUD Queries & Page Sort — Part 12 Coming Soon
+8. Java 23, SpringBoot 3.4.1: Tracing: OpenTelemetry In Action — Part 8 Coming Soon
+9. Java 23, SpringBoot 3.4.1: Filters: Security, Log — Part 9 Coming Soon
+10. Java 23, SpringBoot 3.4.1: AOP: Spring Security — Part 10 Coming Soon
+11. Java 23, SpringBoot 3.4.1: CRUD — Part 11 Coming Soon
+12. Java 23, SpringBoot 3.4.1: CRUD Queries & Page Sort — Part 12 Coming Soon
 
 ### Pre-Requisites
 
