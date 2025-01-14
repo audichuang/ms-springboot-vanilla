@@ -55,10 +55,10 @@ public class DatabaseConfig implements Serializable {
 	private String secureDataKey;
 
 	// Database Configurations
-	@Value("${db.server:localhost}")
+	@Value("${db.server}")
 	private String dataSourceServer;
 
-	@Value("${db.port:5432}")
+	@Value("${db.port}")
 	private int dataSourcePort;
 
 	@Value("${db.name:demo}")

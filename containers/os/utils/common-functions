@@ -1,0 +1,32 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# OS Installation
+# Araf Karsh Hamid, (c) Copyright 2025
+#
+# Version 0.01
+#---------------------------------------------------------------
+# Common Functions used in other Scripts
+#---------------------------------------------------------------
+
+# Function to determine SERVICE and DOCKER_FILE based on $1
+determine_os() {
+  case "$1" in
+    alpine)
+      SERVICE="alpine"
+      DOCKER_FILE="Dockerfiles/Dockerfile.alpine"
+      ;;
+    ubuntu)
+      SERVICE="ubuntu"
+      DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu"
+      ;;
+    *)
+      SERVICE="alpine"
+      DOCKER_FILE="Dockerfiles/Dockerfile.alpine"
+      echo "----------------------------------------------------------------"
+      echo "OS Container"
+      echo "NO INPUTS! Defaulting to $ORG/$SERVICE"
+      echo "Options: $0 [alpine, ubuntu]"
+      echo "----------------------------------------------------------------"
+      ;;
+  esac
+}

@@ -22,7 +22,7 @@
 	<!-- =================================================================== -->
 	<properties>
 		<!-- Java Version ================================================== -->
-		<java.version>23</java.version>
+		<java.version>21</java.version>
 
 		<!-- Maven ========================================================= -->
 		<maven.compiler.target>${java.version}</maven.compiler.target>
@@ -84,7 +84,7 @@
 		<spring.kafka.version>3.2.4</spring.kafka.version>
 
 		<!-- Open API v3 - Swagger UI ===================================== -->
-		<openapi.webmvc.version>2.7.0</openapi.webmvc.version>
+		<openapi.webmvc.version>2.8.1</openapi.webmvc.version>
 		<openapi.common.version>1.8.0</openapi.common.version>
 
 	</properties>
@@ -98,6 +98,29 @@
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 	</repositories>
+
+	<!-- ================================================================= -->
+	<!-- Dependency Management -  -->
+	<!-- ================================================================= -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.opentelemetry.instrumentation</groupId>
+				<artifactId>opentelemetry-instrumentation-bom</artifactId>
+				<version>2.11.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- ================================================================= -->
@@ -154,17 +177,9 @@
 		</dependency>
 
 		<!-- ================================================================= -->
-		<!-- Tracing: Open Telemetry                                                      -->
+		<!-- Tracing: Micrometer                                                            -->
 		<!-- ================================================================= -->
-		<!--
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-tracing-bom</artifactId>
-			<version>${micrometer.version}</version>
-			<type>pom</type>
-			<scope>import</scope>
-		</dependency>
-		-->
+
 		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-tracing -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -173,38 +188,31 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-tracing-bridge-otel -->
+		<!--
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-otel</artifactId>
 			<version>${micrometer.tracing.version}</version>
 		</dependency>
+		-->
 
 		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-otlp -->
-
+		<!--
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-otlp</artifactId>
 			<version>${micrometer.version}</version>
 		</dependency>
+		-->
 
-
+		<!-- ================================================================= -->
+		<!-- Tracing: Open Telemetry                                                      -->
+		<!-- ================================================================= -->
 		<!-- === ONLY if OpenTelemetry Custom Trace/Span Usage ================ -->
-		<!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-api -->
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-api</artifactId>
-			<version>${opentelemetry.version}</version>
-		</dependency>
 
 		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-sdk</artifactId>
-			<version>${opentelemetry.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-exporter-otlp</artifactId>
-			<version>${opentelemetry.version}</version>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-spring-boot-starter</artifactId>
 		</dependency>
 
 		<!-- ================================================================= -->
@@ -359,6 +367,7 @@
 			</exclusions>
 		</dependency>
 
+
 		<!-- ================================================================= -->
 		<!-- Spring Framework -->
 		<!-- ================================================================= -->
@@ -480,6 +489,7 @@
 			<scope>test</scope>
 		</dependency>
 
+
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -579,35 +589,24 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-common -->
+		<!--
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-common</artifactId>
 			<version>${openapi.webmvc.version}</version>
 		</dependency>
+		-->
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-common -->
-		<!--
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-common</artifactId>
 			<version>${openapi.common.version}</version>
 		</dependency>
-		-->
+
 
 		<!-- End of Dependency Definitions -->
 	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
-			<dependency>
-			    <groupId>org.springframework.cloud</groupId>
-			    <artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring.cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>

@@ -1,0 +1,59 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Java Installation
+# Araf Karsh Hamid, (c) Copyright 2025
+#
+# Version 0.01
+#---------------------------------------------------------------
+# Common Functions used in other Scripts
+#---------------------------------------------------------------
+
+# Function to set VERSION from input or default to 21
+set_version() {
+  if [[ -n "$1" ]]; then
+    VERSION="$1"
+  else
+    VERSION=21
+  fi
+}
+
+# Function to determine SERVICE and DOCKER_FILE based on $1
+determine_config() {
+  case "$1" in
+    alpine)
+      SERVICE="java:$VERSION-alpine"
+      DOCKER_FILE="Dockerfiles/Dockerfile.alpine.$VERSION"
+      ;;
+    ubuntu)
+      SERVICE="java:$VERSION"
+      DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.$VERSION"
+      ;;
+    ubuntu-x86)
+      SERVICE="java:$VERSION-x86"
+      DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.x86.$VERSION"
+      ;;
+    ubuntu-openjdk)
+      SERVICE="java:$VERSION-openjdk"
+      DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.openjdk.$VERSION"
+      ;;
+    *)
+      SERVICE="java:$VERSION-alpine"
+      DOCKER_FILE="Dockerfiles/Dockerfile.alpine.$VERSION"
+      echo "----------------------------------------------------------------"
+      echo "Java Container Management. "
+      echo "Copyright (c) Araf Karsh Hamid, 2025"
+      echo "NO INPUTS! Defaulting to $ORG/$SERVICE"
+      echo "----------------------------------------------------------------"
+      echo "Options: $0 [alpine, ubuntu, ubuntu-openjdk] [23, 21, 17, 11]"
+      echo "Examples"
+      echo "----------------------------------------------------------------"
+      echo "$0 alpine 21 [supports arm64 & amd64]"
+      echo "$0 alpine 17 [supports arm64 & amd64]"
+      echo "$0 ubuntu 21 [supports arm64 only]"
+      echo "$0 ubuntu 23 [supports arm64 only]"
+      echo "$0 ubuntu-openjdk 17 [supports arm64 & amd64]"
+      echo "$0 ubuntu-openjdk 21 [supports arm64 & amd64]"
+      echo "----------------------------------------------------------------"
+      ;;
+  esac
+}

@@ -114,6 +114,7 @@ public class WebSecurityConfiguration {
     private void authorizeHttpRequests(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(apiPath + "/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()  // Allow access to actuator endpoints
                         // Require authentication for any other requests
                         .anyRequest().permitAll()
                 )

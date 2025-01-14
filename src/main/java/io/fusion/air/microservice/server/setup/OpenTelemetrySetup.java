@@ -25,36 +25,62 @@
  * under the terms of the Apache 2 License version 2.0
  * as published by the Apache Software Foundation.
  */
-package io.fusion.air.microservice.adapters.logging.examples.tracing;
+package io.fusion.air.microservice.server.setup;
 // Open Telemetry
+/**
+import io.fusion.air.microservice.utils.Std;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+*/
 // Spring
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 
 /**
- * ms-springboot-334-vanilla / OpenTelemetryConfig 
+ * ms-springboot-334-vanilla / OpenTelemetrySetup
  *
  * @author: Araf Karsh Hamid
  * @version: 0.1
  * @date: 2024-11-25T12:41
  */
-@Configuration
-public class OpenTelemetryConfig {
+// @Configuration
+public class OpenTelemetrySetup {
 
-    @Value("${management.otlp.metrics.export.url}")
+    @Value("${otel.exporter.otlp.endpoint}")
     private String endpoint;
 
-    @Bean
-    @ConditionalOnProperty(name = "management.otlp.metrics.export.enabled", havingValue = "true")
+    @Value("${otel.export.enabled:true}")
+    private boolean exportEnabled;
+
+    /**
+    // @PostConstruct
+    public void setupOpenTelemetry() {
+        if (exportEnabled) {
+            // Traces
+            OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder()
+                    .setEndpoint(endpoint)
+                    .build();
+
+            SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+                    .addSpanProcessor(SimpleSpanProcessor.create(spanExporter))
+                    .build();
+
+            OpenTelemetrySdk.builder()
+                    .setTracerProvider(tracerProvider)
+                    .buildAndRegisterGlobal();
+        } else {
+            Std.println("OpenTelemetry exporting is disabled.");
+        }
+    }
+
+    // @Bean
+    // @ConditionalOnProperty(name = "otel.javaagent.enabled", havingValue = "true")
     public Tracer tracer() {
+        Std.println("Creating OpenTelemetry Tracer... ");
         // Configure OTLP exporter
         OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder()
                 .setEndpoint(endpoint) // Update with your OpenTelemetry Collector endpoint
@@ -70,7 +96,10 @@ public class OpenTelemetryConfig {
                 .setTracerProvider(tracerProvider)
                 .build();
 
+        Std.println(openTelemetry.getTracerProvider().tracerBuilder("vanilla-tracer"));
+
         // Return Tracer
         return openTelemetry.getTracer("ms-vanilla-service");
     }
+     */
 }

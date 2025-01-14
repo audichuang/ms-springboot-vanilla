@@ -1,3 +1,20 @@
 #!/bin/bash
-echo "Starting the MicroService"
-java -jar *spring-bbot.jar
+# -------------------------------------------------------------------------------------------
+# @author: Araf Karsh Hamid
+# -------------------------------------------------------------------------------------------
+echo "Starting Vanilla Microservice"
+runMode=$APP_PROFILE
+# Check if the runMode is null or not one of "dev", "prod", or "staging"
+if [[ -z $runMode || ($runMode != "dev" && $runMode != "prod" && $runMode != "staging") ]]
+then
+  runMode="dev"
+fi
+echo "App running with profile = $runMode"
+
+# Run Maven Command
+# mvn spring-boot:run -Dspring-boot.run.profiles=$runMode
+
+# Run Java command
+echo "java -jar ms-vanilla-service-spring-boot.jar --spring.profiles.active=$runMode"
+java -jar /Softwares/service/ms-vanilla-service-spring-boot.jar --spring.profiles.active=$runMode  -Djava.security.manager=java.lang.SecurityManager -Djava.security.policy=./vanilla.policy
+

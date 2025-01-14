@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "Starting Open Telemetry Container using Docker"
+docker run --rm \
+  -v $(pwd)/otel-collector-config.yaml:/etc/otel-collector-config.yaml \
+  -p 127.0.0.1:4317:4317 \
+  -p 127.0.0.1:4318:4318 \
+  -p 127.0.0.1:55679:55679 \
+  otel/opentelemetry-collector-contrib:0.116.1 \
+  --config=/etc/otel-collector-config.yaml \
+  2>&1 | tee collector-output.txt 
+# Optionally tee output for easier search later
+

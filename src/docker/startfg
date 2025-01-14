@@ -1,0 +1,29 @@
+#!/bin/bash
+# -------------------------------------------------------------------------------------------
+# @author: Araf Karsh Hamid
+# -------------------------------------------------------------------------------------------
+# Start Container
+# -------------------------------------------------------------------------------------------
+PORT=9334
+cd ../../
+ORG=`getServiceName 1`
+SERVICE=`getServiceName 4`
+API=`getServiceName 3`
+cd src/docker
+APP_PROFILE=$1
+if test "$#" -gt 3; then
+	echo "Extracting ORG and Service Names..."
+	# Get the Org Name and Container Name from Properties file
+  ORG=$1
+  SERVICE=$2
+  API=$3
+  APP_PROFILE=$4
+fi
+echo "docker container run -it --name $SERVICE --rm -p $PORT:9334 $ORG/$SERVICE"
+echo "Checkout API: http://localhost:$PORT/$API/api/v1/swagger-ui.html"
+docker container run -it --network="host" --name $SERVICE --rm -p $PORT:9334 \
+	-e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \
+	-e APP_PROFILE=$APP_PROFILE \
+	-e SPRING_PROFILES_ACTIVE=$APP_PROFILE \
+	-e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/ms_vanilla_334 \
+	$ORG/$SERVICE

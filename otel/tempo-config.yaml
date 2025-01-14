@@ -1,0 +1,28 @@
+server:
+  http_listen_port: 3200  # Port where Tempo will listen for requests
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:5317  # OTLP gRPC port for receiving traces
+        http:
+          endpoint: 0.0.0.0:5318  # OTLP HTTP port for receiving traces
+
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+
+compactor:
+  compaction:
+    block_retention: 48h
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /tmp/tempo/traces

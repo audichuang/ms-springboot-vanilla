@@ -59,11 +59,18 @@ then
 	cp src/main/resources/logback-spring-scope.xml .
 	cp src/main/resources/logback-spring-appenders-json.xml .
 	cp src/main/resources/logback-spring-appenders-text.xml .
+	echo "2.6 Copy the logback-spring xml Files to Docker directory src/docker/"
+	cp src/main/resources/logback-spring.xml src/docker/
+	cp src/main/resources/logback-spring-scope.xml src/docker/
+	cp src/main/resources/logback-spring-appenders-text.xml src/docker/
+	cp src/main/resources/logback-spring-appenders-json.xml src/docker/
+	cp src/main/resources/logback-spring-appenders-json-logstash.xml src/docker/
 	echo "---------------------------------------------------------------------------------------"
-	echo "2.6. Building the Container for $ORG/$SERVICE Service ..... "
+	echo "2.7. Building the Container for $ORG/$SERVICE Service ..... "
 	echo "---------------------------------------------------------------------------------------"
 	cd src/docker
-	build
+	echo "2.7.1 Docker Build Process Disabled.... "
+	#build
 	echo "---------------------------------------------------------------------------------------"
 	echo "3. $SERVICE Microservice Build Process Completed Successfully! ........... "
 	echo "---------------------------------------------------------------------------------------"

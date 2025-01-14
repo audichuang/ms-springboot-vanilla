@@ -1,49 +1,39 @@
-#################################################################
-#
+#---------------------------------------------------------------
 # Microservice Container Template
-# (C) MetaMagic Global Inc, NJ, USA, 2022
+# Araf Karsh Hamid, (c) Copyright 2025
 # Apache 2.0 License
+# Container Name: ms-vanilla-service
+# Microservices Containers - SpringBoot 3.4.1 / Java 21
 #
-# Container Name: ms-cache-service
-#
-# Microservices Containers - SpringBoot 2.7.0 / Java 17
-#
-# Version 0.1
-#################################################################
-# Base Version
-#FROM metamagic/java:8
-FROM metamagic/java:17
+# Version 0.01
+#---------------------------------------------------------------
 
-LABEL author="Araf Karsh Hamid <araf.karsh@metamagic.in>"
+#FROM arafkarsh/java:21
+FROM arafkarsh/java:21-alpine
 
-RUN mkdir /Softwares/service
-RUN mkdir /Softwares/service/libs
-RUN mkdir /home/poduser/libs
+LABEL author="Araf Karsh Hamid <araf.karsh@gmail.com>"
 
-ARG SPRINGBOOT_JAR=ms-cache-service-spring-boot.jar
-ARG MAVEN_JAR=ms-cache-service-thin.jar
+# Create Service Directory and Set Ownership
+RUN mkdir -p /Softwares/service /home/ozazo && \
+    chown -R ozazo:dev /Softwares/service /home/ozazo && \
+    chmod -R 750 /Softwares/service /home/ozazo
 
-# Copy Service (Install)
-# COPY --chown=poduser:poduser StartService /Softwares/service/
-COPY --chown=poduser:poduser application.properties /home/poduser/
-COPY --chown=poduser:poduser application.properties /Softwares/service/
-# SpringBoot Fat Jar
-COPY --chown=poduser:poduser ${SPRINGBOOT_JAR} /Softwares/service/
+ARG SPRINGBOOT_JAR=ms-vanilla-service-spring-boot.jar
 
-# Maven Thin Jar
-#COPY --chown=poduser:poduser ${MAVEN_JAR} /Softwares/service/
-#COPY --chown=poduser:poduser /libs /Softwares/service/libs/
-#COPY --chown=poduser:poduser /libs /home/poduser/libs/
+# Copy Application Properties, Logback, and Policy Files
+COPY --chown=ozazo:dev application*.properties logback-spring*.xml vanilla.policy /home/ozazo/
 
-# Change the Mode
-RUN chmod -R 750 /Softwares/service/*
+# Copy Microservice SpringBoot Jar and Start Script
+COPY --chown=ozazo:dev ${SPRINGBOOT_JAR} /Softwares/service/
+COPY --chown=ozazo:dev startService /home/ozazo/
 
 # Expose Microservice Port
-EXPOSE 9090
+EXPOSE 9334
 
-USER poduser
+# Set Working Directory and User
+WORKDIR /home/ozazo
+USER ozazo
 
 # Start Microservice
-#ENTRYPOINT ["java","-jar","/Softwares/service/ms-cache-service-thin.jar"]
-ENTRYPOINT ["java","-jar","/Softwares/service/ms-cache-service-spring-boot.jar"]
+ENTRYPOINT ["/home/ozazo/startService"]
 
