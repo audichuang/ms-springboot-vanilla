@@ -4,7 +4,7 @@
 # -------------------------------------------------------------------------------------------
 # Start Container
 # -------------------------------------------------------------------------------------------
-PORT=9090
+PORT=9334
 ORG=$1
 SERVICE=$2
 API=$3
@@ -17,8 +17,11 @@ if test "$#" -lt 1; then
     API=`getServiceName 3`
 	cd src/docker
 fi
-echo "docker container run --name $SERVICE -d --rm -p $PORT:9090 $ORG/$SERVICE"
-docker container run --name $SERVICE -d --rm -p $PORT:9090 $ORG/$SERVICE
-echo "Checkout API: http://localhost:$PORT/api/v1/$API/swagger-ui.html"
+echo "docker container run --name $SERVICE -d --rm -p $PORT:9334 $ORG/$SERVICE"
+docker container run --name $SERVICE -d --rm -p $PORT:9334 \
+  -e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \
+  -e APP_PROFILE=$APP_PROFILE $ORG/$SERVICE
+
+echo "Checkout API: http://localhost:$PORT/$API/api/v1/swagger-ui.html"
 echo "Container id for $SERVICE ="`docker container ls | grep $SERVICE | tr -s " " | cut -d " " -f 1`
 docker container ls | grep $SERVICE | tr -s " " | cut -d " " -f 1 > $SERVICE.cid

@@ -7,6 +7,7 @@ src/docker/*.jar
 src/docker/libs
 src/docker/Dockerfile-r
 tests/tokens
+otel/collector-output.txt
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

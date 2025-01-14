@@ -14,11 +14,11 @@ if test "$#" -lt 1; then
 	SERVICE=`getServiceName 4`
 	cd src/docker
 fi
-echo "Building Containr for $ORG/$SERVICE ......."
+echo "Building Containr for $ORG/f-air-$SERVICE ......."
 # Replace Mock Service Container name with actual Container name
 cp Dockerfile-r Dockerfile
 sed -i -r "s/mock-service/$SERVICE/g" Dockerfile
 # Build Container
 echo "docker build --force-rm -f Dockerfile -t $ORG/$SERVICE . "
-docker build --force-rm -f Dockerfile -t $ORG/$SERVICE . 
+docker build --force-rm -f Dockerfile -t $ORG/$SERVICE .
 cd ../../

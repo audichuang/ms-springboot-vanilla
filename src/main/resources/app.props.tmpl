@@ -5,7 +5,7 @@ spring.profiles.default=dev
 # =======================================================================
 # Service Name & API Details -  Version, Path
 # =======================================================================
-service.org=orgname
+service.org=arafkarsh
 service.name=MS-Vanilla
 service.api.name=ms-vanilla
 service.api.prefix=api
@@ -114,6 +114,7 @@ logging.file.total-size-cap=3GB
 # Metrics: Micrometer / Prometheus / Actuator /
 # ------------------------------------------------------------------------
 # Enable exposure of specific actuator endpoints (health, metrics, prometheus)
+springdoc.show-actuator=true
 management.endpoints.web.exposure.include=health,metrics,prometheus,info
 # Enable Spring Boot Actuator Endpoints
 management.endpoint.health.enabled=true
@@ -128,22 +129,58 @@ management.metrics.enable.datasource=false
 # Tracing: Open Telemetry / Micrometer
 # Micrometer only supports HTTP/Protobuf (http) for OTLP. grpc is not supported.
 # ------------------------------------------------------------------------
+# OpenTelemetry Setup
+# W3C Standard, B3 Zipkin Standard
+# ------------------------------------------------------------------------
+otel.propagators=tracecontext
+otel.resource.attributes.deployment.environment=dev
+otel.resource.attributes.service.name=ms-vanilla
+otel.resource.attributes.service.namespace=shopping
+# ------------------------------------------------------------------------
+# Export to Collector
+# ------------------------------------------------------------------------
 # Enable OpenTelemetry
-management.tracing.enabled=false
+otel.javaagent.debug=true
+otel.service.name=${service.container}
+otel.exporter.otlp.endpoint=http://localhost:4318
+# to load the Custom OpenTelemetric Config
+otel.traces.exporter=none
+otel.metrics.exporter=none
+otel.logs.exporter=none
+# ------------------------------------------------------------------------
+# Disable global auto-instrumentation and explicitly enable for jdbc, logback, web, kafka, etc
+# ------------------------------------------------------------------------
+otel.instrumentation.common.default-enabled=false
+# Enable specific instrumentation (JDBC is not supported in this version of Open Telemetry)
+otel.instrumentation.jdbc.enabled=false
+otel.instrumentation.logback-mdc.enabled=true
+otel.instrumentation.spring-web.enabled=true
+otel.instrumentation.spring-webmvc.enabled=true
+otel.instrumentation.micrometer.enabled=true
+# External Systems Kafka / MongoDB
+otel.instrumentation.kafka.enabled=false
+otel.instrumentation.mongo.enabled=false
+# ------------------------------------------------------------------------
+# Async - Reactive Framework
+# ------------------------------------------------------------------------
+#otel.instrumentation.spring-webflux.enabled=false
+#otel.instrumentation.r2dbc.enabled=false
+# ------------------------------------------------------------------------
+#management.tracing.enabled=false
 # OpenTelemetry Tracing Configuration
-management.otlp.metrics.export.enabled=false
-management.otlp.metrics.export.url=http://localhost:4318/v1/metrics
+#management.otlp.metrics.export.enabled=false
+#management.otlp.metrics.export.url=http://localhost:4358/v1/metrics
 # number of Meter to include in a single payload sent to the backend. The default is 10,000.
-management.otlp.metrics.export.batchSize=15000
-management.otlp.metrics.export.timeout=5s
+#management.otlp.metrics.export.batchSize=15000
+#management.otlp.metrics.export.timeout=5s
 # Determines how the additive quantities are expressed, in relation to time. Values are cumulative or delta
-management.otlp.metrics.export.aggregationTemporality=cumulative
+#management.otlp.metrics.export.aggregationTemporality=cumulative
 # Additional headers to send with exported metrics
-management.otlp.metrics.export.headers.Authorization=Bearer abc123
+#management.otlp.metrics.export.headers.Authorization=Bearer abc123
 # the interval at which metrics will be published.
-management.otlp.metrics.export.step=10s
+#management.otlp.metrics.export.step=10s
 # Resource Attributes are used for all metrics published.
-management.otlp.metrics.export.resourceAttributes.service.name=ms-vanilla-service
+#management.otlp.metrics.export.resourceAttributes.service.name=ms-vanilla-service
 # =======================================================================
 # Text Encryption
 # =======================================================================
@@ -206,9 +243,9 @@ springdoc.api-docs.enabled=true
 # Disabling the swagger-ui
 #springdoc.swagger-ui.enabled=true
 springdoc.swagger-ui.operationsSorter=method
-#For sorting tags alphabetically
+# For sorting tags alphabetically
 springdoc.swagger-ui.tagsSorter=alpha
-springdoc.show-actuator=true
+#springdoc.show-actuator=true
 # Packages to include
 # springdoc.packagesToScan=io.fusion.water, io.fusion.fire
 # Paths to include

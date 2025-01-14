@@ -1,0 +1,16 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Base Alpine Installation
+# Araf Karsh Hamid, (c) Copyright 2025
+#
+# Version 0.01
+#---------------------------------------------------------------
+
+# Source the organization-wide config
+source utils/config-org.env
+source utils/common-functions
+
+determine_os "$1"
+
+echo "docker push $ORG/$SERVICE"
+docker push $ORG/$SERVICE
