@@ -1,0 +1,25 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Container Manager
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Start Container in Foreground
+# --------------------------------------------------------------
+
+# Get the Org Name, Service Name, Version and Full Container Name
+source serviceName
+source colimaStatus
+
+PORT=9334
+APP_PROFILE=$1
+
+echo "docker container run -it --name $SERVICE-$VERSION --rm -p $PORT:9334 $FULL_NAME"
+#echo "Checkout API: http://localhost:$PORT/$API/api/v1/swagger-ui.html"
+docker container run -it --network="host" --name $SERVICE-$VERSION --rm -p $PORT:9334 \
+	-e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \
+	-e APP_PROFILE=$APP_PROFILE \
+	-e SPRING_PROFILES_ACTIVE=$APP_PROFILE \
+	-e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/ms_vanilla_334 \
+	$FULL_NAME

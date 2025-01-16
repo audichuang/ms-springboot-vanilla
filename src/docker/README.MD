@@ -2,9 +2,7 @@
 
 ## Step 1 - Verify Container Name and Org Name
 
-1. Verify the Org Name in src/main/resources/app.props.tmpl file (service.org)
-2. Verify the container name in src/main/resources/app.props.tmpl file (service.container)
-3. Verify the microservice name in src/main/resources/app.props.tmpl file (service.api.name)
+Add the Org Name in the serviceName shellscript
 
 ## Step 2 - Build the image
 

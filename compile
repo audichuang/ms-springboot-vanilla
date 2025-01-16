@@ -41,14 +41,14 @@ then
 	echo "2.1 Compiling Service > $ORG/$SERVICE :: SUCCESS"
 	echo "---------------------------------------------------------------------------------------"
 	echo "2.2 Copy the Fat and Thin jar files and the libs to the Docker Directory (src/docker)"
-	cp target/*service*-spring-boot.jar src/docker/$CONTAINER-spring-boot.jar
-	#cp target/*service*?.?.?.jar src/docker/$CONTAINER-thin.jar
+	cp target/*service*-spring-boot.jar src/docker/Input/$CONTAINER-spring-boot.jar
+	#cp target/*service*?.?.?.jar src/docker/Input/$CONTAINER-thin.jar
 	#cp target/libs/* src/docker/libs/
 	echo "2.3 Copy the application.properties File to the Docker Directory (src/docker)"
-	cp src/main/resources/application.properties src/docker/
-	cp src/main/resources/application-dev.properties src/docker/
-	cp src/main/resources/application-staging.properties src/docker/
-	cp src/main/resources/application-prod.properties src/docker/
+	cp src/main/resources/application.properties src/docker/Input
+	cp src/main/resources/application-dev.properties src/docker/Input
+	cp src/main/resources/application-staging.properties src/docker/Input
+	cp src/main/resources/application-prod.properties src/docker/Input
 	echo "2.4 Copy the application.properties Files to current directory."
 	cp src/main/resources/application.properties .
 	cp src/main/resources/application-dev.properties .
@@ -60,24 +60,23 @@ then
 	cp src/main/resources/logback-spring-appenders-json.xml .
 	cp src/main/resources/logback-spring-appenders-text.xml .
 	echo "2.6 Copy the logback-spring xml Files to Docker directory src/docker/"
-	cp src/main/resources/logback-spring.xml src/docker/
-	cp src/main/resources/logback-spring-scope.xml src/docker/
-	cp src/main/resources/logback-spring-appenders-text.xml src/docker/
-	cp src/main/resources/logback-spring-appenders-json.xml src/docker/
-	cp src/main/resources/logback-spring-appenders-json-logstash.xml src/docker/
+	cp src/main/resources/logback-spring.xml src/docker/Input
+	cp src/main/resources/logback-spring-scope.xml src/docker/Input
+	cp src/main/resources/logback-spring-appenders-text.xml src/docker/Input
+	cp src/main/resources/logback-spring-appenders-json.xml src/docker/Input
+	cp src/main/resources/logback-spring-appenders-json-logstash.xml src/docker/Input
 	echo "---------------------------------------------------------------------------------------"
 	echo "2.7. Building the Container for $ORG/$SERVICE Service ..... "
 	echo "---------------------------------------------------------------------------------------"
-	cd src/docker
-	echo "2.7.1 Docker Build Process Disabled.... "
+	echo "2.7.1 Docker Build Process Disabled.... Run the build command separately"
 	#build
 	echo "---------------------------------------------------------------------------------------"
 	echo "3. $SERVICE Microservice Build Process Completed Successfully! ........... "
 	echo "---------------------------------------------------------------------------------------"
 	echo "3.1 Start the Service using "
-	echo "  run (Run the SpringBoot App)  OR"
-	echo "  cd src/docker"
-	echo "  start (Start the Container)"
+	echo "  run profile (dev, staging, prod) : Run the SpringBoot App  OR "
+	echo "  startfg profile (dev, staging, prod) : Start docker container in foreground OR"
+	echo "  start profile (dev, staging, prod) : Start the Container as a daemon)"
 	echo "3.2 Then to test it with"
 	echo "  test (To Test the SpringBoot App)"
 	echo "---------------------------------------------------------------------------------------"

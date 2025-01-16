@@ -1,0 +1,55 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Server Installation
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Common Functions used in other Scripts
+#---------------------------------------------------------------
+
+# Function to set VERSION from input or default to 21
+set_version() {
+  if [[ -n "$1" ]]; then
+    VERSION="$1"
+  else
+    VERSION=2
+  fi
+}
+
+# Function to determine SERVICE and DOCKER_FILE based on $1
+determine_config() {
+  case "$1" in
+    apache)
+      SERVICE="apache:$VERSION"
+      SERVICE_NAME="apache-$VERSION"
+      SERVICE_PORT="80"
+      DOCKER_FILE="Dockerfiles/Dockerfile.apache"
+      ;;
+    tomcat)
+      SERVICE="tomcat:$VERSION"
+      SERVICE_NAME="tomcat-$VERSION"
+      SERVICE_PORT="8080"
+      DOCKER_FILE="Dockerfiles/Dockerfile.tomcat.$VERSION"
+      ;;
+    *)
+      SERVICE="apache:$VERSION"
+      SERVICE_NAME="apache-$VERSION"
+      SERVICE_PORT="80"
+      DOCKER_FILE="Dockerfiles/Dockerfile.apache"
+      echo "----------------------------------------------------------------"
+      echo "Server Container Management. "
+      echo "Copyright (c) Araf Karsh Hamid, 2025"
+      echo "NO INPUTS! Defaulting to $ORG/$SERVICE"
+      echo "----------------------------------------------------------------"
+      echo "Options: $0 [apache, tomcat] [2, 9, 10, 11]"
+      echo "Examples"
+      echo "----------------------------------------------------------------"
+      echo "$0 apache 2  [supports arm64 & amd64]"
+      echo "$0 tomcat 9  [supports arm64 & amd64]"
+      echo "$0 tomcat 10 [supports arm64 & amd64]"
+      echo "$0 tomcat 11 [supports arm64 & amd64]"
+      echo "----------------------------------------------------------------"
+      ;;
+  esac
+}

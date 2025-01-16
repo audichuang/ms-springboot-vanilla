@@ -2,22 +2,16 @@
 # -------------------------------------------------------------------------------------------
 # @author: Araf Karsh Hamid
 # -------------------------------------------------------------------------------------------
-# Developer Local Compile Process
+# Build Docker Container
 # ===========================================================================================
-# 1. Clean up the target folder
-# 2. Generate the Build Number (from git commit count) and Build Date
-# 3. Build the Service
-# 4. Copy the jar file to the Lib Folder
-# 5. Start the Service using ./run script and then test it with ./test script
-#
-# After the Successful build and Startup of the Service, It should show the Build No. & Date
-# -------------------------------------------------------------------------------------------
-SERVICE=`getServiceName`
-CONTAINER=`getServiceName 4`
-ORG=`getServiceName 1`
+
+# Get the Org Name, Service Name, Version and Full Container Name
+source serviceName
+
 echo "---------------------------------------------------------------------------------------"
 echo "Building the Container for $ORG/$SERVICE Service ..... "
 echo "---------------------------------------------------------------------------------------"
 cd src/docker
 build
+cd ../../
 echo "---------------------------------------------------------------------------------------"
