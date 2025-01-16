@@ -2,15 +2,16 @@
 #---------------------------------------------------------------
 # Base OS Installation
 # Araf Karsh Hamid, (c) Copyright 2025
-#
+# License: Apache 2.0
 # Version 0.01
 #---------------------------------------------------------------
 # Check Container Logs
 # --------------------------------------------------------------
 
 # Source the organization-wide config
-source utils/config-org.env
+source ../utils/config-org.env
 source utils/common-functions
+source ../utils/colimaStatus
 
 determine_os "$1"
 

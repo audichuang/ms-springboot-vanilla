@@ -1,18 +1,17 @@
 #!/bin/bash
-# -------------------------------------------------------------------------------------------
-# @author: Araf Karsh Hamid
-# -------------------------------------------------------------------------------------------
-# Container Stats (CPU, Memory)
-# -------------------------------------------------------------------------------------------
-ORG=$1
-SERVICE=$2
-if test "$#" -lt 1; then
-	echo "Extracting ORG and Service Names..."
-	# Get the Org Name and Container Name from Properties file
-	cd ../../
-	ORG=`getServiceName 1`
-	SERVICE=`getServiceName 4`
-	cd src/docker
-fi
-CID=`cat $SERVICE.cid`
+#---------------------------------------------------------------
+# Container Manager
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Stats Container
+# --------------------------------------------------------------
+# Get the Org Name, Service Name, Version and Full Container Name
+cd ../../
+source serviceName
+source colimaStatus
+cd src/docker
+
+CID=`cat tmp/$SERVICE.cid`
 docker stats $CID

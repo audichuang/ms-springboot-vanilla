@@ -2,15 +2,16 @@
 #---------------------------------------------------------------
 # Java Installation
 # Araf Karsh Hamid, (c) Copyright 2025
-#
+# License: Apache 2.0
 # Version 0.01
 #---------------------------------------------------------------
 # Shell Java Container 
 #---------------------------------------------------------------
 
 # Source the organization-wide config 
-source utils/config-org.env
+source ../utils/config-org.env
 source utils/common-functions
+source ../utils/colimaStatus
 
 # Set version from $2
 set_version "$2"

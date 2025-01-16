@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+# Function to check for a specific JAR file in a folder
+check_specific_jar() {
+    local folder="Input"    # Specify the folder
+    local jar_file="ms-vanilla-service-spring-boot.jar" # Specify the JAR file name
+
+    # Check if the folder exists
+    if [ ! -d "$folder" ]; then
+        echo "Error: Directory 'src/docker/$folder' does not exist."
+	echo "Input Directory will have all  the following files: "
+	echo " - application.*properties files"
+	echo " - logback-spring.*.xml files"
+	echo " - vanilla.policy file"
+	echo " - $jar_file file"
+	echo " "
+	echo "Run the compile script in the base folder of the project to create the above files."
+	exit 1
+    fi
+
+    # Check if the specific JAR file exists in the folder
+    if [ ! -f "$folder/$jar_file" ]; then
+        echo "Error: File '$jar_file' not found in the directory 'src/docker/$folder'."
+	echo "Run the compile script in the base folder of the project."
+	exit 1
+    else
+        return 0
+    fi
+}
+
+# Call the function
+check_specific_jar

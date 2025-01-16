@@ -1,0 +1,21 @@
+#!/bin/bash
+# -------------------------------------------------------------------------------------------
+# @author: Araf Karsh Hamid
+# -------------------------------------------------------------------------------------------
+
+# Organization to Push the Container to a Container Registry
+ORG=arafkarsh
+
+# Pickup the Container Version from the POM File
+VERSION=$(awk -F'[<>]' '/<version>/ {print $3; exit}' pom.xml)
+
+# Pickup the Container Name from the Artifact ID from POM File
+SERVICE=$(awk -F'[<>]' '/<artifactId>/ {print $3; exit}' pom.xml)
+
+# Derive the Container Full Name from Org, Service & Version
+FULL_NAME=$ORG/$SERVICE:$VERSION
+
+# Docker File Source
+DOCKER_FILE=Dockerfiles/Dockerfile
+
+#echo "Service: $FULL_NAME"

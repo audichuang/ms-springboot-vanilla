@@ -6,7 +6,7 @@
 	<artifactId>ms-vanilla-service</artifactId>
 	<version>0.3.4</version>
 	<packaging>jar</packaging>
-	<name>msVanillaService</name>
+	<name>ms-vanilla-service</name>
 	<description>Microservice Vanilla Template</description>
 
 	<!-- =================================================================== -->

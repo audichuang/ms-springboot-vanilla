@@ -18,7 +18,7 @@ LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
 
 # Install vim, bash, gzip
 RUN apk update && \
-    apk add --no-cache vim bash gzip
+    apk add --no-cache bash gzip vim 
 
 # Create Software Directories
 RUN mkdir -p /Softwares && \
