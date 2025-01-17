@@ -13,6 +13,9 @@ source ../utils/config-org.env
 source utils/common-functions
 source ../utils/colimaStatus
 
+# Call the validation function with "$@"
+validate_params "$@"
+
 determine_os "$1"
 
 echo "docker build --rm=true -t $ORG/$SERVICE -f $DOCKER_FILE "

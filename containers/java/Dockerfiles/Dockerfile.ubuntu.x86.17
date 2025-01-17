@@ -7,9 +7,15 @@
 # Java 17 Container
 #---------------------------------------------------------------
 
-FROM arafkarsh/ubuntu
+FROM arafkarsh/ubuntu:24.04
 
-MAINTAINER Araf Karsh Hamid "araf.karsh@gmail.com"
+# Metadata
+LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
+      description="This Dockerfile creates the Oracle Java Ubuntu image." \
+      version="1.0" \
+      org.opencontainers.image.authors="Araf Karsh Hamid <araf.karsh@gmail.com>" \
+      org.opencontainers.image.version="1.0" \
+      org.opencontainers.image.licenses="Apache 2"
 
 # Download and install Java (Intel version)
 RUN mkdir -p /Softwares/jdk17 && \
@@ -29,8 +35,8 @@ RUN { \
     echo "echo \"----------------------------------------------------------------\""; \
   }  >> /home/ozazo/.bash_profile
 
-ENV PATH $PATH:/Softwares/jdk17/bin:
-ENV JAVA_HOME /Softwares/jdk17
+ENV PATH=$PATH:/Softwares/jdk17/bin:
+ENV JAVA_HOME=/Softwares/jdk17
 
 # Enable User ozazo at this Level
 USER ozazo

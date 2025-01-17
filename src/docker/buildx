@@ -1,0 +1,37 @@
+#! /bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Container Manager
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Build Vanilla Microservice Container for arm64 and amd64
+#---------------------------------------------------------------
+
+# Source the organization-wide config
+cd ../../
+source serviceName
+cd src/docker
+source utils/checkServiceJar
+source utils/common-functions
+
+# Call the validation function with "$@"
+validate_params "$@"
+
+# Set version from $2
+set_version "$2"
+
+# Determine configuration based on $1
+determine_os_java "$1"
+
+# Check if Colima is running, if Not Start Colima
+source utils/colimaStatus
+
+echo "Building Containr for $FULL_NAME "
+
+# Build Multi-Architecture Container
+echo "docker buildx build --platform linux/arm64,linux/amd64 \ "
+echo "          --rm=true -t $FULL_NAME -f $DOCKER_FILE --push ."
+
+docker buildx build --platform linux/arm64,linux/amd64 \
+                --rm=true -t $FULL_NAME -f $DOCKER_FILE --push .

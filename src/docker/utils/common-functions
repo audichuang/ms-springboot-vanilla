@@ -1,0 +1,80 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Service Container Installation
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Common Functions used in other Scripts
+#---------------------------------------------------------------
+
+# Function to set VERSION from input or default to 21
+set_version() {
+  if [[ -n "$1" ]]; then
+    JAVA_VERSION="$1"
+  else
+    JAVA_VERSION=21
+  fi
+}
+
+# Show Help
+show_help() {
+  echo "----------------------------------------------------------------"
+  echo "Vanilla Microservice Container Management. "
+  echo "Copyright (c) Araf Karsh Hamid, 2025"
+  echo "Use buildx to create Multi-Architecture (arm64/amd64) Images"
+  echo "----------------------------------------------------------------"
+  echo "INVALID INPUTS! Missing OS Name and/or Java Version Number"
+  echo "----------------------------------------------------------------"
+  echo "Usage: $0 [alpine, ubuntu, ubuntu-openjdk] [23, 21, 17, 11]"
+  echo "Examples"
+  echo "----------------------------------------------------------------"
+  echo "$0 alpine 21"
+  echo "$0 alpine 17"
+  echo "$0 ubuntu 21"
+  echo "$0 ubuntu 23"
+  echo "$0 ubuntu-openjdk 21"
+  echo "$0 ubuntu-openjdk 17"
+  echo "----------------------------------------------------------------"
+
+}
+
+# Validate the Paramters to the Shell Script
+validate_params() {
+    local expected_count=2  # Expected number of parameters
+    local actual_count=$#   # Number of parameters passed
+
+    if [ "$actual_count" -ne "$expected_count" ]; then
+        show_help
+        exit 1
+    fi
+}
+
+DOCKER_FILE="Dockerfiles/Dockerfile"
+
+# Function to determine SERVICE and DOCKER_FILE based on $1
+determine_os_java() {
+  case "$1" in
+    alpine)
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpine"
+      #DOCKER_FILE="Dockerfiles/Dockerfile.alpine.$JAVA_VERSION"
+      ;;
+    ubuntu)
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
+      #DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.$JAVA_VERSION"
+      ;;
+    ubuntu-x86)
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
+      #DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.x86.$JAVA_VERSION"
+      ;;
+    ubuntu-openjdk)
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-openjdk"
+      DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.openjdk.$JAVA_VERSION"
+      ;;
+    *)
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-openjdk"
+      #DOCKER_FILE="Dockerfiles/Dockerfile.alpine.$JAVA_VERSION"
+      show_help
+      ;;
+  esac
+}

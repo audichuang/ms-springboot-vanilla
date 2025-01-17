@@ -1,22 +1,34 @@
 #!/bin/bash
 #---------------------------------------------------------------
-# Container Manager
+# Vanilla Microservice Container Manager
 # Araf Karsh Hamid, (c) Copyright 2025
 # License: Apache 2.0
 # Version 0.01
 #---------------------------------------------------------------
-# Build Container
+# Build Vanilla Microservice Container
 # --------------------------------------------------------------
 
 # Get the Org Name, Service Name, Version and Full Container Name
 cd ../../
 source serviceName
-source colimaStatus
 cd src/docker
 source utils/checkServiceJar
+source utils/common-functions
+
+# Call the validation function with "$@"
+validate_params "$@"
+
+# Set version from $2
+set_version "$2"
+
+# Determine configuration based on $1
+determine_os_java "$1"
+
+# Check if Colima is running, if Not Start Colima
+source utils/colimaStatus
 
 echo "Building Containr for $FULL_NAME "
 
 # Build Container
-echo "docker build --force-rm -f $DOCKER_FILE -t $FULL_NAME ."
-docker build --force-rm -f $DOCKER_FILE -t $FULL_NAME .
+echo "docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE -t $FULL_NAME ."
+docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE -t $FULL_NAME .

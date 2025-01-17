@@ -1,4 +1,18 @@
 #!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Service Container Installation
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Check Input Directory and Microservice Springboot Jar File
+#---------------------------------------------------------------
+
+show_std_error() {
+    echo "Run the compile script in the base folder of the project to create the file."
+    echo "Or Copy the above file manually to the Input Folder."
+    exit 1
+}
 
 
 # Function to check for a specific JAR file in a folder
@@ -9,21 +23,21 @@ check_specific_jar() {
     # Check if the folder exists
     if [ ! -d "$folder" ]; then
         echo "Error: Directory 'src/docker/$folder' does not exist."
-	echo "Input Directory will have all  the following files: "
-	echo " - application.*properties files"
-	echo " - logback-spring.*.xml files"
-	echo " - vanilla.policy file"
-	echo " - $jar_file file"
-	echo " "
-	echo "Run the compile script in the base folder of the project to create the above files."
-	exit 1
+        echo "Input Directory will have all  the following files: "
+        echo " - application.*properties files"
+        echo " - logback-spring.*.xml files"
+        echo " - vanilla.policy file"
+        echo " - $jar_file file"
+        echo " "
+        echo "Run the compile script in the base folder of the project to create the above files."
+        echo "Or Copy the above set of files manually to the Input Folder."
+        exit 1
     fi
 
     # Check if the specific JAR file exists in the folder
     if [ ! -f "$folder/$jar_file" ]; then
         echo "Error: File '$jar_file' not found in the directory 'src/docker/$folder'."
-	echo "Run the compile script in the base folder of the project."
-	exit 1
+        show_std_error
     else
         return 0
     fi
