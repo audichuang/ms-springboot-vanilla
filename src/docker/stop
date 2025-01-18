@@ -1,6 +1,6 @@
 #!/bin/bash
 #---------------------------------------------------------------
-# Container Manager
+# Vanilla Microservice Container Manager
 # Araf Karsh Hamid, (c) Copyright 2025
 # License: Apache 2.0
 # Version 0.01
@@ -11,8 +11,10 @@
 # Get the Org Name, Service Name, Version and Full Container Name
 cd ../../
 source serviceName
-source colimaStatus
 cd src/docker
+
+# Check if Colima is running, if Not Start Colima
+source utils/colimaStatus
 
 echo "docker container stop $SERVICE"
 docker container stop $SERVICE

@@ -16,6 +16,6 @@ SERVICE=$(awk -F'[<>]' '/<artifactId>/ {print $3; exit}' pom.xml)
 FULL_NAME=$ORG/$SERVICE:$VERSION
 
 # Docker File Source
-DOCKER_FILE=Dockerfiles/Dockerfile
+DOCKER_FILE=Dockerfiles/Dockerfile.alpine.21
 
 #echo "Service: $FULL_NAME"

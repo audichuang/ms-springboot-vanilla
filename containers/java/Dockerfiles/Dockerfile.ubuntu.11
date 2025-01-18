@@ -7,11 +7,11 @@
 # Java 11 Container
 #---------------------------------------------------------------
 
-FROM arafkarsh/ubuntu
+FROM arafkarsh/ubuntu:24.04
 
 # Metadata
 LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
-      description="This Dockerfile creates the Java Ubuntu image." \
+      description="This Dockerfile creates the Java OpenJDK Ubuntu image." \
       version="1.0" \
       org.opencontainers.image.authors="Araf Karsh Hamid <araf.karsh@gmail.com>" \
       org.opencontainers.image.version="1.0" \
@@ -20,14 +20,6 @@ LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
 RUN mkdir -p /Softwares/jdk11 
 
 RUN apt-get install -y openjdk-11-jdk
-    
-# Copy the JDK 11 to Tmp directory
-#COPY  jdk-11.0.25_linux-aarch64_bin.tar.gz /tmp/jdk11-arm.tar.gz
-
-#RUN tar -xzf /tmp/jdk11-arm.tar.gz -C /Softwares/jdk11 --strip-components=1 && \
-    #rm -f /tmp/jdk11-arm.tar.gz && \
-    #chown -R ozazo:dev /Softwares/jdk11 && \
-    #chmod -R 750 /Softwares/jdk11
 
 # Add profile information to .bash_profile
 RUN { \
@@ -38,8 +30,6 @@ RUN { \
     echo "echo \"----------------------------------------------------------------\""; \
   } >> /home/ozazo/.bash_profile
 
-#ENV PATH $PATH:/Softwares/jdk11/bin:
-#ENV JAVA_HOME /Softwares/jdk11
 
 # Enable User ozazo at this Level
 USER ozazo

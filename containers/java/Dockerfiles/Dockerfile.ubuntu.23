@@ -8,11 +8,11 @@
 #---------------------------------------------------------------
 
 # Stage 1: Builder Stage
-FROM arafkarsh/ubuntu AS builder
+FROM arafkarsh/ubuntu:24.04 AS builder
 
 # Metadata
 LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
-      description="This Dockerfile creates the Java Ubuntu image." \
+      description="This Dockerfile creates the Oracle Java Ubuntu image." \
       version="1.0" \
       org.opencontainers.image.authors="Araf Karsh Hamid <araf.karsh@gmail.com>" \
       org.opencontainers.image.version="1.0" \
@@ -25,10 +25,15 @@ RUN mkdir -p /Softwares/jdk23 && \
     rm -f /tmp/jdk23-arm.tar.gz
 
 # Stage 2: Final Image
-FROM arafkarsh/ubuntu
+FROM arafkarsh/ubuntu:24.04
 
 # Metadata
-MAINTAINER Araf Karsh Hamid "araf.karsh@gmail.com"
+LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
+      description="This Dockerfile creates the Oracle Java Ubuntu image." \
+      version="1.0" \
+      org.opencontainers.image.authors="Araf Karsh Hamid <araf.karsh@gmail.com>" \
+      org.opencontainers.image.version="1.0" \
+      org.opencontainers.image.licenses="Apache 2"
 
 # Copy only the Java runtime from the builder stage
 COPY --from=builder /Softwares/jdk23 /Softwares/jdk23
@@ -47,8 +52,8 @@ RUN { \
   } >> /home/ozazo/.bash_profile
 
 # Set environment variables
-ENV PATH $PATH:/Softwares/jdk23/bin
-ENV JAVA_HOME /Softwares/jdk23
+ENV PATH=$PATH:/Softwares/jdk23/bin
+ENV JAVA_HOME=/Softwares/jdk23
 
 # Enable User ozazo at this Level
 USER ozazo

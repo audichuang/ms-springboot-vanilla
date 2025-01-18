@@ -21,6 +21,7 @@ RUN mkdir /Softwares && \
     groupadd -r dev && \
     useradd -r -g dev -ms /bin/bash ozazo && \
     mkdir -p /home/ozazo && \
+    chown -R ozazo:dev /Softwares && \
     chown -R ozazo:dev /home/ozazo && \
     chmod 750 /home/ozazo
 
