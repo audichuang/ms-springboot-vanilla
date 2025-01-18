@@ -23,5 +23,5 @@ set_version "$2"
 determine_config "$1"
 
 echo "Inspect the Manifest of the container"
-echo "skopeo inspect --raw docker://$ORG/$SERVICE "
-skopeo inspect --raw docker://$ORG/$SERVICE
+echo "docker buildx imagetools inspect $ORG/$SERVICE"
+docker buildx imagetools inspect $ORG/$SERVICE

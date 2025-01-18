@@ -1,0 +1,21 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Container Manager
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Inspect the Container
+# --------------------------------------------------------------
+
+# Get the Org Name, Service Name, Version and Full Container Name
+cd ../../
+source serviceName
+cd src/docker
+
+
+# Check if Colima is running, if Not Start Colima
+source utils/colimaStatus
+
+echo "docker buildx imagetools inspect $FULL_NAME"
+docker buildx imagetools inspect $FULL_NAME

@@ -80,21 +80,17 @@ determine_os_java() {
   case "$1" in
     alpine)
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpine"
-      #DOCKER_FILE="Dockerfiles/Dockerfile.alpine.$JAVA_VERSION"
       ;;
     ubuntu)
       validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
-      #DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.$JAVA_VERSION"
       ;;
     ubuntu-x86)
       validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
-      #DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.x86.$JAVA_VERSION"
       ;;
     ubuntu-openjdk)
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-openjdk"
-      DOCKER_FILE="Dockerfiles/Dockerfile.ubuntu.openjdk.$JAVA_VERSION"
       ;;
     *)
       show_help
