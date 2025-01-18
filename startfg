@@ -10,7 +10,7 @@
 
 # Get the Org Name, Service Name, Version and Full Container Name
 source serviceName
-source colimaStatus
+source containers/utils/colimaStatus
 
 PORT=9334
 APP_PROFILE=$1

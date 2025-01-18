@@ -31,9 +31,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -708,6 +706,93 @@ public final class Utils {
 		StringWriter stringWriter = new StringWriter();
 		e.printStackTrace(new PrintWriter(stringWriter));
 		return stringWriter.toString();
+	}
+
+	/**
+	 * Returns True if the Java Version is 21 or higher
+	 * @return
+	 */
+	public static  boolean isJava21OrHigher() {
+		String version = System.getProperty("java.version");
+		String[] versionParts = version.split("\\.");
+		int majorVersion;
+		if (versionParts[0].equals("1")) {
+			// Handle "1.x" style versioning (Java 8 and earlier)
+			majorVersion = Integer.parseInt(versionParts[1]);
+		} else {
+			majorVersion = Integer.parseInt(versionParts[0]);
+		}
+		return majorVersion >= 21;
+	}
+
+	/**
+	 * Get the OS Details
+	 * @return
+	 */
+	public static String getOSDetails() {
+		// Get the operating system name and version
+		String osName = System.getProperty("os.name");
+		String osVersion = System.getProperty("os.version");
+		// Get the chip architecture
+		String architecture = System.getProperty("os.arch");
+		if(osName != null && osName.equalsIgnoreCase("Linux")) {
+				return new StringBuilder().append(getLinuxDistribution(osName, osVersion))
+						.append(" : ").append(architecture).append(") ").toString();
+		}
+		return new StringBuilder().append(osName).append(" (").append(osVersion)
+				.append(" : ").append(architecture).append(") ").toString();
+	}
+
+	public static String getLinuxDistribution(String osName, String version) {
+		// Try to read /etc/os-release first
+		String osReleaseFile = "/etc/os-release";
+		String alpineReleaseFile = "/etc/alpine-release";
+		String issueFile = "/etc/issue";
+		try {
+			if (fileExists(osReleaseFile)) {
+				return parseOsRelease(osReleaseFile, osName, version);
+			} else if (fileExists(alpineReleaseFile)) {
+				// If /etc/alpine-release exists, it's likely Alpine Linux
+				return "Alpine (" + readFirstLine(alpineReleaseFile);
+			} else if (fileExists(issueFile)) {
+				// Fallback to /etc/issue
+				return readFirstLine(issueFile);
+			} else {
+				return new StringBuilder().append(osName).append("(").append(version).toString();
+			}
+		} catch (Exception io) {
+			return new StringBuilder().append(osName).append("(").append(version).toString();
+		}
+	}
+
+	private static String parseOsRelease(String filePath, String osName, String osVersion) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			String name = null;
+			String version = null;
+
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("NAME=")) {
+					name = line.split("=", 2)[1].replace("\"", "").replace("Linux", "");
+				} else if (line.startsWith("VERSION_ID=")) {
+					version = line.split("=", 2)[1].replace("\"", "");
+				}
+			}
+			if(name != null && version != null) {
+				return new StringBuilder().append(name.trim()).append(" (").append(version).toString();
+			}
+			return new StringBuilder().append(osName).append(" (").append(osVersion).toString();
+		}
+	}
+
+	private static boolean fileExists(String filePath) {
+		return new java.io.File(filePath).exists();
+	}
+
+	private static String readFirstLine(String filePath) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			return reader.readLine();
+		}
 	}
 
 	/**

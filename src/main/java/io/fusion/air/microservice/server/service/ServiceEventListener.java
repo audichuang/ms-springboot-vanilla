@@ -24,6 +24,7 @@ import static io.fusion.air.microservice.security.jwt.core.JsonWebTokenConstants
 import static io.fusion.air.microservice.security.jwt.core.JsonWebTokenConstants.REFRESH_TOKEN;
 // Micrometer
 import io.fusion.air.microservice.utils.Std;
+import io.fusion.air.microservice.utils.Utils;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 // Spring
@@ -221,6 +222,7 @@ public class ServiceEventListener {
 				.replace("SIGMA", name)
 				.replace("MSVERSION", version)
 				.replace("JAVAVERSION", javaVersion)
+				.replace("OSDETAILS", Utils.getOSDetails())
 				.replace("SPRINGBOOTVERSION", sbVersion);
 		log.info("{} Service is ready! ... .. {}"
 				+ "Build No. = {} "
