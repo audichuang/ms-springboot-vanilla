@@ -27,11 +27,15 @@
  */
 package io.fusion.air.microservice.server.config;
 
+import io.fusion.air.microservice.utils.Std;
+import io.fusion.air.microservice.utils.Utils;
 import org.apache.coyote.ProtocolHandler;
 import org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -67,9 +71,38 @@ import java.util.concurrent.Executors;
 @Configuration
 public class TomcatServerConfig {
 
-        @Bean
-        public TomcatProtocolHandlerCustomizer<ProtocolHandler> protocolHandlerVirtualThreadExecutorCustomizer() {
-            return protocolHandler ->
-                protocolHandler.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-        }
+    @Bean
+    public TomcatProtocolHandlerCustomizer<ProtocolHandler> protocolHandlerVirtualThreadExecutorCustomizer() {
+        return protocolHandler -> {
+            if (Utils.isJava21OrHigher()) {
+                try {
+                    // Use Virtual Threads if Java 21+
+                    ExecutorService virtualThreadExecutor = createVirtualThreadExecutor();
+                    protocolHandler.setExecutor(virtualThreadExecutor);
+                } catch (Exception e) {
+                    Std.println("Error creating virtual thread executor: " + e.getMessage());
+                }
+            } else {
+                // Fallback to a fixed thread pool for Java 17
+                ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+                protocolHandler.setExecutor(fixedThreadPool);
+            }
+        };
+    }
+
+    /**
+     * Extract the Virtual Thread Pool Executor Class
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    private ExecutorService createVirtualThreadExecutor()
+            throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        // Use reflection to create a virtual thread executor to maintain compatibility
+        Class<?> executorClass = Class.forName("java.util.concurrent.Executors");
+        return (ExecutorService) executorClass.getMethod("newVirtualThreadPerTaskExecutor").invoke(null);
+    }
+
 }

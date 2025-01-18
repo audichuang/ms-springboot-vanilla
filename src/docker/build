@@ -31,4 +31,4 @@ echo "Building Containr for $FULL_NAME "
 
 # Build Container
 echo "docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE -t $FULL_NAME ."
-docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE -t $FULL_NAME .
+docker build --force-rm --build-arg BASE_IMAGE="$BASE_IMAGE" -f "$DOCKER_FILE" -t "$FULL_NAME" .
