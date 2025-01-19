@@ -17,6 +17,13 @@ PORT=9334
 
 # Check if Colima is running, if Not Start Colima
 source utils/colimaStatus
+source utils/common-functions
+
+# Set version from $2
+set_version "$2"
+
+# Determine os based on $1 and return the FULL_NAME
+determine_os_java "$1" "$FULL_NAME"
 
 echo "docker container run --name $SERVICE -d --rm -p $PORT:9334 $$FULL_NAME"
 docker container run --name $SERVICE -d --rm -p $PORT:9334 \

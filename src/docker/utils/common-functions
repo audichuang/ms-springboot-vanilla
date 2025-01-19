@@ -25,7 +25,7 @@ set_version() {
 # Show Help
 show_help() {
   echo "----------------------------------------------------------------"
-  echo "Java Container Management. "
+  echo "App Service Container Management. "
   echo "Copyright (c) Araf Karsh Hamid, 2025"
 
   # Check if the script name is "abc"
@@ -46,6 +46,7 @@ show_help() {
   echo "$0 alpine 21"
   echo "$0 alpine 17"
   if [ "$script_name" = "build" ]; then
+    echo "$0 distroless 21"
     echo "$0 ubuntu 21"
     echo "$0 ubuntu 23"
   fi
@@ -75,22 +76,33 @@ validate_buildx_os() {
   fi
 }
 
-# Function to determine SERVICE and DOCKER_FILE based on $1
+# Function to determine the OS and Base Image
 determine_os_java() {
   case "$1" in
+    distroless)
+      validate_buildx_os "$1"
+      #BASE_IMAGE="bellsoft/liberica-runtime-container:jre-21-musl"
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpaquita"
+      DOCKER_FILE="Dockerfiles/Dockerfile"
+      FULL_NAME="$2-alpaquita-$JAVA_VERSION"
+      ;;
     alpine)
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpine"
+      FULL_NAME="$2-alpine-$JAVA_VERSION"
       ;;
     ubuntu)
       validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
+      FULL_NAME="$2-ubuntu-$JAVA_VERSION"
       ;;
     ubuntu-x86)
       validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
+      FULL_NAME="$2-ubuntu-$JAVA_VERSION"
       ;;
     ubuntu-openjdk)
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-openjdk"
+      FULL_NAME="$2-ubuntu-openjdk-$JAVA_VERSION"
       ;;
     *)
       show_help

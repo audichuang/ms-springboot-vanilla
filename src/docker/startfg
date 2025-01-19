@@ -13,8 +13,18 @@ cd ../../
 source serviceName
 cd src/docker
 
+
 PORT=9334
-APP_PROFILE=$1
+APP_PROFILE=$3
+
+source utils/common-functions
+
+# Set version from $2
+set_version "$2"
+
+# Determine os based on $1 and return the FULL_NAME
+determine_os_java "$1" "$FULL_NAME"
+
 
 # Check if Colima is running, if Not Start Colima
 source utils/colimaStatus

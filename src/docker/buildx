@@ -21,8 +21,8 @@ validate_params "$@"
 # Set version from $2
 set_version "$2"
 
-# Determine configuration based on $1
-determine_os_java "$1"
+# Determine os based on $1 and return the FULL_NAME
+determine_os_java "$1" "$FULL_NAME"
 
 # Check if Colima is running, if Not Start Colima
 source utils/colimaStatus
