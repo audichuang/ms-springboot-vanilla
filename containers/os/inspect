@@ -16,8 +16,11 @@ source ../utils/colimaStatus
 # Call the validation function with "$@"
 validate_params "$@"
 
-# Determine OS
-determine_os "$1"
+# Set version from $2
+set_version "$2"
+
+# Determine configuration based on $1
+determine_config "$1"
 
 echo "Inspect the Manifest of the container"
 echo "docker buildx imagetools inspect $ORG/$SERVICE"

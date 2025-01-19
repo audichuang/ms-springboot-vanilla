@@ -48,3 +48,4 @@ WORKDIR /home/ozazo
 USER ozazo
 
 ENTRYPOINT ["/bin/sh", "--login"]
+

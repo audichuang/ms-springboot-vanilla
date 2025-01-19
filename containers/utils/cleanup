@@ -5,8 +5,7 @@
 # License: Apache 2.0
 # Version 0.01
 #---------------------------------------------------------------
-
-source ../utils/colimaStatus
+source colimaStatus
 
 echo "docker images -f "dangling=true" -q | xargs docker rmi -f"
 docker images -f "dangling=true" -q | xargs docker rmi -f
