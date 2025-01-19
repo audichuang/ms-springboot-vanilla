@@ -25,7 +25,7 @@ set_version() {
 # Show Help
 show_help() {
   echo "----------------------------------------------------------------"
-  echo "Java Container Management. "
+  echo "App Service Container Management. "
   echo "Copyright (c) Araf Karsh Hamid, 2025"
 
   # Check if the script name is "abc"
@@ -38,19 +38,32 @@ show_help() {
   if [ "$script_name" = "build" ]; then
     echo "Usage: $0 [alpine, ubuntu, ubuntu-openjdk] [23, 21, 17, 11]"
   fi
-    if [ "$script_name" = "buildx" ]; then
+  if [ "$script_name" = "buildx" ]; then
     echo "Usage: $0 [alpine, ubuntu-openjdk] [21, 17, 11]"
+  fi
+  if [ "$script_name" = "startfg" ]; then
+    echo "Usage: $0 [alpine, distroless, ubuntu-openjdk] [21, 17, 11] spring-profile"
   fi
   echo "Examples"
   echo "----------------------------------------------------------------"
-  echo "$0 alpine 21"
-  echo "$0 alpine 17"
-  if [ "$script_name" = "build" ]; then
-    echo "$0 ubuntu 21"
-    echo "$0 ubuntu 23"
+  if [ "$script_name" = "startfg" ]; then
+    echo "$0 alpine 21 dev"
+    echo "$0 alpine 17 dev"
+    echo "$0 distroless 21 dev"
+    echo "$0 ubuntu-openjdk 17 dev"
+    echo "$0 ubuntu-openjdk 21 dev"
+
+  else
+    echo "$0 alpine 21"
+    echo "$0 alpine 17"
+    echo "$0 distroless 21"
+    if [ "$script_name" = "build" ]; then
+      echo "$0 ubuntu 21"
+      echo "$0 ubuntu 23"
+    fi
+    echo "$0 ubuntu-openjdk 17"
+    echo "$0 ubuntu-openjdk 21"
   fi
-  echo "$0 ubuntu-openjdk 17"
-  echo "$0 ubuntu-openjdk 21"
   echo "----------------------------------------------------------------"
   exit 1
 }
@@ -75,22 +88,38 @@ validate_buildx_os() {
   fi
 }
 
-# Function to determine SERVICE and DOCKER_FILE based on $1
+# Function to determine the OS and Base Image
 determine_os_java() {
   case "$1" in
+    alpaquita)
+      validate_buildx_os "$1"
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpaquita"
+      DOCKER_FILE="Dockerfiles/Dockerfile"
+      FULL_NAME="$2-alpaquita-$JAVA_VERSION"
+      ;;
+    distroless)
+      validate_buildx_os "$1"
+      BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpaquita"
+      DOCKER_FILE="Dockerfiles/Dockerfile"
+      FULL_NAME="$2-alpaquita-$JAVA_VERSION"
+      ;;
     alpine)
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpine"
+      FULL_NAME="$2-alpine-$JAVA_VERSION"
       ;;
     ubuntu)
       validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
+      FULL_NAME="$2-ubuntu-$JAVA_VERSION"
       ;;
     ubuntu-x86)
       validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION"
+      FULL_NAME="$2-ubuntu-$JAVA_VERSION"
       ;;
     ubuntu-openjdk)
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-openjdk"
+      FULL_NAME="$2-ubuntu-openjdk-$JAVA_VERSION"
       ;;
     *)
       show_help

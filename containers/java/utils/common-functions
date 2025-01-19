@@ -41,6 +41,7 @@ show_help() {
   fi
   echo "Examples"
   echo "----------------------------------------------------------------"
+  echo "$0 alpaquita 21"
   echo "$0 alpine 21"
   echo "$0 alpine 17"
   if [ "$script_name" = "build" ]; then
@@ -67,7 +68,7 @@ validate_params() {
 # Check if the OS is supported for Multi-Architecture
 validate_buildx_os() {
   if [ "$script_name" = "buildx" ]; then
-    echo "OS '$1' with Oracle Java Not Supported!. "
+    echo "OS '$1' with Oracla Java Not Supported!. "
     echo "Try using alpine (openjdk) or ubuntu-openjdk"
     exit 1
   fi
@@ -76,6 +77,10 @@ validate_buildx_os() {
 # Function to determine SERVICE and DOCKER_FILE based on $1
 determine_config() {
   case "$1" in
+    alpaquita)
+      SERVICE="java:$VERSION-alpaquita"
+      DOCKER_FILE="Dockerfiles/Dockerfile.alpaquita.$VERSION"
+      ;;
     alpine)
       SERVICE="java:$VERSION-alpine"
       DOCKER_FILE="Dockerfiles/Dockerfile.alpine.$VERSION"

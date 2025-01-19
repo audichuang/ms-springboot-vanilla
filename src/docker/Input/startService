@@ -1,20 +1,21 @@
-#!/bin/bash
+#!/bin/sh
 # -------------------------------------------------------------------------------------------
 # @author: Araf Karsh Hamid
 # -------------------------------------------------------------------------------------------
 echo "Starting Vanilla Microservice"
 runMode=$APP_PROFILE
+
 # Check if the runMode is null or not one of "dev", "prod", or "staging"
-if [[ -z $runMode || ($runMode != "dev" && $runMode != "prod" && $runMode != "staging") ]]
+if [ -z "$runMode" ] || { [ "$runMode" != "dev" ] && [ "$runMode" != "prod" ] && [ "$runMode" != "staging" ]; }
 then
   runMode="dev"
 fi
+
 echo "Microservice running with profile = $runMode"
 
 # Run Java command
 echo "java -jar ms-vanilla-service-spring-boot.jar --spring.profiles.active=$runMode"
 java -jar /Softwares/service/ms-vanilla-service-spring-boot.jar \
-	--spring.profiles.active=$runMode  \
-	-Djava.security.manager=java.lang.SecurityManager \
-	-Djava.security.policy=./vanilla.policy
-
+        --spring.profiles.active=$runMode  \
+        -Djava.security.manager=java.lang.SecurityManager \
+        -Djava.security.policy=./vanilla.policy
