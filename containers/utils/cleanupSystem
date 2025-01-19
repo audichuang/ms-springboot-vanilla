@@ -5,7 +5,25 @@
 # License: Apache 2.0
 # Version 0.01
 #---------------------------------------------------------------
-source ../utils/colimaStatus
+source colimaStatus
 
+echo "Docker Repository List"
+docker images
+
+echo
+echo "Cleaning up Dangling Images"
 echo "docker images -f "dangling=true" -q | xargs docker rmi -f"
 docker images -f "dangling=true" -q | xargs docker rmi -f
+
+echo
+echo "Docker System Space Before Prune"
+docker system df
+
+echo
+echo "Docker System Prune"
+#docker system prune
+
+echo
+echo "Docker System Space After Prune"
+docker system df
+
