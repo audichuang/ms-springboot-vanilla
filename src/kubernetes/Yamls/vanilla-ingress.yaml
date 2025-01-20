@@ -12,4 +12,4 @@ spec:
           service:
             name: vanilla-service
             port:
-              number: 19334
+              number: 9334
