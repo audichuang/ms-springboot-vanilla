@@ -21,7 +21,6 @@ spec:
           # Only for testing purpose - use Always
           imagePullPolicy: Always
           args:
-            - "-JASYPT_ENCRYPTOR_PASSWORD=$(ENCODED_KEY)"
             - "-APP_PROFILE=prod"
             - "-SPRING_PROFILES_ACTIVE=prod"
             - "-SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.5.1:5433/ms_vanilla_334"
@@ -29,11 +28,11 @@ spec:
             - containerPort: 9334
               hostPort: 9334
           env:
-            - name: ENCODED_KEY
+            - name: JASYPT_ENCRYPTOR_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: vanilla-secret
-                  key: JASYPT_ENCRYPTOR_PASSWORD
+                  key: JASYPT_ENCRYPTOR
           livenessProbe:
             httpGet:
               path: /

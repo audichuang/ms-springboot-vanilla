@@ -32,14 +32,14 @@ FROM ${BASE_IMAGE}
 LABEL author="Araf Karsh Hamid <araf.karsh@gmail.com>"
 
 # Create Service Directory and Set Ownership
-RUN mkdir -p /Softwares/service /home/ozazo && \
-    chown -R ozazo:dev /Softwares/service /home/ozazo && \
-    chmod -R 750 /Softwares/service /home/ozazo
+RUN mkdir -p /Softwares/service /home/ozazo/config && \
+    chown -R ozazo:dev /Softwares/service /home/ozazo/config && \
+    chmod -R 750 /Softwares/service /home/ozazo/config
 
 # Copy artifacts from the build stage
-COPY --from=builder --chown=ozazo:dev /build/application*.properties /home/ozazo/
-COPY --from=builder --chown=ozazo:dev /build/logback-spring*.xml /home/ozazo/
-COPY --from=builder --chown=ozazo:dev /build/vanilla.policy /home/ozazo/
+COPY --from=builder --chown=ozazo:dev /build/application*.properties /home/ozazo/config/
+COPY --from=builder --chown=ozazo:dev /build/logback-spring*.xml /home/ozazo/config/
+COPY --from=builder --chown=ozazo:dev /build/vanilla.policy /home/ozazo/config/
 COPY --from=builder --chown=ozazo:dev /build/*.jar /Softwares/service/
 COPY --from=builder --chown=ozazo:dev /build/startService /home/ozazo/
 
