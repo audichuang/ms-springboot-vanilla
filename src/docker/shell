@@ -23,5 +23,5 @@ set_version "$2"
 # Determine os based on $1 and return the FULL_NAME
 determine_os_java "$1" "$FULL_NAME"
 
-echo "docker container exec -it $$FULL_NAME bash"
-docker container exec -it $$FULL_NAME bash
+echo "docker container exec -it $FULL_NAME bash"
+docker container exec -it $FULL_NAME bash

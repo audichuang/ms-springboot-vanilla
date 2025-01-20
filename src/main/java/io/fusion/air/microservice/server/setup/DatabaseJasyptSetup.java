@@ -25,7 +25,7 @@
  * under the terms of the Apache 2 License version 2.0
  * as published by the Apache Software Foundation.
  */
-package io.fusion.air.microservice.server.config;
+package io.fusion.air.microservice.server.setup;
 
 // Jasypt
 import org.jasypt.encryption.StringEncryptor;
@@ -39,14 +39,14 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Base64;
 /**
- * ms-springboot-334-vanilla / DatabaseJasyptConfig 
+ * ms-springboot-334-vanilla / DatabaseJasyptSetup
  *
  * @author: Araf Karsh Hamid
  * @version: 0.1
  * @date: 2025-01-20T3:38 PM
  */
 @Configuration
-public class DatabaseJasyptConfig {
+public class DatabaseJasyptSetup {
 
     @Value("${jasypt.encryptor.algorithm:PBEWithHmacSHA512AndAES_256}")
     private String encryptAlgo;

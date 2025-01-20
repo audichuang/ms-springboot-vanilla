@@ -35,10 +35,15 @@ import static io.fusion.air.microservice.security.jwt.core.JsonWebTokenConstants
 @PropertySource(
         name = "JsonWebTokenConfig",
         // Expects file in the directory the jar is executed
-        value = "file:./application.properties")
-        // Expects the file in src/main/resources folder
-        // value = "classpath:application.properties")
-        // value = "classpath:application2.properties,file:./application.properties")
+        value = {
+                "file:/config/application.properties",
+                "file:./config/application.properties"
+        },
+        ignoreResourceNotFound = true
+)
+// Expects the file in src/main/resources folder
+// value = "classpath:application.properties")
+// value = "classpath:application2.properties,file:./application.properties")
 public class JsonWebTokenConfig implements Serializable {
 
     @Value("${service.org:OrgNotDefined}")

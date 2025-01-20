@@ -18,4 +18,4 @@ echo "java -jar ms-vanilla-service-spring-boot.jar --spring.profiles.active=$run
 java -jar /Softwares/service/ms-vanilla-service-spring-boot.jar \
         --spring.profiles.active=$runMode  \
         -Djava.security.manager=java.lang.SecurityManager \
-        -Djava.security.policy=./vanilla.policy
+        -Djava.security.policy=./config/vanilla.policy
