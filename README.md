@@ -125,16 +125,19 @@ for more details on this topic.
 5. [Java 23, SpringBoot 3.3.4: Metrics: Micrometer, Prometheus, Actuator — Part 5](https://arafkarsh.medium.com/java-23-springboot-3-3-4-metrics-micrometer-prometheus-actuator-part-5-f67f0581815c)
 6. [Java 23, SpringBoot 3.3.4: Metrics: Micrometer & AOP — Part 6](https://arafkarsh.medium.com/java-23-springboot-3-3-4-metrics-micrometer-aop-part-6-808dcb97dcb7)
 7. [Java 23, SpringBoot 3.3.4: Tracing: OpenTelemetry — Part 7](https://arafkarsh.medium.com/java-23-springboot-3-3-4-tracing-opentelemetry-part-7-937df4867c9c)
-8. Java 23, SpringBoot 3.4.1: Tracing: OpenTelemetry In Action — Part 8 Coming Soon
-9. Java 23, SpringBoot 3.4.1: Filters: Security, Log — Part 9 Coming Soon
-10. Java 23, SpringBoot 3.4.1: AOP: Spring Security — Part 10 Coming Soon
-11. Java 23, SpringBoot 3.4.1: CRUD — Part 11 Coming Soon
-12. Java 23, SpringBoot 3.4.1: CRUD Queries & Page Sort — Part 12 Coming Soon
+8. Java 23, SpringBoot 3.4.1: Tracing: OpenTelemetry Zero Code— Part 8 Coming Soon
+9. [Java 23, SpringBoot 3.4.1: Containers: Alpine Multi-Architecture — Part 9](https://arafkarsh.medium.com/java-23-springboot-3-4-1-multi-architecture-containers-part-9-b8c70ed3842f)
+10. Java 23, SpringBoot 3.4.1: Containers: Maven Plugins — Part 10 Coming Soon
+11. Java 23, SpringBoot 3.4.1: Filters: Security, Log — Part 11 Coming Soon
+12. Java 23, SpringBoot 3.4.1: AOP: Spring Security — Part 12 Coming Soon
+13. Java 23, SpringBoot 3.4.1: Security: JSON Web Token — Part 13 Coming Soon
+14. Java 23, SpringBoot 3.4.1: CRUD : Domain Driven Design — Part 14 Coming Soon
+15. Java 23, SpringBoot 3.4.1: CRUD Queries & Page Sort — Part 15 Coming Soon
 
 ### Pre-Requisites
 
 1. SpringBoot 3.3.4
-2. Java 23 
+2. Java 23 (Minimum Requirement Java 17)
 3. Jakarta EE 10 (jakarta.servlet.*, jakarta.persistence.*, javax.validation.*)
 4. Maven 3.8.6
 5. Git 2.31
