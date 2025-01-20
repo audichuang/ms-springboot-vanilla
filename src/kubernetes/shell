@@ -1,0 +1,12 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Kubernetes Utils
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+
+source utils/colimaStatus
+
+echo "Log into the Pod Shell..."
+kubectl exec -it $1 -- sh

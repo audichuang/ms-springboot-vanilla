@@ -95,7 +95,7 @@ public final class JsonWebTokenKeyManager {
 	protected void initialize() {
 		log.info("JWT-KeyManager: Json Web Token Type = {}  with Issuer = {}", this.tokenType, issuer);
 		// Create the Key based on Secret Key or Private Key
-		log.info("Create Signing Keys...");
+		log.info("JWT-KeyManager: Create Signing Keys...");
 		createSigningKey();
 		setKeyCloakPublicKey();
 		log.info("JWT-KeyManager: Initialization Complete! ");

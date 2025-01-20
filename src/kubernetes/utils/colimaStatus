@@ -1,6 +1,6 @@
 #!/bin/bash
 #---------------------------------------------------------------
-# Colima Manager
+# Colima Manager for Kubernetes
 # Araf Karsh Hamid, (c) Copyright 2025
 # License: Apache 2.0
 # Version 0.01
@@ -21,7 +21,8 @@ check_and_start_colima() {
         # Check if `status` is null
         if [ -z "$status" ]; then
             echo "Colima is not running. Starting Colima..."
-            colima start 
+            echo "colima start --kubernetes --cpu 4 --memory 4"
+            colima start --kubernetes --cpu 4 --memory 4
             if [ $? -eq 0 ]; then
                 echo "Colima started successfully."
             else

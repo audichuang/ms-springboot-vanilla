@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vanilla-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/vanilla"
+        backend:
+          service:
+            name: vanilla-service
+            port:
+              number: 19334
