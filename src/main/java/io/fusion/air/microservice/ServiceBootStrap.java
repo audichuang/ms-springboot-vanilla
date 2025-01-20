@@ -109,6 +109,8 @@ public class ServiceBootStrap {
 	public static void start(String[] args) {
 		log.info("Booting MicroService ..... ..");
 		try {
+			String ja = System.getenv("JASYPT_ENCRYPTOR_PASSWORD");
+			log.info("ja: {}", ja);
 			context = SpringApplication.run(ServiceBootStrap.class, args);
 			// Set a default profile if no other profile is specified
 			ConfigurableEnvironment environment = context.getEnvironment();

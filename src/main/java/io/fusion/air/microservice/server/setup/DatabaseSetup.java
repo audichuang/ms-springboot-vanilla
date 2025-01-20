@@ -16,6 +16,7 @@
 package io.fusion.air.microservice.server.setup;
 // Spring
 import io.fusion.air.microservice.server.config.DatabaseConfig;
+import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,9 @@ import javax.sql.DataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * @author: Araf Karsh Hamid
  * @version:
@@ -44,6 +48,9 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories(basePackages = { "io.fusion.air.microservice.domain.ports", "io.fusion.air.microservice.adapters.repository" })
 @EnableTransactionManagement
 public class DatabaseSetup {
+
+    // Set Logger -> Lookup will automatically determine the class name.
+    private static final Logger log = getLogger(lookup().lookupClass());
 
     // Autowired using the Constructor
     private DatabaseConfig dbConfig;
@@ -61,15 +68,17 @@ public class DatabaseSetup {
      * @return
      */
     public DataSource dataSource() {
+        log.info("DB-1: {} ", dbConfig.getDataSourceVendor());
+        log.info("DB-2: {} ", dbConfig.getDataSourceName());
+
         switch(dbConfig.getDataSourceVendor()) {
-            case DatabaseConfig.DB_H2:
-                return h2DataSource();
             case DatabaseConfig.DB_POSTGRESQL:
                 return postgreSQLDataSource();
+            case DatabaseConfig.DB_H2:
+                // Falls Thru to the default option
             default:
                 // Returns H2 Database if Nothing Matches
-                EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-                return builder.setType(EmbeddedDatabaseType.H2).build();
+                return h2DataSource();
         }
     }
 

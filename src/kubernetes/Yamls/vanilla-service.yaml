@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vanilla-service
+  labels:
+    app: vanilla-pod
+spec:
+  ports:
+  - name: http
+    port: 19334
+    targetPort: 9334
+    protocol: TCP
+  selector:
+    app: vanilla-pod
