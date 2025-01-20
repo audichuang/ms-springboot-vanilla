@@ -1,0 +1,42 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Kubernetes Utils
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+
+source utils/colimaStatus
+
+
+# Function to handle uninstallation
+uninstall() {
+  echo "Proceeding with uninstallation..."
+  # Add uninstallation commands here
+  echo "Deploy the Vanilla Service in Kubernetes cluster"
+  kubectl delete secret vanilla-secret
+  kubectl delete ingress vanilla-ingress
+  kubectl delete service vanilla-service
+  kubectl delete deploy vanilla-deployment
+  echo "Uninstallation complete!"
+}
+
+# List all the Vanilla Services
+list
+echo 
+
+# Ask the user the question
+read -p "Do you want to uninstall Vanilla-Service? (yes/y or no/n): " response
+
+# Normalize the input to lowercase for easy comparison
+response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+
+# Process the response
+if [[ "$response" == "y" || "$response" == "yes" ]]; then
+  uninstall
+elif [[ "$response" == "n" || "$response" == "no" ]]; then
+  echo "Uninstallation canceled. Exiting."
+else
+  echo "Invalid input. Please enter yes/y or no/n."
+fi
+
