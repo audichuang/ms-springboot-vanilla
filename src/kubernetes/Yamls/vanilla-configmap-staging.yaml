@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  application-staging.properties: |+
+    server.port=9334
+    logging.level.root=INFO
+    db.server=localhost
+    db.port=5433
+    db.name=ms_vanilla_334
+    db.schema=ms_schema
+    db.vendor=PostgreSQL
+    spring.datasource.url=jdbc:postgresql://${db.server}:${db.port}/${db.name}
+    spring.datasource.driverClassName=org.postgresql.ds.PGSimpleDataSource
+    spring.datasource.username=msadm
+    spring.datasource.password=ENC(In0ZYcoLjwe2OzzaWZ07BMoFHL8yvo4KQ/3ABAbzSKJuUVEu5hYycNGWB66Xswju)
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+    spring.datasource.hikari.connection-test-query=SELECT 1
+
+
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-staging

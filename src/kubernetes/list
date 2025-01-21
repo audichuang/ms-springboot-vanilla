@@ -10,5 +10,6 @@ source utils/colimaStatus
 
 echo "List All Artifacts of Vanilla Service"
 
+kubectl get configmaps -o wide
 #kubectl get pods,deploy,svc,ing,hpa -A -o wide
 kubectl get secrets,pods,deploy,svc,ing,hpa -o wide

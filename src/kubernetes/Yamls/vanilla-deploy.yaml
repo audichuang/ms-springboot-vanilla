@@ -35,11 +35,11 @@ spec:
                   key: JASYPT_ENCRYPTOR
           livenessProbe:
             httpGet:
-              path: /
+              path: /ms-vanilla/api/v1/service/live
               port: 9334
           readinessProbe:
             httpGet:
-              path: /
+              path: /ms-vanilla/api/v1/service/ready
               port: 9334
           resources:
             limits:

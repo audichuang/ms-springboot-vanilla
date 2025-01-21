@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 // Java
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import org.slf4j.Logger;
@@ -92,9 +93,12 @@ public class SecurityController {
 			// Decrypt the text
 			String decryptedText = textEncryptor.decrypt(encryptedText);
 			log.info("Decrypted Text: {} ", decryptedText);
+			// Base64 Encoded Plain Text
+			String encodedData = Base64.getEncoder().encodeToString(text.getBytes()).toString();
 			HashMap<String, String> data = new LinkedHashMap<>();
 			data.put("algo", algo);
-			data.put("text", text);
+			data.put("plain.text", text);
+			data.put("base64", encodedData);
 			data.put("encrypted", encryptedText);
 			return ResponseEntity.ok(data);
 		}

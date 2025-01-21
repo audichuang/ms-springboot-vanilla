@@ -1,0 +1,11 @@
+#!/bin/sh
+# -------------------------------------------------------------------------------------------
+# @author: Araf Karsh Hamid
+# -------------------------------------------------------------------------------------------
+# Making Application Properties file Compatible for Kubernetes
+# ===========================================================================================
+#echo "Converting Application Properties to Support Config Map inputs"
+
+# Process the input file and remove lines starting with #
+echo "    Removing all lines starts with # from $1 to $2"
+grep -vE '^#' "$1" > "$2"
