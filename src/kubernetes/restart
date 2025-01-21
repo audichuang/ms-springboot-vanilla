@@ -8,7 +8,5 @@
 
 source utils/colimaStatus
 
-podName=`kubectl get pods | awk 'NR>1 {print $1}'`
-
-echo "Check the Logs of the Pod=$podName"
-kubectl logs -f $podName
+echo "Restart all the pods of Vanilla Deployment"
+kubectl rollout restart deployment vanilla-deployment
