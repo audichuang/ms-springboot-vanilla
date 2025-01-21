@@ -1,0 +1,21 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Kubernetes Utils
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+
+source utils/colimaStatus
+
+echo "Create ConfigMap using Kustomize utility"
+kubectl kustomize ./Package/default > Yamls/vanilla-configmap-default.yaml
+kubectl kustomize ./Package/dev > Yamls/vanilla-configmap-dev.yaml
+kubectl kustomize ./Package/staging > Yamls/vanilla-configmap-staging.yaml
+kubectl kustomize ./Package/prod > Yamls/vanilla-configmap-prod.yaml
+
+echo "Apply ConfigMaps to Kubernetes Cluster"
+kubectl apply -f Yamls/vanilla-configmap-default.yaml 
+kubectl apply -f Yamls/vanilla-configmap-dev.yaml 
+kubectl apply -f Yamls/vanilla-configmap-staging.yaml 
+kubectl apply -f Yamls/vanilla-configmap-prod.yaml

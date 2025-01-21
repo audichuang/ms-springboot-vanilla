@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  a.properties: |
+    build.number=209
+    build.date=Tue Jan 21 08:00:23 IST 2025
+    spring.profiles.default=dev
+    service.org=arafkarsh
+    service.name=MS-Vanilla
+    service.api.name=ms-vanilla
+    service.api.prefix=api
+    service.api.version=v1
+    service.api.error.prefix=13
+    service.container=ms-vanilla-service
+    service.api.repository=https://github.com/arafkarsh/ms-springboot-334-vanilla
+    service.api.path=/${service.api.name}/${service.api.prefix}/${service.api.version}
+    service.url=http://www.arafkarsh.com/
+    service.license=Apache 2 License
+    service.license.url=https://github.com/arafkarsh/ms-springboot-334-vanilla?tab=Apache-2.0-1-ov-file
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-default-6gt27d6545
