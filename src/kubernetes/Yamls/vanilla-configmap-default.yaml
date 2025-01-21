@@ -17,7 +17,7 @@ data:
     service.license=Apache 2 License
     service.license.url=https://github.com/arafkarsh/ms-springboot-334-vanilla?tab=Apache-2.0-1-ov-file
     server.port=9334
-    server.version=0.3.4
+    server.version=3.4.0
     server.restart=false
     server.leak.test=3
     server.resources.url=${service.url}${service.api.path}

@@ -21,18 +21,28 @@ spec:
           # Only for testing purpose - use Always
           imagePullPolicy: Always
           args:
-            - "-APP_PROFILE=prod"
-            - "-SPRING_PROFILES_ACTIVE=prod"
-            - "-SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.5.1:5433/ms_vanilla_334"
+            - "-APP_PROFILE=$(SPRING_PROFILES_ACTIVE)""
+            - "-SPRING_DATASOURCE_URL=jdbc:postgresql://database-service:5433/ms_vanilla_334"
           ports:
             - containerPort: 9334
               hostPort: 9334
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+              readOnly: true
           env:
             - name: JASYPT_ENCRYPTOR_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: vanilla-secret
                   key: JASYPT_ENCRYPTOR
+            - name: SPRING_CONFIG_LOCATION
+              value: "file:/config/application.properties"
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: vanilla-configmap-active # Shared ConfigMap for all environments
+                  key: spring.profiles.active
           livenessProbe:
             httpGet:
               path: /ms-vanilla/api/v1/service/live
@@ -48,3 +58,7 @@ spec:
             requests:
               cpu: 1000m
               memory: 1536Mi
+      volumes:
+        - name: config-volume
+          configMap:
+            name: vanilla-configmap-default
