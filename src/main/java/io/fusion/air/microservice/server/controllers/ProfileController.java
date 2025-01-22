@@ -96,7 +96,7 @@ public class ProfileController extends AbstractController {
     })
 	@GetMapping("/profile")
 	public ResponseEntity<StandardResponse> retrieveProfile() throws SecurityException {
-		log.info("{} |Request to Encrypt of Service... ", LocalDateTime.now());
+		log.info("{} |Request to  Retrieve Active Profile ... ", LocalDateTime.now());
 		Map<String, Object> data = new LinkedHashMap<>();
 		StandardResponse stdResponse = createSuccessResponse("Profile Data Retrieved!");
 		data.put("Service", serviceName);
@@ -107,7 +107,41 @@ public class ProfileController extends AbstractController {
 		data.put("Java Version",System.getProperty("java.version"));
 		data.put("Spring Version", SpringBootVersion.getVersion());
 		data.put("OS Version", Utils.getOSDetails());
+		stdResponse.setPayload(data);
+		return ResponseEntity.ok(stdResponse);
+	}
+
+	/**
+	 * Get Method Call to Show the Current Database Profiles
+	 * WARNING:
+	 * THIS is ONLY FOR DEMO PURPOSE.
+	 * THIS METHOD MUST BE DISABLED IN PRODUCTION ENVIRONMENT FOR SECURITY REASONS
+	 * @return
+	 */
+	@Operation(summary = "Profile DB Details of the Order Service")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200",
+					description = "Profile DB Retrieved OK",
+					content = {@Content(mediaType = "application/json")}),
+			@ApiResponse(responseCode = "404",
+					description = "Failed to Retrieve DB Profile.",
+					content = @Content)
+	})
+	@GetMapping("/profile/db")
+	public ResponseEntity<StandardResponse> retrieveDBProfile() throws SecurityException {
+		log.info("{} |Request to Database Profile ... ", LocalDateTime.now());
+		Map<String, Object> data = new LinkedHashMap<>();
+		StandardResponse stdResponse = createSuccessResponse("Profile Data Retrieved!");
+		data.put("Service", serviceName);
+		data.put("Active Profile", getActiveProfile());
+		data.put("Service Version", serviceConfig.getServerVersion());
+		data.put("Build Date", serviceConfig.getBuildDate());
+		data.put("Build No", serviceConfig.getBuildNumber());
 		data.put("Database", dbConfig.getDataSourceVendor());
+		data.put("Dialect", dbConfig.getDataSourceDialect());
+		data.put("DB Server", dbConfig.getDataSourceServer());
+		data.put("DB Port", dbConfig.getDataSourcePort());
+		data.put("DB URL", dbConfig.getDataSourceURL());
 		stdResponse.setPayload(data);
 		return ResponseEntity.ok(stdResponse);
 	}

@@ -49,8 +49,8 @@ spec:
                 secretKeyRef:
                   name: vanilla-secret
                   key: JASYPT_ENCRYPTOR
-            #- name: SPRING_CONFIG_LOCATION
-             # value: "file:/config/application.properties"
+            - name: SPRING_CONFIG_LOCATION
+              value: "file:/config/application.properties"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:

@@ -1,8 +1,12 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-dev
 data:
-  application-dev.properties: |+
+  application.properties: |+
+    spring.config.activate.on-profile=dev
     server.port=9334
-    logging.level.root=INFO
+    logging.level.root=DEV
     db.server=mem
     db.port=5432
     db.name=ms_vanilla_334
@@ -17,8 +21,3 @@ data:
     spring.h2.console.path=/h2-ui
     spring.h2.console.settings.trace=false
     spring.h2.console.settings.web-allow-others=false
-
-
-kind: ConfigMap
-metadata:
-  name: vanilla-configmap-dev

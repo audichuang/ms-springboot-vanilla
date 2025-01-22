@@ -25,19 +25,6 @@ spec:
           ports:
             - containerPort: 9334
               hostPort: 9334
-          volumeMounts:
-            - name: config-volume-default
-              mountPath: /config
-              readOnly: true
-            - name: config-volume-dev
-              mountPath: /config/d
-              readOnly: true
-            - name: config-volume-staging
-              mountPath: /config/s
-              readOnly: true
-            - name: config-volume-prod
-              mountPath: /config/p
-              readOnly: true
           env:
             - name: APP_PROFILE
               valueFrom:
@@ -49,8 +36,6 @@ spec:
                 secretKeyRef:
                   name: vanilla-secret
                   key: JASYPT_ENCRYPTOR
-            #- name: SPRING_CONFIG_LOCATION
-             # value: "file:/config/application.properties"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
@@ -71,16 +56,3 @@ spec:
             requests:
               cpu: 1000m
               memory: 1536Mi
-      volumes:
-        - name: config-volume-default
-          configMap:
-            name: vanilla-configmap-default
-        - name: config-volume-dev
-          configMap:
-            name: vanilla-configmap-dev
-        - name: config-volume-staging
-          configMap:
-            name: vanilla-configmap-staging
-        - name: config-volume-prod
-          configMap:
-            name: vanilla-configmap-prod

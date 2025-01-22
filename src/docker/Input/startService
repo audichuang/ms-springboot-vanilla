@@ -8,6 +8,7 @@ runMode=$APP_PROFILE
 # Check if the runMode is null or not one of "dev", "prod", or "staging"
 if [ -z "$runMode" ] || { [ "$runMode" != "dev" ] && [ "$runMode" != "prod" ] && [ "$runMode" != "staging" ]; }
 then
+  echo "StartService Script : RunMode = $runMode"
   runMode="dev"
 fi
 

@@ -8,7 +8,5 @@
 
 source utils/colimaStatus
 
-podName=`kubectl get pods | awk 'NR>1 {print $1}'`
-
-echo "Log into the Pod Shell..."
-kubectl exec -it $podName -- sh
+echo "Describe Vanilla Configmap"
+kubectl describe configmap vanilla-configmap-active

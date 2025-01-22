@@ -7,7 +7,7 @@
 PROPS_PATH=src/main/resources
 PROPS_BUILD=app.props.build
 PROPS_TMPL=app.props.tmpl
-PROPS_BACK=$PROPS_PATH/backup
+PROPS_BACK=backup/props
 PROPS_FILE=application.properties
 
 CURR_BN=`git rev-list HEAD --count`
@@ -18,19 +18,22 @@ fi
 PREV_BN=`expr $CURR_BN - 1`
 
 echo "======================================================================="
+echo "1. Generate Build No."
+echo "-----------------------------------------------------------------------"
 echo "Previous Build Number="$PREV_BN  
 echo "Current  Build Number="$CURR_BN  
-echo "======================================================================="
-echo "Taking Properties Backup"
-cp $PROPS_PATH/$PROPS_FILE $PROPS_BACK/$PROPS_FILE.$PREV_BN
-echo "======================================================================="
-echo "Generate Build Numbers"
+echo "-----------------------------------------------------------------------"
+echo "1.1 Taking Properties Backup"
+cp config/$PROPS_FILE $PROPS_BACK/$PROPS_FILE.$PREV_BN
+echo "1.2 Generate Build File... "
 echo "# =======================================================================" > $PROPS_PATH/$PROPS_BUILD
 echo "# $1 Service Properties" >>  $PROPS_PATH/$PROPS_BUILD
 echo "# =======================================================================" >>  $PROPS_PATH/$PROPS_BUILD
 echo "build.number="$CURR_BN >> $PROPS_PATH/$PROPS_BUILD
 echo "build.date="`date` >> $PROPS_PATH/$PROPS_BUILD
-
-cat $PROPS_PATH/$PROPS_BUILD > $PROPS_PATH/$PROPS_FILE
-cat $PROPS_PATH/$PROPS_TMPL >> $PROPS_PATH/$PROPS_FILE
-echo "======================================================================="
+echo "1.3 Generate Application properties with New Build No. and Date..."
+echo "-----------------------------------------------------------------------"
+cat $PROPS_PATH/$PROPS_BUILD > config/$PROPS_FILE
+echo "1.4 Copy the application.properties to config directory..."
+echo "-----------------------------------------------------------------------"
+cat $PROPS_PATH/$PROPS_TMPL >> config/$PROPS_FILE

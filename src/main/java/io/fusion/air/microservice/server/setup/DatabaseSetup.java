@@ -16,6 +16,7 @@
 package io.fusion.air.microservice.server.setup;
 // Spring
 import io.fusion.air.microservice.server.config.DatabaseConfig;
+import io.fusion.air.microservice.server.service.ProfileService;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -55,12 +56,15 @@ public class DatabaseSetup {
     // Autowired using the Constructor
     private DatabaseConfig dbConfig;
 
+    private ProfileService profileService;
+
     /**
      * Autowired using the Constructor
      * @param dbCfg
      */
-    public DatabaseSetup(DatabaseConfig dbCfg) {
-        dbConfig = dbCfg;
+    public DatabaseSetup(DatabaseConfig dbCfg, ProfileService profileService) {
+        this.dbConfig = dbCfg;
+        this.profileService = profileService;
     }
 
     /**
@@ -68,16 +72,18 @@ public class DatabaseSetup {
      * @return
      */
     public DataSource dataSource() {
-        log.info("DB-1: {} ", dbConfig.getDataSourceVendor());
-        log.info("DB-2: {} ", dbConfig.getDataSourceName());
-
+        log.info("DB-Vendor: {} ", dbConfig.getDataSourceVendor());
+        log.info("DB-Source: {} ", dbConfig.getDataSourceName());
+        log.info("DB-Profile: {} ", profileService.getActiveProfile());
         switch(dbConfig.getDataSourceVendor()) {
             case DatabaseConfig.DB_POSTGRESQL:
+                log.info("DB-Database: Setting PostgreSQL Data Source....");
                 return postgreSQLDataSource();
             case DatabaseConfig.DB_H2:
                 // Falls Thru to the default option
             default:
                 // Returns H2 Database if Nothing Matches
+                log.info("DB-Database: Setting H2 Data Source....");
                 return h2DataSource();
         }
     }
@@ -89,7 +95,9 @@ public class DatabaseSetup {
     @Bean
     @Profile("dev")
     public DataSource h2DataSource() {
+        log.info("Creating H2 DataSource bean (Profiles=dev) 1-of-5");
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        log.info("Creating H2 DataSource bean (Profiles=dev) 2-of-5");
         return builder.setType(EmbeddedDatabaseType.H2).build();
     }
 
@@ -100,6 +108,7 @@ public class DatabaseSetup {
     @Bean
     @Profile("staging | prod")
     public DataSource postgreSQLDataSource() {
+        log.info("Creating PostgreSQL DataSource bean (Profiles=staging/prod) 1-of-5");
         // For PostgreSQL Database
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(dbConfig.getDataSourceDriverClassName());
@@ -109,7 +118,7 @@ public class DatabaseSetup {
         config.addDataSourceProperty("user", dbConfig.getDataSourceUserName());
         config.addDataSourceProperty("password", dbConfig.getDataSourcePassword());
         config.setSchema(dbConfig.getDataSourceSchema());
-
+        log.info("Creating PostgreSQL DataSource bean (Profiles=staging/prod) 2-of-5");
         // postgress configuration for Hikari
         return new HikariDataSource(config);
     }
@@ -120,10 +129,12 @@ public class DatabaseSetup {
      */
     @Bean
     public EntityManagerFactory entityManagerFactory() {
+        log.info("Creating EntityManagerFactory bean. (Vendor Adapter) 4-of-5");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
         vendorAdapter.setDatabasePlatform(dbConfig.getDataSourceDialect());
 
+        log.info("Creating EntityManagerFactory bean. (LCEMF) 4-of-5");
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         String[] pkgs = {"io.fusion.air.microservice.domain.*"};
@@ -131,8 +142,9 @@ public class DatabaseSetup {
         // Set Database Source
         factory.setDataSource(dataSource());
         factory.afterPropertiesSet();
-
-        return factory.getObject();
+        EntityManagerFactory emf = factory.getObject();
+        log.info("Created EMF: MetaModel = {} 4-of-5", emf.getMetamodel());
+        return emf;
     }
 
     /**
@@ -141,8 +153,10 @@ public class DatabaseSetup {
      */
     @Bean
     public PlatformTransactionManager transactionManager() {
+        log.info("Creating PlatformTransactionManager bean. 3-of-5");
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());
+        log.info("Creating PlatformTransactionManager bean. 5-of-5 ... Complete");
         return txManager;
     }
 

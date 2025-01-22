@@ -1,6 +1,9 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-default
 data:
-  application.properties: |
+  application.properties: |+
     build.number=209
     build.date=Tue Jan 21 08:42:40 IST 2025
     spring.profiles.default=dev
@@ -60,7 +63,7 @@ data:
     logging.level.web=INFO
     logging.level.sql=INFO
     logging.level.tomcat=INFO
-    logging.level.root=INFO
+    logging.level.root=DEBUG
     logging.config=classpath:logback-spring.xml
     logging.format=plain
     logging.path=/tmp/logs/${service.api.name}
@@ -131,6 +134,4 @@ data:
     springdoc.api-docs.enabled=true
     springdoc.swagger-ui.operationsSorter=method
     springdoc.swagger-ui.tagsSorter=alpha
-kind: ConfigMap
-metadata:
-  name: vanilla-configmap-default
+    
