@@ -19,6 +19,7 @@ import io.fusion.air.microservice.domain.models.core.StandardResponse;
 import io.fusion.air.microservice.server.config.DatabaseConfig;
 import io.fusion.air.microservice.server.config.ServiceConfig;
 // Swagger
+import io.fusion.air.microservice.server.service.ProfileService;
 import io.fusion.air.microservice.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -62,6 +63,7 @@ public class ProfileController extends AbstractController {
 	private final DatabaseConfig dbConfig;
 	// Autowired using the Constructor
 	private ConfigurableEnvironment environment;
+	private ProfileService profileService;
 
 	private final String serviceName;
 
@@ -71,10 +73,11 @@ public class ProfileController extends AbstractController {
 	 * @param dbConfig
 	 */
 	public ProfileController(ServiceConfig serviceConfig, DatabaseConfig dbConfig,
-							 ConfigurableEnvironment environment) {
+							 ConfigurableEnvironment environment, ProfileService profileService) {
 		this.serviceConfig = serviceConfig;
 		this.dbConfig = dbConfig;
 		this.environment = environment;
+		this.profileService = profileService;
 		this.serviceName = serviceConfig.getServiceName();
 	}
 
@@ -100,7 +103,7 @@ public class ProfileController extends AbstractController {
 		Map<String, Object> data = new LinkedHashMap<>();
 		StandardResponse stdResponse = createSuccessResponse("Profile Data Retrieved!");
 		data.put("Service", serviceName);
-		data.put("Active Profile", getActiveProfile());
+		data.put("Active Profile", profileService.getActiveProfile());
 		data.put("Service Version", serviceConfig.getServerVersion());
 		data.put("Build Date", serviceConfig.getBuildDate());
 		data.put("Build No", serviceConfig.getBuildNumber());
@@ -133,7 +136,7 @@ public class ProfileController extends AbstractController {
 		Map<String, Object> data = new LinkedHashMap<>();
 		StandardResponse stdResponse = createSuccessResponse("Profile Data Retrieved!");
 		data.put("Service", serviceName);
-		data.put("Active Profile", getActiveProfile());
+		data.put("Active Profile", profileService.getActiveProfile());
 		data.put("Service Version", serviceConfig.getServerVersion());
 		data.put("Build Date", serviceConfig.getBuildDate());
 		data.put("Build No", serviceConfig.getBuildNumber());
@@ -144,24 +147,6 @@ public class ProfileController extends AbstractController {
 		data.put("DB URL", dbConfig.getDataSourceURL());
 		stdResponse.setPayload(data);
 		return ResponseEntity.ok(stdResponse);
-	}
-
-	/**
-	 * Get Active Profile
-	 * @return
-	 */
-	private String getActiveProfile() {
-		if (environment.getActiveProfiles().length == 0) {
-			log.info("Spring Profile is missing, so defaulting to {}  Profile!", serviceConfig.getActiveProfile());
-			environment.addActiveProfile(serviceConfig.getActiveProfile());
-		}
-		StringBuilder sb = new StringBuilder();
-		for(String profile : environment.getActiveProfiles()) {
-			sb.append(profile).append(" ");
-		}
-		String profile = sb.toString().trim().replace(" ", ", ");
-		log.info("Spring Active Profiles = {} ", profile);
-		return profile;
 	}
  }
 

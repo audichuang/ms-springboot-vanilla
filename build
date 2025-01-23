@@ -7,7 +7,6 @@
 
 # Get the Org Name, Service Name, Version and Full Container Name
 source serviceName
-source updateProperties
 
 echo "---------------------------------------------------------------------------------------"
 echo "Building the Container for $ORG/$SERVICE Service ..... "

@@ -63,7 +63,7 @@ public class ServiceEventListener {
 	private  MeterRegistry meterRegistry;
 
 	// Autowired using the Constructor
-	private ConfigurableEnvironment environment;
+	private ProfileService profileService;
 
 	/**
 	 * Autowired using the Constructor
@@ -71,42 +71,14 @@ public class ServiceEventListener {
 	 * @param serviceConfig
 	 * @param tokenManager
 	 * @param meterRegistry
-	 * @param environment
+	 * @param profileService
 	 */
 	public ServiceEventListener(ServiceConfig serviceConfig, TokenManager tokenManager,
-								MeterRegistry meterRegistry, ConfigurableEnvironment environment) {
+								MeterRegistry meterRegistry, ProfileService profileService) {
 		this.serviceConfig = serviceConfig;
 		this.tokenManager = tokenManager;
-
 		this.meterRegistry = meterRegistry;
-		this.environment = environment;
-	}
-
-	/**
-	 * Check the Dev Mode
-	 * @return
-	 */
-	private boolean  getDevMode() {
-		String activeProfile = getActiveProfile();
-		return (activeProfile != null && activeProfile.equalsIgnoreCase("prod")) ? false : true;
-	}
-
-	/**
-	 * Get Active Profile
-	 * @return
-	 */
-	private String getActiveProfile() {
-		if (environment.getActiveProfiles().length == 0) {
-			log.info("Spring Profile is missing, so defaulting to {}  Profile!", serviceConfig.getActiveProfile());
-			environment.addActiveProfile(serviceConfig.getActiveProfile());
-		}
-		StringBuilder sb = new StringBuilder();
-		for(String profile : environment.getActiveProfiles()) {
-			sb.append(profile).append(" ");
-		}
-		String profile = sb.toString().trim().replace(" ", ", ");
-		log.info("Spring Active Profiles = {} ", profile);
-		return profile;
+		this.profileService = profileService;
 	}
 
 	/**
@@ -139,7 +111,7 @@ public class ServiceEventListener {
 		// 2: Register the APIs with Micrometer
 		registerAPICallsForMicroMeter();
 		// 3: Generate Tokens - ONLY For Dev Mode (For Developer Testing)
-		if(tokenManager.getJsonWebTokenConfig().isServerTokenTest() && getDevMode() ) {
+		if(tokenManager.getJsonWebTokenConfig().isServerTokenTest() && profileService.getDevMode() ) {
 			generateTestToken();
 		}
 	}
@@ -235,7 +207,7 @@ public class ServiceEventListener {
 		}
 	}
 	private String geDeploymentMode() {
-		return switch (getActiveProfile()) {
+		return switch (profileService.getActiveProfile()) {
             case "staging" -> "Staging";
             case "prod" -> "Production";
 			case "dev" -> "Development";

@@ -55,6 +55,8 @@ then
 	convert4ConfigMap config/application-staging.properties src/kubernetes/Package/staging/application-staging.properties
 	convert4ConfigMap config/application-prod.properties src/kubernetes/Package/prod/application-prod.properties
 
+	source updateProperties
+
 	echo "2.5 Copy logback-spring xml Files to config directory."
 	cp src/main/resources/logback-spring*xml config
 
