@@ -1,0 +1,93 @@
+/**
+ * Copyright (c) 2025 Araf Karsh Hamid
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * <p>
+ * This program and the accompanying materials are dual-licensed under
+ * either the terms of the Eclipse Public License v1.0 as published by
+ * the Eclipse Foundation
+ * <p>
+ * or (per the licensee's choosing)
+ * <p>
+ * under the terms of the Apache 2 License version 2.0
+ * as published by the Apache Software Foundation.
+ */
+package io.fusion.air.microservice.server.service;
+
+import io.fusion.air.microservice.server.config.ServiceConfig;
+import org.slf4j.Logger;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.stereotype.Service;
+
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
+
+/**
+ * ms-springboot-334-vanilla / ProfileService 
+ *
+ * @author: Araf Karsh Hamid
+ * @version: 0.1
+ * @date: 2025-01-22T12:00 PM
+ */
+@Service
+public class ProfileService {
+
+    // Set Logger -> Lookup will automatically determine the class name.
+    private static final Logger log = getLogger(lookup().lookupClass());
+
+    // Autowired using the Constructor
+    private ServiceConfig serviceConfig;
+
+    // Autowired using the Constructor
+    private ConfigurableEnvironment environment;
+
+    /**
+     * Autowired using Constructor Injection
+     * @param environment
+     */
+    public ProfileService(ServiceConfig serviceConfig, ConfigurableEnvironment environment) {
+        this.serviceConfig = serviceConfig;
+        this.environment = environment;
+    }
+
+    /**
+     * Check the Dev Mode
+     * @return
+     */
+    public boolean  getDevMode() {
+        String activeProfile = getActiveProfile();
+        return (activeProfile != null && activeProfile.equalsIgnoreCase("prod")) ? false : true;
+    }
+
+    /**
+     * Get Active Profile
+     * @return
+     */
+    public String getActiveProfile() {
+        if (environment.getActiveProfiles().length == 0) {
+            log.info("Spring Profile is missing, so defaulting to {}  Profile!", serviceConfig.getActiveProfile());
+            environment.addActiveProfile(serviceConfig.getActiveProfile());
+        }
+        StringBuilder sb = new StringBuilder();
+        for(String profile : environment.getActiveProfiles()) {
+            sb.append(profile).append(" ");
+        }
+        String profile = sb.toString().trim().replace(" ", ", ");
+        log.info("Spring Active Profiles = {} ", profile);
+        return profile;
+    }
+
+}

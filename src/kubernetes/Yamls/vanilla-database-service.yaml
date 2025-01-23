@@ -4,4 +4,4 @@ metadata:
   name: database-service
 spec:
   type: ExternalName
-  externalName: 192.168.5.1
+  externalName: host.docker.internal

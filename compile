@@ -26,7 +26,7 @@ echo "Clean up the target folder: mvn clean"
 echo "---------------------------------------------------------------------------------------"
 mvn clean
 # -------------------------------------------------------------------------------------------
-echo "Git Commit Count = "`git rev-list HEAD --count`
+echo "0. Git Commit Count = "`git rev-list HEAD --count`
 echo "---------------------------------------------------------------------------------------"
 generateBuildNumber $SERVICE
 # -------------------------------------------------------------------------------------------
@@ -41,31 +41,32 @@ then
 	echo "2.1 Compiling Service > $ORG/$SERVICE :: SUCCESS"
 	echo "---------------------------------------------------------------------------------------"
 
-	echo "2.2 Copy the Fat and Thin jar files and the libs to the Docker Directory (src/docker)"
+	echo "2.2 Copy $CONTAINER-spring-boot.jar file to the Docker Directory (src/docker)"
 	cp target/*service*-spring-boot.jar src/docker/Input/$CONTAINER-spring-boot.jar
 
-	echo "2.3 Copy the application.properties File to the Docker Directory (src/docker)"
-	cp src/main/resources/application*properties src/docker/Input
+	echo "2.3 Copy application.properties File to the Docker Directory (src/docker)"
+	cp config/application*properties src/docker/Input
 
-	echo "2.4 Copy the application.properties File to the Docker Directory (src/docker)"
-	convert4ConfigMap src/main/resources/application.properties src/kubernetes/Package/default/application.properties
-	convert4ConfigMap src/main/resources/application-dev.properties src/kubernetes/Package/dev/application-dev.properties
-	convert4ConfigMap src/main/resources/application-staging.properties src/kubernetes/Package/staging/application-staging.properties
-	convert4ConfigMap src/main/resources/application-prod.properties src/kubernetes/Package/prod/application-prod.properties
+	echo "2.4 Copy application.properties File to the Kubernetes Directory (src/kubernetes)"
+	convert4ConfigMap config/application.properties src/kubernetes/Package/dev/application.properties
+	convert4ConfigMap config/application.properties src/kubernetes/Package/staging/application.properties
+	convert4ConfigMap config/application.properties src/kubernetes/Package/prod/application.properties
+	convert4ConfigMap config/application-dev.properties src/kubernetes/Package/dev/application-dev.properties
+	convert4ConfigMap config/application-staging.properties src/kubernetes/Package/staging/application-staging.properties
+	convert4ConfigMap config/application-prod.properties src/kubernetes/Package/prod/application-prod.properties
 
-	echo "2.5 Copy the application.properties Files to config directory."
-	cp src/main/resources/application*properties config
+	source updateProperties
 
-	echo "2.6 Copy the logback-spring xml Files to config directory."
+	echo "2.5 Copy logback-spring xml Files to config directory."
 	cp src/main/resources/logback-spring*xml config
 
-	echo "2.7 Copy the logback-spring xml Files to Docker directory src/docker/"
+	echo "2.6 Copy logback-spring xml Files to Docker directory src/docker/"
 	cp src/main/resources/logback-spring*xml src/docker/Input
 
 	echo "---------------------------------------------------------------------------------------"
-	echo "2.8. Building the Container for $ORG/$SERVICE Service ..... "
+	echo "2.7. Building the Container for $ORG/$SERVICE Service ..... "
 	echo "---------------------------------------------------------------------------------------"
-	echo "2.8.1 Docker Build Process Disabled.... Run the build/buildx command separately"
+	echo "2.7.1 Docker Build Process Disabled.... Run the build/buildx command separately"
 	#build
 	echo "---------------------------------------------------------------------------------------"
 	echo "3. $SERVICE Microservice Build Process Completed Successfully! ........... "

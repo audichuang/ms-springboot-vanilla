@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vanilla-deployment
+  labels:
+    app: vanilla-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vanilla-pod
+  template:
+    metadata:
+      labels:
+        app: vanilla-pod
+    spec:
+      hostNetwork: true
+      containers:
+        - name: vanilla-container
+          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
+          # Only for testing purpose -  use IfNotPresent
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9334
+              hostPort: 9334
+          env:
+            - name: APP_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: vanilla-configmap-active
+                  key: spring.profiles.active
+            - name: JASYPT_ENCRYPTOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vanilla-secret
+                  key: JASYPT_ENCRYPTOR
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: vanilla-configmap-active
+                  key: spring.profiles.active
+          livenessProbe:
+            httpGet:
+              path: /ms-vanilla/api/v1/service/live
+              port: 9334
+          readinessProbe:
+            httpGet:
+              path: /ms-vanilla/api/v1/service/ready
+              port: 9334
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1536Mi
+            requests:
+              cpu: 1000m
+              memory: 1536Mi

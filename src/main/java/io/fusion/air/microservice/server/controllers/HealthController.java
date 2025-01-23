@@ -64,8 +64,8 @@ public class HealthController extends AbstractController {
 					;
 
 	// Autowired using the Constructor
-	private ServiceConfig serviceConfig;
-	private String serviceName;
+	private final ServiceConfig serviceConfig;
+	private final String serviceName;
 
 	/**
 	 * Autowired using the Constructor

@@ -1,0 +1,83 @@
+#!/bin/bash
+# -------------------------------------------------------------------------------------------
+# @author: Araf Karsh Hamid, (c) Copyright 2024
+# -------------------------------------------------------------------------------------------
+echo 
+echo "Testing the Stabiliy of the Service"
+echo 
+
+# Default value for the number of requests
+DEFAULT_REQUESTS=1000
+
+# Get the number of requests from the input argument or use default if not provided or less than 10
+NUM_REQUESTS=${1:-$DEFAULT_REQUESTS}
+if [ "$NUM_REQUESTS" -lt 1000 ]; then
+  NUM_REQUESTS=$DEFAULT_REQUESTS
+fi
+
+echo "Number of requests: $NUM_REQUESTS"
+
+# URL and headers for the request
+URL="http://localhost:9334/ms-vanilla/api/v1/service/profile"
+HEADERS="-H 'accept: application/json'"
+
+# Initialize total time
+TOTAL_TIME=0
+
+# Function to execute a curl request and measure time taken
+perform_request() {
+  TIME_OUTPUT=$( { time curl -s -o /dev/null -w "%{http_code}" -X 'GET' "$URL" $HEADERS; } 2>&1 )
+  REAL_TIME=$(echo "$TIME_OUTPUT" | grep real | awk '{print $2}')
+  MINUTES=$(echo "$REAL_TIME" | awk -F'm' '{print $1}')
+  SECONDS=$(echo "$REAL_TIME" | awk -F'm' '{print $2}' | sed 's/s//')
+  TIME_TAKEN=$(echo "($MINUTES * 60000) + ($SECONDS * 1000)" | bc)
+  echo "$TIME_TAKEN" # Return time taken in milliseconds
+}
+
+# Export variables and function for parallel execution
+export -f perform_request
+export URL
+export HEADERS
+
+# Divide requests into batches of 10
+BATCH_SIZE=200
+BATCHES=$((NUM_REQUESTS / BATCH_SIZE))
+REMAINING=$((NUM_REQUESTS % BATCH_SIZE))
+
+# Run the requests in batches and measure time
+for ((i = 1; i <= BATCHES; i++)); do
+  # echo "Running batch $i..."
+  BATCH_TIME=0
+  TIMES=$(seq $BATCH_SIZE | xargs -n1 -P$BATCH_SIZE bash -c 'perform_request')
+
+  for TIME in $TIMES; do
+    BATCH_TIME=$((BATCH_TIME + TIME))
+  done
+
+  echo "$i: Time taken for batch $i: ${BATCH_TIME} ms"
+  TOTAL_TIME=$((TOTAL_TIME + BATCH_TIME))
+done
+
+# Handle remaining requests if any
+if [ "$REMAINING" -gt 0 ]; then
+  echo "Running remaining $REMAINING requests..."
+  REMAINING_TIME=0
+  TIMES=$(seq $REMAINING | xargs -n1 -P$REMAINING bash -c 'perform_request')
+  
+  for TIME in $TIMES; do
+    REMAINING_TIME=$((REMAINING_TIME + TIME))
+  done
+
+  echo "Time taken for remaining requests: ${REMAINING_TIME} ms"
+  TOTAL_TIME=$((TOTAL_TIME + REMAINING_TIME))
+fi
+
+# Convert total time into hours:minutes:seconds
+TOTAL_SECONDS=$((TOTAL_TIME / 1000))
+HOURS=$((TOTAL_SECONDS / 3600))
+MINUTES=$(( (TOTAL_SECONDS % 3600) / 60 ))
+SECONDS=$((TOTAL_SECONDS % 60))
+
+# Print total time
+echo "Total time taken for $NUM_REQUESTS requests: ${TOTAL_TIME} ms"
+echo "Total time in hours:minutes:seconds: ${HOURS}:${MINUTES}:${SECONDS}"

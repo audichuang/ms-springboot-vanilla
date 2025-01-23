@@ -27,7 +27,7 @@ determine_os_java "$1" "$FULL_NAME"
 # Check if Colima is running, if Not Start Colima
 source utils/colimaStatus
 
-echo "Building Container for $FULL_NAME "
+echo "Building Container for $FULL_NAME"
 
 # Build Container
 echo "docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE -t $FULL_NAME ."

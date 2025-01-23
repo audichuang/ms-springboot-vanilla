@@ -1,0 +1,52 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Kubernetes Utils
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Change Vanilla Service Profile [dev, staging, prod]
+#---------------------------------------------------------------
+
+echo "---------------------------------------------------------------"
+echo "Change the profile to $1"
+echo "---------------------------------------------------------------"
+# Check if the script has been provided with the required arguments
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 profile [dev, staging, prod]"
+  echo "Example: $0 dev"
+  echo "Example: $0 prod"
+  echo "---------------------------------------------------------------"
+  exit 1
+fi
+
+# Input arguments
+input_file="Yamls/vanilla-configmap-active.yaml"
+new_profile=$1
+
+# Validate the new profile value
+if [[ "$new_profile" != "dev" && "$new_profile" != "staging"  && "$new_profile" != "prod" ]]; then
+  echo "Error: Invalid profile value. Only 'dev', 'staging' or 'prod' are allowed."
+  echo "---------------------------------------------------------------"
+  exit 1
+fi
+
+# Backup the original file
+cp "$input_file" "$input_file.bak"
+
+# Use sed to replace the value of spring.profiles.active
+sed -i.bak -E "s/(spring.profiles.active:).*/\1 $new_profile/" "$input_file"
+
+# Confirm the changes
+if [ $? -eq 0 ]; then
+  echo "Updated spring.profiles.active to '$new_profile' in $input_file"
+  grep spring.profiles.active $input_file
+  echo "Updating Kubernetes Cluster with new Active Profile $1 in $input_file"
+  kubectl apply -f $input_file
+  kubectl describe configmap vanilla-configmap-active
+  echo "---------------------------------------------------------------"
+else
+  echo "Failed to update the profile. Please check the file and permissions."
+  echo "---------------------------------------------------------------"
+  exit 1
+fi

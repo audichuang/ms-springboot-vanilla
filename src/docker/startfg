@@ -34,7 +34,6 @@ echo "docker container run -it --network="host" --name $SERVICE-$VERSION --rm -p
 	echo "-e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \ "
 	echo "-e APP_PROFILE=$APP_PROFILE \ "
 	echo "-e SPRING_PROFILES_ACTIVE=$APP_PROFILE \ "
-	echo "-e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/ms_vanilla_334 \ "
 	echo "$FULL_NAME "
 
 # Start the Container in Foreground
@@ -42,5 +41,4 @@ docker container run -it --network="host" --name $SERVICE-$VERSION --rm -p $PORT
 	-e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \
 	-e APP_PROFILE=$APP_PROFILE \
 	-e SPRING_PROFILES_ACTIVE=$APP_PROFILE \
-	-e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/ms_vanilla_334 \
 	$FULL_NAME

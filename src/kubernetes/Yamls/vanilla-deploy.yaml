@@ -17,12 +17,9 @@ spec:
       hostNetwork: true
       containers:
         - name: vanilla-container
-          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21
-          # Only for testing purpose - use Always
-          imagePullPolicy: Always
-          args:
-            - "-APP_PROFILE=$(SPRING_PROFILES_ACTIVE)""
-            - "-SPRING_DATASOURCE_URL=jdbc:postgresql://database-service:5433/ms_vanilla_334"
+          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
+          # Only for testing purpose -  use IfNotPresent
+          imagePullPolicy: Never
           ports:
             - containerPort: 9334
               hostPort: 9334
@@ -31,6 +28,11 @@ spec:
               mountPath: /config
               readOnly: true
           env:
+            - name: APP_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: vanilla-configmap-active
+                  key: spring.profiles.active
             - name: JASYPT_ENCRYPTOR_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -41,7 +43,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
-                  name: vanilla-configmap-active # Shared ConfigMap for all environments
+                  name: vanilla-configmap-active
                   key: spring.profiles.active
           livenessProbe:
             httpGet:
@@ -61,4 +63,4 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: vanilla-configmap-default
+            name: vanilla-configmap-prod

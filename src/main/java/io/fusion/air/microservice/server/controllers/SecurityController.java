@@ -15,6 +15,7 @@
  */
 package io.fusion.air.microservice.server.controllers;
 // Custom
+import io.fusion.air.microservice.domain.models.core.StandardResponse;
 import io.fusion.air.microservice.server.config.ServiceConfig;
 // Swagger Open API
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,7 +53,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 // "/service-name/api/v1/service"
 @RequestMapping("${service.api.path}"+ ServiceConfig.HEALTH_PATH)
 @Tag(name = "System - Health", description = "Health (Liveness, Readiness, ReStart.. etc)")
-public class SecurityController {
+public class SecurityController extends AbstractController {
 
 	// Set Logger -> Lookup will automatically determine the class name.
 	private static final Logger log = getLogger(lookup().lookupClass());
@@ -72,7 +73,7 @@ public class SecurityController {
             content = @Content)
     })
 	@GetMapping("/security/{text}")
-	public ResponseEntity<HashMap<String, String>> encryptText(@PathVariable("text") String text) throws SecurityException {
+	public ResponseEntity<StandardResponse> encryptText(@PathVariable("text") String text) throws SecurityException {
 		log.info("{} |Request to Encrypt of Service... ", LocalDateTime.now());
 		String masterPassword = System.getenv("JASYPT_ENCRYPTOR_PASSWORD");
 
@@ -94,13 +95,16 @@ public class SecurityController {
 			String decryptedText = textEncryptor.decrypt(encryptedText);
 			log.info("Decrypted Text: {} ", decryptedText);
 			// Base64 Encoded Plain Text
-			String encodedData = Base64.getEncoder().encodeToString(text.getBytes()).toString();
+			String encodedData = Base64.getEncoder().encodeToString(text.getBytes());
+			StandardResponse stdResponse = createSuccessResponse("Service is Ready!");
+
 			HashMap<String, String> data = new LinkedHashMap<>();
 			data.put("algo", algo);
 			data.put("plain.text", text);
 			data.put("base64", encodedData);
 			data.put("encrypted", encryptedText);
-			return ResponseEntity.ok(data);
+			stdResponse.setPayload(data);
+			return ResponseEntity.ok(stdResponse);
 		}
 		throw new SecurityException("Set ENV Variable JASYPT_ENCRYPTOR_PASSWORD for Encryption Key.");
 	}
