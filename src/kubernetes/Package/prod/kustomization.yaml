@@ -4,5 +4,6 @@ configMapGenerator:
   - name: vanilla-configmap-prod
     files:
       - application.properties
+      - application-prod.properties
 generatorOptions:
   disableNameSuffixHash: true

@@ -7,7 +7,7 @@
 # Tomcat 10 Container
 #---------------------------------------------------------------
 
-FROM arafkarsh/alpine
+FROM arafkarsh/alpine:3.21
 
 # Metadata
 LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \

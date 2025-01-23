@@ -17,7 +17,7 @@ spec:
       hostNetwork: true
       containers:
         - name: vanilla-container
-          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21
+          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
           # Only for testing purpose -  use IfNotPresent
           imagePullPolicy: Always
           args:

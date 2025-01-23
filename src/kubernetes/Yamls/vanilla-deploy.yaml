@@ -17,26 +17,15 @@ spec:
       hostNetwork: true
       containers:
         - name: vanilla-container
-          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21
+          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
           # Only for testing purpose -  use IfNotPresent
-          imagePullPolicy: Always
-          args:
-            - "-SPRING_DATASOURCE_URL=jdbc:postgresql://database-service:5433/ms_vanilla_334"
+          imagePullPolicy: Never
           ports:
             - containerPort: 9334
               hostPort: 9334
           volumeMounts:
-            - name: config-volume-default
+            - name: config-volume
               mountPath: /config
-              readOnly: true
-            - name: config-volume-dev
-              mountPath: /config/d
-              readOnly: true
-            - name: config-volume-staging
-              mountPath: /config/s
-              readOnly: true
-            - name: config-volume-prod
-              mountPath: /config/p
               readOnly: true
           env:
             - name: APP_PROFILE
@@ -49,8 +38,8 @@ spec:
                 secretKeyRef:
                   name: vanilla-secret
                   key: JASYPT_ENCRYPTOR
-            #- name: SPRING_CONFIG_LOCATION
-             # value: "file:/config/application.properties"
+            - name: SPRING_CONFIG_LOCATION
+              value: "file:/config/application.properties"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
@@ -72,15 +61,6 @@ spec:
               cpu: 1000m
               memory: 1536Mi
       volumes:
-        - name: config-volume-default
-          configMap:
-            name: vanilla-configmap-default
-        - name: config-volume-dev
-          configMap:
-            name: vanilla-configmap-dev
-        - name: config-volume-staging
-          configMap:
-            name: vanilla-configmap-staging
-        - name: config-volume-prod
+        - name: config-volume
           configMap:
             name: vanilla-configmap-prod

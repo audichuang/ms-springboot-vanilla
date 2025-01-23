@@ -1,25 +1,11 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-staging
 data:
-  application-staging.properties: |+
-    server.port=9334
-    logging.level.root=INFO
-    spring.profiles=staging
-    db.server=localhost
-    db.port=5433
-    db.name=ms_vanilla_334
-    db.schema=ms_schema
-    db.vendor=PostgreSQL
-    spring.datasource.url=jdbc:postgresql://${db.server}:${db.port}/${db.name}
-    spring.datasource.driverClassName=org.postgresql.ds.PGSimpleDataSource
-    spring.datasource.username=msadm
-    spring.datasource.password=ENC(In0ZYcoLjwe2OzzaWZ07BMoFHL8yvo4KQ/3ABAbzSKJuUVEu5hYycNGWB66Xswju)
-    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
-    spring.datasource.hikari.connection-test-query=SELECT 1
-
-
   application.properties: |
-    build.number=215
-    build.date=Thu Jan 23 15:04:05 IST 2025
+    build.number=209
+    build.date=Tue Jan 21 08:42:40 IST 2025
     spring.profiles.default=dev
     service.org=arafkarsh
     service.name=MS-Vanilla
@@ -34,7 +20,7 @@ data:
     service.license=Apache 2 License
     service.license.url=https://github.com/arafkarsh/ms-springboot-334-vanilla?tab=Apache-2.0-1-ov-file
     server.port=9334
-    server.version=0.3.4
+    server.version=3.4.0
     server.restart=false
     server.leak.test=3
     server.resources.url=${service.url}${service.api.path}
@@ -148,6 +134,19 @@ data:
     springdoc.api-docs.enabled=true
     springdoc.swagger-ui.operationsSorter=method
     springdoc.swagger-ui.tagsSorter=alpha
-kind: ConfigMap
-metadata:
-  name: vanilla-configmap-staging
+
+  application-staging.properties: |+
+    spring.config.activate.on-profile=staging
+    server.port=9334
+    logging.level.root=INFO
+    db.server=localhost
+    db.port=5433
+    db.name=ms_vanilla_334
+    db.schema=ms_schema
+    db.vendor=PostgreSQL
+    spring.datasource.url=jdbc:postgresql://${db.server}:${db.port}/${db.name}
+    spring.datasource.driverClassName=org.postgresql.ds.PGSimpleDataSource
+    spring.datasource.username=msadm
+    spring.datasource.password=ENC(In0ZYcoLjwe2OzzaWZ07BMoFHL8yvo4KQ/3ABAbzSKJuUVEu5hYycNGWB66Xswju)
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+    spring.datasource.hikari.connection-test-query=SELECT 1

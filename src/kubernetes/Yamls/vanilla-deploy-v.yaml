@@ -17,11 +17,9 @@ spec:
       hostNetwork: true
       containers:
         - name: vanilla-container
-          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21
+          image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
           # Only for testing purpose -  use IfNotPresent
           imagePullPolicy: Always
-          args:
-            - "-SPRING_DATASOURCE_URL=jdbc:postgresql://database-service:5433/ms_vanilla_334"
           ports:
             - containerPort: 9334
               hostPort: 9334

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podshell-deployment
+  labels:
+    app: podshell-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: podshell
+  template:
+    metadata:
+      labels:
+        app: podshell
+    spec:
+      hostNetwork: true
+      containers:
+        - name: podshell-container
+          image: arafkarsh/podshell:1
+          imagePullPolicy: IfNotPresent

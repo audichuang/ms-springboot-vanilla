@@ -4,5 +4,6 @@ configMapGenerator:
   - name: vanilla-configmap-staging
     files:
       - application.properties
+      - application-staging.properties
 generatorOptions:
   disableNameSuffixHash: true

@@ -1,11 +1,8 @@
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: vanilla-configmap-default
 data:
-  application.properties: |+
-    build.number=209
-    build.date=Tue Jan 21 08:42:40 IST 2025
+  application.properties: |
+    build.number=215
+    build.date=Thu Jan 23 15:04:05 IST 2025
     spring.profiles.default=dev
     service.org=arafkarsh
     service.name=MS-Vanilla
@@ -20,7 +17,7 @@ data:
     service.license=Apache 2 License
     service.license.url=https://github.com/arafkarsh/ms-springboot-334-vanilla?tab=Apache-2.0-1-ov-file
     server.port=9334
-    server.version=3.4.0
+    server.version=0.3.4
     server.restart=false
     server.leak.test=3
     server.resources.url=${service.url}${service.api.path}
@@ -63,7 +60,7 @@ data:
     logging.level.web=INFO
     logging.level.sql=INFO
     logging.level.tomcat=INFO
-    logging.level.root=DEBUG
+    logging.level.root=INFO
     logging.config=classpath:logback-spring.xml
     logging.format=plain
     logging.path=/tmp/logs/${service.api.name}
@@ -134,4 +131,6 @@ data:
     springdoc.api-docs.enabled=true
     springdoc.swagger-ui.operationsSorter=method
     springdoc.swagger-ui.tagsSorter=alpha
-    
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-default

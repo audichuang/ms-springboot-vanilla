@@ -1,0 +1,33 @@
+#!/bin/bash
+# -------------------------------------------------------------------------------------------
+# @author: Araf Karsh Hamid
+# -------------------------------------------------------------------------------------------
+# Update properties for local testing inside docker and kubernetes
+# ===========================================================================================
+
+update_properties() {
+  echo "--------------------------------------------------------------------------"
+  echo "Updating Staging and Production Property file with DB Server Name"
+  echo "--------------------------------------------------------------------------"
+  replace_db_server "src/docker/Input/application-staging.properties"
+  replace_db_server "src/docker/Input/application-prod.properties"
+
+  replace_db_server "src/kubernetes/Package/staging/application-staging.properties"
+  replace_db_server "src/kubernetes/Package/prod/application-prod.properties"
+  echo "--------------------------------------------------------------------------"
+}
+
+# Function to replace db.server value in the given file
+replace_db_server() {
+  local filepath="$1"
+
+  # Check if the file exists
+  if [ -f "$filepath" ]; then
+    sed -i -r 's/^db\.server=localhost$/db.server=host.docker.internal/g' "$filepath"
+    echo "Replaced 'db.server=localhost' with 'db.server=host.docker.internal' in $filepath."
+  fi
+}
+
+update_properties
+
+
