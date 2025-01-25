@@ -17,10 +17,11 @@ show_help() {
   echo "----------------------------------------------------------------"
   echo "INVALID INPUTS! Missing OS Name"
   echo "----------------------------------------------------------------"
-  echo "Usage: $0 [alpine, ubuntu]"
+  echo "Usage: $0 [alpine, alpaquita, ubuntu]"
   echo "Examples"
   echo "----------------------------------------------------------------"
   echo "$0 alpine "
+  echo "$0 alpaquita "
   echo "$0 ubuntu "
   echo "----------------------------------------------------------------"
 }
@@ -43,6 +44,10 @@ determine_os() {
     alpine)
       SERVICE="alpine:3.21"
       DOCKER_FILE="Dockerfiles/Dockerfile.alpine"
+      ;;
+    alpaquita)
+      SERVICE="alpaquita:musl"
+      DOCKER_FILE="Dockerfiles/Dockerfile.alpaquita"
       ;;
     ubuntu)
       SERVICE="ubuntu:24.04"

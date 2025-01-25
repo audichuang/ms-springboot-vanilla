@@ -7,7 +7,8 @@
 # PodShell Container
 #---------------------------------------------------------------
 
-FROM arafkarsh/alpine:3.21
+#FROM arafkarsh/alpine:3.21
+FROM arafkarsh/alpaquita:musl
 
 # Metadata
 LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
@@ -22,10 +23,11 @@ LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
 RUN apk update && \
     apk add --no-cache \
         bash \
+	# DNS Tools - nslookup, dig
+	bind-tools \		
         busybox-extras \
         curl \
         gzip \
-        htop \
         iputils \
         nano \
         openssh \
