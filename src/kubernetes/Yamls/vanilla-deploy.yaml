@@ -19,10 +19,10 @@ spec:
         - name: vanilla-container
           image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
           # Only for testing purpose -  use IfNotPresent
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9334
-              hostPort: 9334
+              #hostPort: 9334
           volumeMounts:
             - name: config-volume
               mountPath: /config

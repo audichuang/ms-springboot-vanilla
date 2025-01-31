@@ -6,24 +6,24 @@
 # Version 0.01
 #---------------------------------------------------------------
 
-source utils/colimaStatus
+source ../utils/colimaStatus
 
 echo "---------------------------------------------------------------"
 echo "Deploy the Vanilla Service in Kubernetes cluster"
 echo "---------------------------------------------------------------"
 echo "1. Deploy the Vanilla Service Config/Secrets in Kubernetes cluster"
-kubectl create -f Yamls/vanilla-configmaps-active.yaml
-kubectl create -f Yamls/vanilla-configmaps-default.yaml
-kubectl create -f Yamls/vanilla-configmaps-dev.yaml
-kubectl create -f Yamls/vanilla-configmaps-staging.yaml
-kubectl create -f Yamls/vanilla-configmaps-prod.yaml
-kubectl create -f Yamls/vanilla-secret.yaml
+kubectl create -f ../Yamls/vanilla-configmap-active.yaml
+kubectl create -f ../Yamls/vanilla-configmap-default.yaml
+kubectl create -f ../Yamls/vanilla-configmap-dev.yaml
+kubectl create -f ../Yamls/vanilla-configmap-staging.yaml
+kubectl create -f ../Yamls/vanilla-configmap-prod.yaml
+kubectl create -f ../Yamls/vanilla-secret.yaml
 echo "---------------------------------------------------------------"
 echo "2. Deploy the External Database Service"
-kubectl create -f Yamls/vanilla-database-service.yaml
+kubectl create -f ../Yamls/vanilla-database-service.yaml
 echo "---------------------------------------------------------------"
 echo "3. Deploy the Pods/Services/Ingress in Kubernetes cluster"
-kubectl create -f Yamls/vanilla-deploy.yaml
-kubectl create -f Yamls/vanilla-service.yaml
-kubectl create -f Yamls/vanilla-ingress.yaml
+kubectl create -f ../Yamls/vanilla-deploy.yaml
+kubectl create -f ../Yamls/vanilla-service.yaml
+kubectl create -f ../Yamls/vanilla-ingress.yaml
 echo "---------------------------------------------------------------"
