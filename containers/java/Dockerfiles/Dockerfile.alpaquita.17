@@ -4,11 +4,10 @@
 #
 # Version 0.01
 #---------------------------------------------------------------
-# Java 21 Container
+# Java 17 Container
 #---------------------------------------------------------------
 
-#FROM bellsoft/liberica-runtime-container:jre-21-musl
-FROM bellsoft/liberica-openjdk-alpine:21-cds
+FROM bellsoft/liberica-openjdk-alpine:17.0.14
 
 # Metadata
 LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
@@ -33,7 +32,7 @@ COPY --chown=ozazo:dev bash_rc /home/ozazo/.bashrc
 # Set permissions for directories
 RUN chown -R ozazo:dev /Softwares && \
     chown -R ozazo:dev /home/ozazo
-    
+
 # Add profile information to .bash_profile
 RUN { \
     echo "export JAVA_HOME=/usr/lib/jvm/jdk"; \
@@ -41,7 +40,7 @@ RUN { \
     echo "echo \"----------------------------------------------------------------\""; \
     echo "java -version"; \
     echo "echo \"----------------------------------------------------------------\""; \
-    echo "echo \"Alpaquita arm64/amd64 Java 21 (cds) Container\""; \
+    echo "echo \"Alpaquita arm64/amd64 Java 17 Container\""; \
     echo "echo \"----------------------------------------------------------------\""; \
   } >> /home/ozazo/.profile
 

@@ -11,6 +11,6 @@ source utils/colimaStatus
 echo "Apply ConfigMaps to Kubernetes Cluster"
 kubectl apply -f Yamls/vanilla-configmap-active.yaml 
 kubectl apply -f Yamls/vanilla-configmap-default.yaml 
-kubectl apply -f Yamls/vanilla-configmap-dev-v2.yaml 
-kubectl apply -f Yamls/vanilla-configmap-staging-v2.yaml 
-kubectl apply -f Yamls/vanilla-configmap-prod-v2.yaml
+kubectl apply -f Yamls/vanilla-configmap-dev.yaml 
+kubectl apply -f Yamls/vanilla-configmap-staging.yaml 
+kubectl apply -f Yamls/vanilla-configmap-prod.yaml

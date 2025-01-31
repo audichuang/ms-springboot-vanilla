@@ -6,13 +6,12 @@
 # Version 0.01
 #---------------------------------------------------------------
 
-source utils/colimaStatus
+source ../utils/colimaStatus
 
 
 # Function to handle uninstallation
 uninstall() {
   echo "Proceeding with uninstallation..."
-  # Add uninstallation commands here
   echo "Deploy the Vanilla Service in Kubernetes cluster"
   kubectl delete secret vanilla-secret
   kubectl delete ingress vanilla-ingress
@@ -22,7 +21,28 @@ uninstall() {
 }
 
 # List all the Vanilla Services
-list
+
+echo "---------------------------------------------------------------"
+echo "App Configuration and Secrets"
+echo "---------------------------------------------------------------"
+kubectl get configmaps -o wide
+echo "---------------------------------------------------------------"
+kubectl get secrets -o wide
+echo "---------------------------------------------------------------"
+echo "Pods / Deployments / Services"
+echo "---------------------------------------------------------------"
+kubectl get pods -o wide
+echo "---------------------------------------------------------------"
+kubectl get deploy -o wide
+echo "---------------------------------------------------------------"
+kubectl get svc -o wide
+echo "---------------------------------------------------------------"
+echo "Ingress / HPA"
+echo "---------------------------------------------------------------"
+kubectl get ing -o wide 
+echo "---------------------------------------------------------------"
+kubectl get hpa -o wide
+echo "---------------------------------------------------------------"
 echo 
 
 # Ask the user the question

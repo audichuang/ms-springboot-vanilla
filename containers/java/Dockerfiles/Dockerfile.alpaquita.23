@@ -8,7 +8,7 @@
 #---------------------------------------------------------------
 
 #FROM bellsoft/liberica-runtime-container:jre-21-musl
-FROM bellsoft/liberica-openjdk-alpine:21-cds
+FROM bellsoft/liberica-openjdk-alpine:23-cds
 
 # Metadata
 LABEL maintainer="Araf Karsh Hamid <araf.karsh@gmail.com>" \
@@ -41,7 +41,7 @@ RUN { \
     echo "echo \"----------------------------------------------------------------\""; \
     echo "java -version"; \
     echo "echo \"----------------------------------------------------------------\""; \
-    echo "echo \"Alpaquita arm64/amd64 Java 21 (cds) Container\""; \
+    echo "echo \"Alpaquita arm64/amd64 Java 23 (cds) Container\""; \
     echo "echo \"----------------------------------------------------------------\""; \
   } >> /home/ozazo/.profile
 

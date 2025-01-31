@@ -3,7 +3,7 @@ data:
   application-dev.properties: |+
     server.port=9334
     logging.level.root=INFO
-    spring.profiles=dev
+    spring.config.activate.on-profile=dev
     db.server=mem
     db.port=5432
     db.name=ms_vanilla_334
@@ -21,8 +21,8 @@ data:
 
 
   application.properties: |
-    build.number=215
-    build.date=Thu Jan 23 15:04:05 IST 2025
+    build.number=219
+    build.date=Fri Jan 31 14:07:45 IST 2025
     spring.profiles.default=dev
     service.org=arafkarsh
     service.name=MS-Vanilla
