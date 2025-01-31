@@ -162,7 +162,16 @@ public class SwaggerSetup {
         List<Server> serverList = new ArrayList<>();
 
         Server dev = new Server();
-        dev.setUrl(serviceConfig.getServerHostDev());
+
+        if(serviceConfig.isK8sEnabled()) {
+            if(serviceConfig.getK8sServicePort() != 80) {
+                dev.setUrl(serviceConfig.getServerHostDev() + ":" + serviceConfig.getK8sServicePort());
+            } else {
+                dev.setUrl(serviceConfig.getServerHostDev());
+            }
+        } else {
+            dev.setUrl(serviceConfig.getServerHostDev()+":"+serviceConfig.getServerPort());
+        }
         dev.setDescription(serviceConfig.getServerHostDevDesc());
         Server uat = new Server();
         uat.setUrl(serviceConfig.getServerHostUat());

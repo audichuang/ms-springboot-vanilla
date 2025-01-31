@@ -8,13 +8,24 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+      # Matching the labels from Pod MetaData,  Multiple labels can be used
       app: vanilla-pod
+  minReadySeconds: 5
+  strategy:
+    # Re-Create / Rolling Update
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
         app: vanilla-pod
+        version: "1.0.0"
+        release: stable
+        organization: Ozazo
     spec:
-      hostNetwork: true
+      #hostNetwork: true
       containers:
         - name: vanilla-container
           image: arafkarsh/ms-vanilla-service:0.3.4-alpaquita-21-k8s
@@ -22,7 +33,6 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9334
-              #hostPort: 9334
           volumeMounts:
             - name: config-volume
               mountPath: /config

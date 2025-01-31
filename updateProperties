@@ -15,17 +15,30 @@ update_properties() {
   replace_db_server "src/kubernetes/Package/staging/application-staging.properties"
   replace_db_server "src/kubernetes/Package/prod/application-prod.properties"
   echo "--------------------------------------------------------------------------"
+
+  enable_k8s_for_swagger "src/kubernetes/Package/dev/application.properties"
+  enable_k8s_for_swagger "src/kubernetes/Package/staging/application.properties"
+  enable_k8s_for_swagger "src/kubernetes/Package/prod/application.properties"
+
 }
 
 # Function to replace db.server value in the given file
 replace_db_server() {
   local filepath="$1"
-
   # Check if the file exists
   if [ -f "$filepath" ]; then
     sed -i -r 's/^db\.server=localhost$/db.server=host.docker.internal/g' "$filepath"
     echo "Replaced 'db.server=localhost' with 'db.server=host.docker.internal' in $filepath."
   fi
+}
+
+enable_k8s_for_swagger() {
+    local filepath="$1"
+      if [ -f "$filepath" ]; then
+        # server.host.k8s.enabled=false
+        sed -i -r 's/^server\.host\.k8s\.enabled=false$/server.host.k8s.enabled=true/g' "$filepath"
+        echo "Replaced 'server.host.k8s.enabled=false' with 'server.host.k8s.enabled=true' in $filepath."
+      fi
 }
 
 update_properties

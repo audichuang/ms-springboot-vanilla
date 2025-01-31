@@ -207,6 +207,12 @@ public class ServiceConfig implements Serializable {
 	@Value("${spring.profiles.default:dev}")
 	private String activeProfile;
 
+	@Value("${server.host.k8s.service.port:80}")
+	private int k8sServicePort;
+
+	@Value("${server.host.k8s.enabled:false}")
+	private boolean k8sEnabled;
+
 	@Value("${spring.codec.max-in-memory-size:3MB}")
 	private String springCodecMaxMemory;
 
@@ -530,5 +536,13 @@ public class ServiceConfig implements Serializable {
 	 */
 	public String getServiceLicenseURL() {
 		return serviceLicenseURL;
+	}
+
+	public int getK8sServicePort() {
+		return k8sServicePort;
+	}
+
+	public boolean isK8sEnabled() {
+		return k8sEnabled;
 	}
 }
