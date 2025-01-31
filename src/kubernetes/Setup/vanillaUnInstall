@@ -12,12 +12,29 @@ source ../utils/colimaStatus
 # Function to handle uninstallation
 uninstall() {
   echo "Proceeding with uninstallation..."
-  echo "Deploy the Vanilla Service in Kubernetes cluster"
+  echo "---------------------------------------------------------------"
+  echo "UnInstall the Vanilla ConfigMaps from Kubernetes cluster"
+  echo "---------------------------------------------------------------"
+  kubectl delete configmap vanilla-configmap-active
+  kubectl delete configmap vanilla-configmap-dev
+  kubectl delete configmap vanilla-configmap-staging
+  kubectl delete configmap vanilla-configmap-prod
+  echo "---------------------------------------------------------------"
+  echo "UnInstall the Vanilla Secret from Kubernetes cluster"
+  echo "---------------------------------------------------------------"
   kubectl delete secret vanilla-secret
-  kubectl delete ingress vanilla-ingress
+  echo "---------------------------------------------------------------"
+  echo "UnInstall the Vanilla Service/Deploy from Kubernetes cluster"
+  echo "---------------------------------------------------------------"
   kubectl delete service vanilla-service
   kubectl delete deploy vanilla-deployment
-  echo "Uninstallation complete!"
+  echo "---------------------------------------------------------------"
+  echo "UnInstall the Vanilla Ingress from Kubernetes cluster"
+  echo "---------------------------------------------------------------"
+  kubectl delete ingress vanilla-ingress
+  echo "---------------------------------------------------------------"
+  echo "Vanilla Uninstallation complete!"
+  echo "---------------------------------------------------------------"
 }
 
 # List all the Vanilla Services

@@ -3,13 +3,17 @@ kind: Ingress
 metadata:
   name: vanilla-ingress
 spec:
+  ingressClassName: nginx
+   # Add TLS 
   rules:
-  - http:
+  - host: localhost
+    http:
       paths:
-      - pathType: Prefix
-        path: "/vanilla"
+      - path: /ms-vanilla
+        pathType: Prefix
         backend:
           service:
+            # Vanilla Microservice
             name: vanilla-service
             port:
-              number: 9334
+              number: 80
