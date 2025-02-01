@@ -16,9 +16,7 @@ uninstall() {
   echo "UnInstall the Vanilla ConfigMaps from Kubernetes cluster"
   echo "---------------------------------------------------------------"
   kubectl delete configmap vanilla-configmap-active
-  kubectl delete configmap vanilla-configmap-dev
-  kubectl delete configmap vanilla-configmap-staging
-  kubectl delete configmap vanilla-configmap-prod
+  kubectl delete configmap vanilla-configmap-profiles
   echo "---------------------------------------------------------------"
   echo "UnInstall the Vanilla Secret from Kubernetes cluster"
   echo "---------------------------------------------------------------"

@@ -1,0 +1,14 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Kubernetes Utils
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+
+source utils/colimaStatus
+
+echo "AutoScale the Vanilla Service in Kubernetes cluster"
+echo "kubectl apply -f Yamls/vanilla-hpa.yaml"
+kubectl apply -f Yamls/vanilla-hpa.yaml
+kubectl get hpa -o wide 

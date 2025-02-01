@@ -36,10 +36,10 @@ echo "Building Container for $FULL_NAME-$K8S"
 
 # Build Multi-Architecture Container
 echo "docker buildx build --platform linux/arm64,linux/amd64 \ "
-echo "          --rm=true -t $FULL_NAME-$K8S -f $DOCKER_FILE.$K8S --push ."
+echo "          --rm=true --build-arg BASE_IMAGE=$BASE_IMAGE \ "
+echo "          -t $FULL_NAME-$K8S -f $DOCKER_FILE.$K8S --push ."
 
 docker buildx build --platform linux/arm64,linux/amd64 \
-                --rm=true -t "$FULL_NAME-$K8S" -f "$DOCKER_FILE.$K8S" --push .
+                --rm=true --build-arg BASE_IMAGE=$BASE_IMAGE \
+                -t "$FULL_NAME-$K8S" -f "$DOCKER_FILE.$K8S" --push .
 
-#echo "docker push $FULL_NAME-$K8S"
-#docker push "$FULL_NAME-$K8S"
