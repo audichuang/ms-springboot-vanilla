@@ -8,7 +8,8 @@
 
 source utils/colimaStatus
 
-echo "Deploy the Vanilla Service in Kubernetes cluster"
-echo "kubectl create -f Yamls/vanilla-deploy.yaml"
-kubectl create -f Yamls/vanilla-deploy.yaml
-kubectl get deploy -o wide 
+podName=`kubectl get pods | awk 'NR>1 {print $1}'`
+
+echo "Check the HW usage of the Pod=$podName"
+kubectl top pod $podName --no-headers=false --sum=false
+while true; do kubectl top pod $podName --no-headers=true --sum=false; sleep 3; done

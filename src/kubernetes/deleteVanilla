@@ -11,4 +11,4 @@ source utils/colimaStatus
 echo "Delete the Vanilla Service..."
 echo "kubectl delete deployment vanilla-deployment"
 kubectl delete deployment vanilla-deployment 
-kubectl get deployment -o wide
+kubectl get deployment -o wide 
