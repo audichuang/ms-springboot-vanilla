@@ -34,9 +34,12 @@ K8S="k8s"
 
 echo "Building Container for $FULL_NAME-$K8S"
 
-# Build Container
-echo "docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE.$K8S -t $FULL_NAME-$K8S."
-docker build --force-rm --build-arg BASE_IMAGE="$BASE_IMAGE" -f "$DOCKER_FILE.$K8S" -t "$FULL_NAME-$K8S" .
+# Build Multi-Architecture Container
+echo "docker buildx build --platform linux/arm64,linux/amd64 \ "
+echo "          --rm=true -t $FULL_NAME-$K8S -f $DOCKER_FILE.$K8S --push ."
+
+docker buildx build --platform linux/arm64,linux/amd64 \
+                --rm=true -t "$FULL_NAME-$K8S" -f "$DOCKER_FILE.$K8S" --push .
 
 #echo "docker push $FULL_NAME-$K8S"
 #docker push "$FULL_NAME-$K8S"

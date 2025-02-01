@@ -27,6 +27,7 @@ uninstall() {
   echo "UnInstall the Vanilla Service/Deploy from Kubernetes cluster"
   echo "---------------------------------------------------------------"
   kubectl delete service vanilla-service
+  kubectl delete service database-service
   kubectl delete deploy vanilla-deployment
   echo "---------------------------------------------------------------"
   echo "UnInstall the Vanilla Ingress from Kubernetes cluster"

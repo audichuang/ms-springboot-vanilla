@@ -36,27 +36,28 @@ show_help() {
   echo "INVALID INPUTS! Missing OS Name and/or Java Version Number"
   echo "----------------------------------------------------------------"
   if [ "$script_name" = "build" ]; then
-    echo "Usage: $0 [alpine, ubuntu, ubuntu-openjdk] [23, 21, 17, 11]"
+    echo "Usage: $0 [alpine, alpaquita, ubuntu, ubuntu-openjdk] [23, 21, 17, 11]"
   fi
   if [ "$script_name" = "buildx" ]; then
-    echo "Usage: $0 [alpine, ubuntu-openjdk] [21, 17, 11]"
+    echo "Usage: $0 [alpine, alpaquita, ubuntu-openjdk] [21, 17, 11]"
   fi
-  if [ "$script_name" = "startfg" ]; then
-    echo "Usage: $0 [alpine, distroless, ubuntu-openjdk] [21, 17, 11] spring-profile"
+  if [ "$script_name" = "start" ]; then
+    echo "Usage: $0 [alpine, alpaquita, ubuntu-openjdk] [21, 17, 11] spring-profile -b"
   fi
   echo "Examples"
   echo "----------------------------------------------------------------"
-  if [ "$script_name" = "startfg" ]; then
-    echo "$0 alpine 21 dev"
-    echo "$0 alpine 17 dev"
-    echo "$0 distroless 21 dev"
-    echo "$0 ubuntu-openjdk 17 dev"
-    echo "$0 ubuntu-openjdk 21 dev"
+  if [ "$script_name" = "start" ]; then
+    echo "$0 alpine 21 [dev,staging,prod] -b (optional)"
+    echo "$0 alpine 17 [dev,staging,prod] -b (optional)"
+    echo "$0 alpaquita 21 [dev,staging,prod] -b (optional)"
+    echo "$0 ubuntu-openjdk 17 [dev,staging,prod] -b (optional)"
+    echo "$0 ubuntu-openjdk 21 [dev,staging,prod] -b (optional)"
 
   else
     echo "$0 alpine 21"
     echo "$0 alpine 17"
-    echo "$0 distroless 21"
+    echo "$0 alpaquita 23"
+    echo "$0 alpaquita 21"
     if [ "$script_name" = "build" ]; then
       echo "$0 ubuntu 21"
       echo "$0 ubuntu 23"
@@ -83,7 +84,7 @@ validate_params() {
 validate_buildx_os() {
   if [ "$script_name" = "buildx" ]; then
     echo "OS '$1' with Oracle Java Not Supported!. "
-    echo "Try using alpine (openjdk) or ubuntu-openjdk"
+    echo "Try using alpine, alpaquita (openjdk) or ubuntu-openjdk"
     exit 1
   fi
 }
@@ -92,13 +93,13 @@ validate_buildx_os() {
 determine_os_java() {
   case "$1" in
     alpaquita)
-      validate_buildx_os "$1"
+      #validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpaquita"
       DOCKER_FILE="Dockerfiles/Dockerfile"
       FULL_NAME="$2-alpaquita-$JAVA_VERSION"
       ;;
     distroless)
-      validate_buildx_os "$1"
+      #validate_buildx_os "$1"
       BASE_IMAGE="arafkarsh/java:$JAVA_VERSION-alpaquita"
       DOCKER_FILE="Dockerfiles/Dockerfile"
       FULL_NAME="$2-alpaquita-$JAVA_VERSION"
