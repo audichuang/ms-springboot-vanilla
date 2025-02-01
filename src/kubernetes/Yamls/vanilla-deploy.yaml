@@ -58,12 +58,12 @@ spec:
               path: /ms-vanilla/api/v1/service/ready
               port: 9334
           resources:
-            limits:
-              cpu: 1000m
-              memory: 1536Mi
             requests:
-              cpu: 1000m
-              memory: 1536Mi
+              cpu: 100m
+              memory: 400Mi
+            limits:
+              cpu: 900m
+              memory: 400Mi
       volumes:
         - name: config-volume
           configMap:
