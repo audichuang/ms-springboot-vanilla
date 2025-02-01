@@ -9,12 +9,8 @@
 source utils/colimaStatus
 
 echo "Create ConfigMap using Kustomize utility"
-kubectl kustomize ./Package/dev > Yamls/vanilla-configmap-dev.yaml
-kubectl kustomize ./Package/staging > Yamls/vanilla-configmap-staging.yaml
-kubectl kustomize ./Package/prod > Yamls/vanilla-configmap-prod.yaml
+kubectl kustomize ./Package > Yamls/vanilla-configmap-profiles.yaml
 
 echo "Apply ConfigMaps to Kubernetes Cluster"
-kubectl apply -f Yamls/vanilla-configmap-active.yaml 
-kubectl apply -f Yamls/vanilla-configmap-dev.yaml 
-kubectl apply -f Yamls/vanilla-configmap-staging.yaml 
-kubectl apply -f Yamls/vanilla-configmap-prod.yaml
+kubectl apply -f Yamls/vanilla-configmap-active.yaml
+kubectl apply -f Yamls/vanilla-configmap-profiles.yaml

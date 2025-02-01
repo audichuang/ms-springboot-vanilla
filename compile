@@ -48,12 +48,10 @@ then
 	cp config/application*properties src/docker/Input
 
 	echo "2.4 Copy application.properties File to the Kubernetes Directory (src/kubernetes)"
-	convert4ConfigMap config/application.properties src/kubernetes/Package/dev/application.properties
-	convert4ConfigMap config/application.properties src/kubernetes/Package/staging/application.properties
-	convert4ConfigMap config/application.properties src/kubernetes/Package/prod/application.properties
-	convert4ConfigMap config/application-dev.properties src/kubernetes/Package/dev/application-dev.properties
-	convert4ConfigMap config/application-staging.properties src/kubernetes/Package/staging/application-staging.properties
-	convert4ConfigMap config/application-prod.properties src/kubernetes/Package/prod/application-prod.properties
+	convert4ConfigMap config/application.properties src/kubernetes/Package/application.properties
+	convert4ConfigMap config/application-dev.properties src/kubernetes/Package/application-dev.properties
+	convert4ConfigMap config/application-staging.properties src/kubernetes/Package/application-staging.properties
+	convert4ConfigMap config/application-prod.properties src/kubernetes/Package/application-prod.properties
 
 	source updateProperties
 
