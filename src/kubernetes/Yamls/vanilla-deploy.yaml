@@ -60,7 +60,7 @@ spec:
               path: /ms-vanilla/api/v1/service/live
               port: 9334
             initialDelaySeconds: 60    # Give the application enough time to fully start before health checks begin.
-            periodSeconds: 10          # Check frequently (every 10 seconds) to quickly catch hangs or deadlocks.
+            periodSeconds: 15          # Check frequently (every 15 seconds) to quickly catch hangs or deadlocks.
             timeoutSeconds: 5          # Allow up to 5 seconds for a response—sufficient for most HTTP endpoints.
             successThreshold: 1        # One successful check is enough to mark the container as healthy.
             failureThreshold: 3        # After 3 consecutive failures, Kubernetes will restart the container.
@@ -70,18 +70,19 @@ spec:
               path: /ms-vanilla/api/v1/service/ready
               port: 9334
             initialDelaySeconds: 30    # Start readiness checks sooner so the pod can be added to service endpoints as soon as it’s capable.
-            periodSeconds: 10          # Frequent checks (every 10 seconds) to quickly reflect the pod’s ability to serve traffic.
+            periodSeconds: 15          # Frequent checks (every 15 seconds) to quickly reflect the pod’s ability to serve traffic.
             timeoutSeconds: 5          # Use the same 5-second window to allow for any transient delays.
             successThreshold: 1        # One success confirms the pod is ready.
             failureThreshold: 3        # After 3 failures, the pod is marked as unready and removed from the load balancer.
           # Resource Limits
           resources:
+            # QoS: [Burstable] / Guaranteed / BestEffort
             requests:
               cpu: 50m
-              memory: 400Mi
+              memory: 256Mi
             limits:
-              cpu: 900m
-              memory: 400Mi
+              cpu: 500m
+              memory: 382Mi
       # Volumes - Profile ConfigMap  (Contains Application Properties
       volumes:
         - name: config-volume
