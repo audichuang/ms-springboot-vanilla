@@ -1,5 +1,25 @@
 apiVersion: v1
 data:
+  application-dev.properties: |+
+    server.port=9334
+    logging.level.root=INFO
+    spring.config.activate.on-profile=dev
+    db.server=mem
+    db.port=5432
+    db.name=ms_vanilla_334
+    db.schema=ms_schema
+    db.vendor=H2
+    spring.datasource.url=jdbc:h2:${db.server}:${db.name};DB_CLOSE_ON_EXIT=FALSE
+    spring.datasource.driverClassName=org.h2.Driver
+    spring.datasource.username=sa
+    spring.datasource.password=ENC(lA6JCEpK7+wuHDpB1A41DOUfn6L74DQxaazXLTjyQHY5/X6CONfUEyDt6erWifrN)
+    spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+    spring.h2.console.enabled=true
+    spring.h2.console.path=/h2-ui
+    spring.h2.console.settings.trace=false
+    spring.h2.console.settings.web-allow-others=false
+
+
   application-prod.properties: |+
     server.port=9334
     logging.level.root=INFO
@@ -17,9 +37,26 @@ data:
     spring.datasource.hikari.connection-test-query=SELECT 1
 
 
+  application-staging.properties: |+
+    server.port=9334
+    logging.level.root=INFO
+    spring.config.activate.on-profile=staging
+    db.server=host.docker.internal
+    db.port=5433
+    db.name=ms_vanilla_334
+    db.schema=ms_schema
+    db.vendor=PostgreSQL
+    spring.datasource.url=jdbc:postgresql://${db.server}:${db.port}/${db.name}
+    spring.datasource.driverClassName=org.postgresql.ds.PGSimpleDataSource
+    spring.datasource.username=msadm
+    spring.datasource.password=ENC(In0ZYcoLjwe2OzzaWZ07BMoFHL8yvo4KQ/3ABAbzSKJuUVEu5hYycNGWB66Xswju)
+    spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+    spring.datasource.hikari.connection-test-query=SELECT 1
+
+
   application.properties: |
-    build.number=221
-    build.date=Fri Jan 31 16:10:14 IST 2025
+    build.number=225
+    build.date=Sat Feb 1 16:16:40 IST 2025
     spring.profiles.default=dev
     service.org=arafkarsh
     service.name=MS-Vanilla
@@ -152,4 +189,4 @@ data:
     springdoc.swagger-ui.tagsSorter=alpha
 kind: ConfigMap
 metadata:
-  name: vanilla-configmap-prod
+  name: vanilla-configmap-profiles

@@ -96,7 +96,7 @@ public class SecurityController extends AbstractController {
 			log.info("Decrypted Text: {} ", decryptedText);
 			// Base64 Encoded Plain Text
 			String encodedData = Base64.getEncoder().encodeToString(text.getBytes());
-			StandardResponse stdResponse = createSuccessResponse("Service is Ready!");
+			StandardResponse stdResponse = createSuccessResponse("Text Encrypted!");
 
 			HashMap<String, String> data = new LinkedHashMap<>();
 			data.put("algo", algo);

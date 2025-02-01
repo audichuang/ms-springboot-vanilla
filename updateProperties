@@ -11,14 +11,11 @@ update_properties() {
   echo "--------------------------------------------------------------------------"
   replace_db_server "src/docker/Input/application-staging.properties"
   replace_db_server "src/docker/Input/application-prod.properties"
-
-  replace_db_server "src/kubernetes/Package/staging/application-staging.properties"
-  replace_db_server "src/kubernetes/Package/prod/application-prod.properties"
   echo "--------------------------------------------------------------------------"
-
-  enable_k8s_for_swagger "src/kubernetes/Package/dev/application.properties"
-  enable_k8s_for_swagger "src/kubernetes/Package/staging/application.properties"
-  enable_k8s_for_swagger "src/kubernetes/Package/prod/application.properties"
+    replace_db_server "src/kubernetes/Package/application-staging.properties"
+    replace_db_server "src/kubernetes/Package/application-prod.properties"
+    enable_k8s_for_swagger "src/kubernetes/Package/application.properties"
+    echo "--------------------------------------------------------------------------"
 
 }
 
