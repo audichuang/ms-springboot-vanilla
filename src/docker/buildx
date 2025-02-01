@@ -31,7 +31,9 @@ echo "Building Containr for $FULL_NAME "
 
 # Build Multi-Architecture Container
 echo "docker buildx build --platform linux/arm64,linux/amd64 \ "
-echo "          --rm=true -t $FULL_NAME -f $DOCKER_FILE --push ."
+echo "  --rm=true --build-arg BASE_IMAGE=$BASE_IMAGE -t $FULL_NAME \ "
+echo "  -f $DOCKER_FILE --push ."
 
 docker buildx build --platform linux/arm64,linux/amd64 \
-                --rm=true -t $FULL_NAME -f $DOCKER_FILE --push .
+    --rm=true --build-arg BASE_IMAGE=$BASE_IMAGE -t $FULL_NAME \
+    -f $DOCKER_FILE --push .

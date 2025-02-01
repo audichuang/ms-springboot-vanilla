@@ -14,10 +14,21 @@ source serviceName
 cd src/docker
 
 PORT=9334
+APP_PROFILE=$3
 
-# Check if Colima is running, if Not Start Colima
-source utils/colimaStatus
 source utils/common-functions
+
+# Default run mode
+runMode="-it"
+
+# Loop through all command-line arguments
+for arg in "$@"; do
+  if [ "$arg" = "-b" ]; then
+    runMode="-d"
+    echo "Service will be running in background"
+    break  # Exit the loop early if -b is found
+  fi
+done
 
 # Set version from $2
 set_version "$2"
@@ -25,10 +36,21 @@ set_version "$2"
 # Determine os based on $1 and return the FULL_NAME
 determine_os_java "$1" "$FULL_NAME"
 
-echo "docker container run --name $SERVICE -d --rm -p $PORT:9334 $$FULL_NAME"
-docker container run --name $SERVICE -d --rm -p $PORT:9334 \
-  -e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \
-  -e APP_PROFILE=$APP_PROFILE $$FULL_NAME
+# Check if Colima is running, if Not Start Colima
+source utils/colimaStatus
 
-echo "Container id for $SERVICE ="`docker container ls | grep $SERVICE | tr -s " " | cut -d " " -f 1`
-docker container ls | grep $SERVICE | tr -s " " | cut -d " " -f 1 > tmp/$SERVICE.cid
+echo "docker container run $runMode --network='host' --name $SERVICE-$VERSION --rm -p $PORT:9334 \ "
+	echo "-e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \ "
+	echo "-e SPRING_PROFILES_ACTIVE=$APP_PROFILE \ "
+	echo "$FULL_NAME "
+
+# Start the Container in Background
+docker container run $runMode --network='host'  --name $SERVICE-$VERSION --rm -p $PORT:9334 \
+  -e JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD} \
+  -e SPRING_PROFILES_ACTIVE=$APP_PROFILE \
+  $FULL_NAME
+
+if [[ "$runMode" == "-d" ]]; then
+  echo "Container id for $SERVICE-$VERSION ="`docker container ls | grep $SERVICE-$VERSION | tr -s " " | cut -d " " -f 1`
+  docker container ls | grep $SERVICE-$VERSION | tr -s " " | cut -d " " -f 1 > tmp/$SERVICE.cid
+fi

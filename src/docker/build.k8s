@@ -1,0 +1,43 @@
+#!/bin/bash
+#---------------------------------------------------------------
+# Vanilla Microservice Container Manager
+# Araf Karsh Hamid, (c) Copyright 2025
+# License: Apache 2.0
+# Version 0.01
+#---------------------------------------------------------------
+# Build Vanilla Microservice Container for K8s 
+# This container is Without the Application properties files 
+# Inside the Container. They are stored as ConfigMaps in K8s
+# --------------------------------------------------------------
+
+# Get the Org Name, Service Name, Version and Full Container Name
+cd ../../
+source serviceName
+cd src/docker
+source utils/checkServiceJar
+source utils/common-functions
+
+# Call the validation function with "$@"
+validate_params "$@"
+
+# Set version from $2
+set_version "$2"
+
+# Determine configuration based on $1
+determine_os_java "$1" "$FULL_NAME"
+
+# Check if Colima is running, if Not Start Colima
+source utils/colimaStatus
+
+# Kubernetes Container
+K8S="k8s"
+
+echo "Building Container for $FULL_NAME-$K8S"
+
+# Build Container
+echo "docker build --force-rm --build-arg BASE_IMAGE=$BASE_IMAGE -f $DOCKER_FILE.$K8S -t $FULL_NAME-$K8S ."
+docker build --force-rm --build-arg BASE_IMAGE="$BASE_IMAGE" -f "$DOCKER_FILE.$K8S" -t "$FULL_NAME-$K8S" .
+
+
+#echo "docker push $FULL_NAME-$K8S"
+#docker push "$FULL_NAME-$K8S"
