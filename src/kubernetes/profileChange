@@ -8,6 +8,8 @@
 # Change Vanilla Service Profile [dev, staging, prod]
 #---------------------------------------------------------------
 
+source utils/colimaStatus
+
 echo "---------------------------------------------------------------"
 echo "Change the profile to $1"
 echo "---------------------------------------------------------------"
