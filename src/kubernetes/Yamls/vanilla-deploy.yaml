@@ -6,6 +6,7 @@ metadata:
   labels:
     app: vanilla-deployment
 spec:
+  # The Min Replica can be controlled using Horizontal Pod Autoscaler
   replicas: 1
   selector:
     matchLabels:

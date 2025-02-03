@@ -1,4 +1,7 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vanilla-configmap-profiles
 data:
   application-dev.properties: |+
     server.port=9334
@@ -19,7 +22,6 @@ data:
     spring.h2.console.settings.trace=false
     spring.h2.console.settings.web-allow-others=false
 
-
   application-prod.properties: |+
     server.port=9334
     logging.level.root=INFO
@@ -36,7 +38,6 @@ data:
     spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
     spring.datasource.hikari.connection-test-query=SELECT 1
 
-
   application-staging.properties: |+
     server.port=9334
     logging.level.root=INFO
@@ -52,7 +53,6 @@ data:
     spring.datasource.password=ENC(In0ZYcoLjwe2OzzaWZ07BMoFHL8yvo4KQ/3ABAbzSKJuUVEu5hYycNGWB66Xswju)
     spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
     spring.datasource.hikari.connection-test-query=SELECT 1
-
 
   application.properties: |
     build.number=226
@@ -187,6 +187,3 @@ data:
     springdoc.api-docs.enabled=true
     springdoc.swagger-ui.operationsSorter=method
     springdoc.swagger-ui.tagsSorter=alpha
-kind: ConfigMap
-metadata:
-  name: vanilla-configmap-profiles

@@ -17,3 +17,4 @@ spec:
             name: vanilla-service
             port:
               number: 80
+
