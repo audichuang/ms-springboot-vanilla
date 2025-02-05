@@ -84,7 +84,7 @@
 		<spring.kafka.version>3.2.4</spring.kafka.version>
 
 		<!-- Open API v3 - Swagger UI ===================================== -->
-		<openapi.webmvc.version>2.8.1</openapi.webmvc.version>
+		<openapi.webmvc.version>2.8.4</openapi.webmvc.version>
 		<openapi.common.version>1.8.0</openapi.common.version>
 
 	</properties>
@@ -414,11 +414,13 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
+		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 			<version>${spring.boot.version}</version>
 		</dependency>
+		-->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
 		<dependency>
@@ -603,8 +605,23 @@
 			<artifactId>springdoc-openapi-common</artifactId>
 			<version>${openapi.common.version}</version>
 		</dependency>
-
-
+		<!--
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-actuator</artifactId>
+			<version>${openapi.common.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-actuator</artifactId>
+			<version>${openapi.common.version}</version>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-actuator-webmvc-tests</artifactId>
+			<version>2.8.4</version>
+		</dependency>
 		<!-- End of Dependency Definitions -->
 	</dependencies>
 
@@ -640,29 +657,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Maven Jar Plugin with dependencies in libs folder -->
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>${maven-dependency-plugin}</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>
-								${project.build.directory}/libs
-							</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
