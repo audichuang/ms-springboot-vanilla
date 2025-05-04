@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package io.fusion.air.microservice.adapters.controllers.open;
+
 // Custom
 import io.fusion.air.microservice.adapters.logging.MetricsCounter;
 import io.fusion.air.microservice.adapters.logging.MetricsPath;
@@ -43,8 +44,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Payment Controller (Secured) for the Service
+ * 支付控制器（安全）服務
  *
  * All the calls in this package will be secured with JWT Token.
+ * 此套件中的所有呼叫都將使用 JWT 令牌進行安全保護。
  * 
  * @author arafkarsh
  * @version 1.0
@@ -64,6 +67,7 @@ public class PaymentOpenControllerImpl extends AbstractController {
 
 	/**
 	 * Set the Service Name from Super
+	 * 從父類設置服務名稱
 	 */
 	public PaymentOpenControllerImpl() {
 		serviceName = super.name();
@@ -72,17 +76,16 @@ public class PaymentOpenControllerImpl extends AbstractController {
 	/**
 	 * Process the Payments
 	 * For testing the Field Validations of Payment details Data Model
+	 * 處理支付
+	 * 用於測試支付詳情數據模型的欄位驗證
 	 */
-    @Operation(summary = "Process Payments")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-            description = "Process the payment - For Testing Field Validations!",
-            content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "404",
-            description = "Unable to process the payment",
-            content = @Content)
-    })
-    @PostMapping("/processPayments/open")
+	@Operation(summary = "Process Payments")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Process the payment - For Testing Field Validations!", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Unable to process the payment", content = @Content)
+	})
+	@PostMapping("/processPayments/open")
 	@MetricsCounter(endpoint = "/processPayments/open")
 	public ResponseEntity<StandardResponse> processPayments(@Valid @RequestBody PaymentDetails payDetails) {
 		log.debug("| {} |Request to  process payments..... ", serviceName);
@@ -96,5 +99,5 @@ public class PaymentOpenControllerImpl extends AbstractController {
 				PaymentType.CREDIT_CARD);
 		stdResponse.setPayload(ps);
 		return ResponseEntity.ok(stdResponse);
-    }
- }
+	}
+}

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package io.fusion.air.microservice.adapters.controllers.open;
+
 // Custom
 import io.fusion.air.microservice.adapters.logging.MetricsCounter;
 import io.fusion.air.microservice.adapters.logging.MetricsPath;
@@ -51,6 +52,9 @@ import static org.slf4j.LoggerFactory.getLogger;
  * CartItem Controller for the CartItem Service
  * This is to demonstrate certain concepts in Exception Handling ONLY.
  * Order, Product, CartItem all must be part of 3 different Microservices.
+ * 購物車項目控制器用於購物車項目服務
+ * 此僅用於展示異常處理中的某些概念。
+ * 訂單、產品、購物車項目都應該是三個不同的微服務的一部分。
  *
  * @author arafkarsh
  * @version 1.0
@@ -76,6 +80,8 @@ public class CartControllerImpl extends AbstractController {
 
 	/**
 	 * Autowired using the Constructor
+	 * 使用構造函數自動裝配
+	 * 
 	 * @param cartSvc
 	 */
 	public CartControllerImpl(CartService cartSvc) {
@@ -85,56 +91,54 @@ public class CartControllerImpl extends AbstractController {
 
 	/**
 	 * GET Method Call to ALL CARTS
+	 * GET 方法調用獲取所有購物車
 	 *
 	 * @return
 	 */
 	@Operation(summary = "Get The Carts")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "CartItem Retrieved!",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "400",
-					description = "Invalid CartItem ID",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "CartItem Retrieved!", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Invalid CartItem ID", content = @Content)
 	})
 	@GetMapping("/all")
-	@MetricsCounter(endpoint = "/all", tags = {"layer", "ws", "public", "yes"})
+	@MetricsCounter(endpoint = "/all", tags = { "layer", "ws", "public", "yes" })
 	public ResponseEntity<StandardResponse> fetchCarts() throws AbstractServiceException {
 		log.debug("| {} |Request to Get CartItem For the Customers ", serviceName);
 		List<CartEntity> cart = cartService.findAll();
-		StandardResponse stdResponse = createSuccessResponse(CART_RETRIEVED+cart.size());
+		StandardResponse stdResponse = createSuccessResponse(CART_RETRIEVED + cart.size());
 		stdResponse.setPayload(cart);
 		return ResponseEntity.ok(stdResponse);
 	}
 
 	/**
 	 * GET Method Call to Get CartItem for the Customer
+	 * GET 方法調用獲取客戶的購物車項目
 	 * 
 	 * @return
 	 */
-    @Operation(summary = "Get The CartItem for the Customer")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-            description = "CartItem Retrieved!",
-            content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "400",
-            description = "Invalid CartItem ID",
-            content = @Content)
-    })
+	@Operation(summary = "Get The CartItem for the Customer")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "CartItem Retrieved!", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Invalid CartItem ID", content = @Content)
+	})
 	@GetMapping("/customer/{customerId}")
-	@MetricsCounter(endpoint = "/customer", tags = {"layer", "ws", "public", "yes"})
-	public ResponseEntity<StandardResponse> fetchCart(@PathVariable("customerId") String customerId) throws AbstractServiceException {
+	@MetricsCounter(endpoint = "/customer", tags = { "layer", "ws", "public", "yes" })
+	public ResponseEntity<StandardResponse> fetchCart(@PathVariable("customerId") String customerId)
+			throws AbstractServiceException {
 
 		String safeCustomerId = HtmlUtils.htmlEscape(customerId);
 		log.debug("| {} |Request to Get CartItem For the Customer {} ", serviceName, safeCustomerId);
 		List<CartEntity> cart = cartService.findByCustomerId(safeCustomerId);
-		StandardResponse stdResponse = createSuccessResponse(CART_RETRIEVED+cart.size());
+		StandardResponse stdResponse = createSuccessResponse(CART_RETRIEVED + cart.size());
 		stdResponse.setPayload(cart);
 		return ResponseEntity.ok(stdResponse);
 	}
 
 	/**
 	 * GET Method Call to Get CartItem for the Customer for the Price Greater Than
+	 * GET 方法調用獲取客戶購物車中價格大於指定值的項目
 	 *
 	 * @param customerId
 	 * @return
@@ -142,39 +146,34 @@ public class CartControllerImpl extends AbstractController {
 	 */
 	@Operation(summary = "Get The CartItem For Items Price Greater Than")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "CartItem Retrieved!",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "400",
-					description = "Invalid CartItem ID",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "CartItem Retrieved!", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Invalid CartItem ID", content = @Content)
 	})
 	@GetMapping("/customer/{customerId}/price/{price}")
-	@MetricsCounter(endpoint = "/customer/price", tags = {"layer", "ws", "public", "yes"})
+	@MetricsCounter(endpoint = "/customer/price", tags = { "layer", "ws", "public", "yes" })
 	public ResponseEntity<StandardResponse> fetchCartForItems(@PathVariable("customerId") String customerId,
-															  @PathVariable("price") BigDecimal price) throws AbstractServiceException {
+			@PathVariable("price") BigDecimal price) throws AbstractServiceException {
 		String safeCustomerId = HtmlUtils.htmlEscape(customerId);
-		log.debug("| {} |Request to Get CartItem For the Customer {} ",serviceName ,safeCustomerId);
+		log.debug("| {} |Request to Get CartItem For the Customer {} ", serviceName, safeCustomerId);
 		List<CartEntity> cart = cartService.fetchProductsByPriceGreaterThan(safeCustomerId, price);
-		StandardResponse stdResponse = createSuccessResponse(CART_RETRIEVED+cart.size());
+		StandardResponse stdResponse = createSuccessResponse(CART_RETRIEVED + cart.size());
 		stdResponse.setPayload(cart);
 		return ResponseEntity.ok(stdResponse);
 	}
 
 	/**
 	 * Add CartItem Item to CartItem
+	 * 向購物車添加購物車項目
 	 */
 	@Operation(summary = "Add Item to CartItem")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "Add the CartItem Item",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "404",
-					description = "Unable to Add the CartItem Item",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "Add the CartItem Item", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Unable to Add the CartItem Item", content = @Content)
 	})
 	@PostMapping("/add")
-	@MetricsCounter(endpoint = "/add", tags = {"layer", "ws", "public", "yes"})
+	@MetricsCounter(endpoint = "/add", tags = { "layer", "ws", "public", "yes" })
 	public ResponseEntity<StandardResponse> addToCart(@Valid @RequestBody CartItem cartItem) {
 		String safeProductName = HtmlUtils.htmlEscape(cartItem.productName());
 		log.debug("| {} |Request to Add CartItem Item... {} ", serviceName, safeProductName);
@@ -186,20 +185,18 @@ public class CartControllerImpl extends AbstractController {
 
 	/**
 	 * De-Activate the CartItem Item
+	 * 停用購物車項目
 	 */
 	@Operation(summary = "De-Activate CartItem Item")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "CartItem Item De-Activated",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "400",
-					description = "Unable to De-Activate the CartItem item",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "CartItem Item De-Activated", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Unable to De-Activate the CartItem item", content = @Content)
 	})
 	@PutMapping("/deactivate/customer/{customerId}/cartItem/{cartId}")
-	@MetricsCounter(endpoint = "/deactivate/customer/cartItem", tags = {"layer", "ws", "public", "yes"})
+	@MetricsCounter(endpoint = "/deactivate/customer/cartItem", tags = { "layer", "ws", "public", "yes" })
 	public ResponseEntity<StandardResponse> deActivateCartItem(@PathVariable("customerId") String customerId,
-									@PathVariable("cartId") UUID cartId) {
+			@PathVariable("cartId") UUID cartId) {
 		String safeCustomerId = HtmlUtils.htmlEscape(customerId);
 		log.debug("| {} |Request to De-Activate the CartItem item...{}  ", serviceName, cartId);
 		CartEntity product = cartService.deActivateCartItem(safeCustomerId, cartId);
@@ -210,22 +207,20 @@ public class CartControllerImpl extends AbstractController {
 
 	/**
 	 * Activate the CartItem Item
+	 * 啟用購物車項目
 	 */
 	@Operation(summary = "Activate CartItem Item")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "CartItem Item Activated",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "400",
-					description = "Unable to Activate the CartItem item",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "CartItem Item Activated", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Unable to Activate the CartItem item", content = @Content)
 	})
 	@PutMapping("/activate/customer/{customerId}/cartItem/{cartId}")
-	@MetricsCounter(endpoint = "/activate/customer/cartItem", tags = {"layer", "ws", "public", "yes"})
+	@MetricsCounter(endpoint = "/activate/customer/cartItem", tags = { "layer", "ws", "public", "yes" })
 	public ResponseEntity<StandardResponse> activateCartItem(@PathVariable("customerId") String customerId,
-															   @PathVariable("cartId") UUID cartId) {
+			@PathVariable("cartId") UUID cartId) {
 		String safeCustomerId = HtmlUtils.htmlEscape(customerId);
-		log.debug("| {} |Request to Activate the CartItem item...{}  ",serviceName, cartId);
+		log.debug("| {} |Request to Activate the CartItem item...{}  ", serviceName, cartId);
 		CartEntity product = cartService.activateCartItem(safeCustomerId, cartId);
 		StandardResponse stdResponse = createSuccessResponse("CartItem Item Activated");
 		stdResponse.setPayload(product);
@@ -234,26 +229,24 @@ public class CartControllerImpl extends AbstractController {
 
 	/**
 	 * Delete the CartItem Item
+	 * 刪除購物車項目
 	 */
 	@AuthorizationRequired(role = "User")
 	@Operation(summary = "Delete CartItem Item", security = { @SecurityRequirement(name = "bearer-key") })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "CartItem Item Deleted",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "400",
-					description = "Unable to Delete the CartItem item",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "CartItem Item Deleted", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "400", description = "Unable to Delete the CartItem item", content = @Content)
 	})
 	@DeleteMapping("/delete/customer/{customerId}/cartItem/{cartId}")
-	@MetricsCounter(endpoint = "/delete/customer/cartItem", tags = {"layer", "ws", "public", "no"})
+	@MetricsCounter(endpoint = "/delete/customer/cartItem", tags = { "layer", "ws", "public", "no" })
 	public ResponseEntity<StandardResponse> deleteCartItem(@PathVariable("customerId") String customerId,
-															 @PathVariable("cartId") UUID cartId) {
+			@PathVariable("cartId") UUID cartId) {
 		String safeCustomerId = HtmlUtils.htmlEscape(customerId);
-		log.debug("| {} |Request to Delete the CartItem item...  {} ",serviceName, cartId);
+		log.debug("| {} |Request to Delete the CartItem item...  {} ", serviceName, cartId);
 		cartService.deleteCartItem(safeCustomerId, cartId);
 		StandardResponse stdResponse = createSuccessResponse("CartItem Item Deleted");
 		return ResponseEntity.ok(stdResponse);
 	}
 
- }
+}

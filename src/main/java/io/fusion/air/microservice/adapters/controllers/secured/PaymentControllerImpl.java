@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package io.fusion.air.microservice.adapters.controllers.secured;
+
 // Custom
 import io.fusion.air.microservice.adapters.logging.MetricsCounter;
 import io.fusion.air.microservice.adapters.logging.MetricsPath;
@@ -45,8 +46,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Payment Controller (Secured) for the Service
+ * 支付控制器（安全）服務
  *
  * All the calls in this package will be secured with JWT Token.
+ * 此套件中的所有呼叫都將使用 JWT 令牌進行安全保護。
  * 
  * @author arafkarsh
  * @version 1.0
@@ -66,6 +69,7 @@ public class PaymentControllerImpl extends AbstractController {
 
 	/**
 	 * Set the Service Name from Super
+	 * 從父類設置服務名稱
 	 */
 	public PaymentControllerImpl() {
 		serviceName = super.name();
@@ -73,21 +77,19 @@ public class PaymentControllerImpl extends AbstractController {
 
 	/**
 	 * Get Method Call to Check the Health of the App
+	 * Get 方法調用以檢查應用程式的健康狀態
 	 * 
 	 * @return
 	 */
-    @Operation(summary = "Check the Payment status", security = { @SecurityRequirement(name = "bearer-key") })
+	@Operation(summary = "Check the Payment status", security = { @SecurityRequirement(name = "bearer-key") })
 	@ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-            description = "Payment Status Check",
-            content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "404",
-            description = "Invalid Payment Reference No.",
-            content = @Content)
-    })
+			@ApiResponse(responseCode = "200", description = "Payment Status Check", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Invalid Payment Reference No.", content = @Content)
+	})
 	@GetMapping("/status/{referenceNo}")
 	@MetricsCounter(endpoint = "/status")
-	public ResponseEntity<StandardResponse> getStatus(@PathVariable("referenceNo") String referenceNo)  {
+	public ResponseEntity<StandardResponse> getStatus(@PathVariable("referenceNo") String referenceNo) {
 		log.debug("| {} |Request to Payment Status of Service... ", serviceName);
 		StandardResponse stdResponse = createSuccessResponse("Processing Success!");
 		// Response Object
@@ -98,17 +100,15 @@ public class PaymentControllerImpl extends AbstractController {
 
 	/**
 	 * Process the Payments
+	 * 處理支付
 	 */
-    @Operation(summary = "Process Payments", security = { @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-            description = "Process the payment",
-            content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "404",
-            description = "Unable to process the payment",
-            content = @Content)
-    })
-    @PostMapping("/processPayments")
+	@Operation(summary = "Process Payments", security = { @SecurityRequirement(name = "bearer-key") })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Process the payment", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Unable to process the payment", content = @Content)
+	})
+	@PostMapping("/processPayments")
 	@MetricsCounter(endpoint = "/processPayments")
 	public ResponseEntity<StandardResponse> processPayments(@Valid @RequestBody PaymentDetails payDetails) {
 		log.debug("| {} |Request to  process payments..... ", serviceName);
@@ -122,19 +122,17 @@ public class PaymentControllerImpl extends AbstractController {
 				PaymentType.CREDIT_CARD);
 		stdResponse.setPayload(ps);
 		return ResponseEntity.ok(stdResponse);
-    }
+	}
 
 	/**
 	 * Cancel the Payment
+	 * 取消支付
 	 */
 	@Operation(summary = "Cancel Payment", security = { @SecurityRequirement(name = "bearer-key") })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "Payment Cancelled",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "404",
-					description = "Unable to Cancel the Payment",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "Payment Cancelled", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Unable to Cancel the Payment", content = @Content)
 	})
 	@DeleteMapping("/cancel/{referenceNo}")
 	@MetricsCounter(endpoint = "/cancel")
@@ -147,15 +145,13 @@ public class PaymentControllerImpl extends AbstractController {
 
 	/**
 	 * Update the Payment
+	 * 更新支付
 	 */
 	@Operation(summary = "Update Payment", security = { @SecurityRequirement(name = "bearer-key") })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200",
-					description = "Update the Payment",
-					content = {@Content(mediaType = "application/json")}),
-			@ApiResponse(responseCode = "404",
-					description = "Unable to Update the Payment",
-					content = @Content)
+			@ApiResponse(responseCode = "200", description = "Update the Payment", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "Unable to Update the Payment", content = @Content)
 	})
 	@PutMapping("/update/{referenceNo}")
 	@MetricsCounter(endpoint = "/update")
@@ -168,14 +164,16 @@ public class PaymentControllerImpl extends AbstractController {
 
 	/**
 	 * Create the Result
+	 * 創建結果
+	 * 
 	 * @param referenceNo
 	 * @param obj
 	 * @return
 	 */
-	private HashMap<String,Object> getResult(String referenceNo, Object obj) {
-		HashMap<String,Object> status = new HashMap<>();
+	private HashMap<String, Object> getResult(String referenceNo, Object obj) {
+		HashMap<String, Object> status = new HashMap<>();
 		status.put("ReferenceNo", referenceNo);
 		status.put("Message", obj);
 		return status;
 	}
- }
+}

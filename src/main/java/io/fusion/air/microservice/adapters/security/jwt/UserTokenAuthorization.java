@@ -44,52 +44,79 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * User Token Authorization for a Stateless Microservices Architecture
+ * 用於無狀態微服務架構的使用者令牌授權
  *
  * 1. Why Set the Spring Security Context in a Stateless Architecture?
- * 	•	Per-Request Authentication
- *     Even though you’re not storing a session between requests, within the lifecycle of a single
- *     request you still need to tell Spring Security, “this user is authenticated.” Setting the
+ *    為什麼在無狀態架構中設置 Spring Security 上下文？
+ * 	•	Per-Request Authentication / 每個請求的驗證
+ *     Even though you're not storing a session between requests, within the lifecycle of a single
+ *     request you still need to tell Spring Security, "this user is authenticated." Setting the
  *     SecurityContextHolder.getContext().setAuthentication(...) ensures that any downstream checks
  *     (e.g., @PreAuthorize, SecurityContextHolder) in the same request know who the user is and
  *     what roles they have.
- * 	•	Framework Integration
+ *     雖然沒有在請求之間存儲會話，但在單個請求的生命週期內，仍然需要告訴 Spring Security "此用戶已驗證"。
+ *     設置 SecurityContextHolder.getContext().setAuthentication(...) 確保同一請求中的任何下游檢查
+ *     （例如 @PreAuthorize, SecurityContextHolder）知道用戶是誰以及他們擁有哪些角色。
+ * 	•	Framework Integration / 框架整合
  *      Spring Security uses the SecurityContext to enforce method-level security (@PreAuthorize,
  *      @RolesAllowed) and to provide the principal object to controllers (@AuthenticationPrincipal)
  *      or any code that calls SecurityContextHolder.getContext().getAuthentication(). If you never
  *      set the authentication, Spring will treat the request as anonymous
+ *      Spring Security 使用 SecurityContext 來執行方法級別的安全性（@PreAuthorize, @RolesAllowed）
+ *      並為控制器提供主體對象（@AuthenticationPrincipal）或任何調用
+ *      SecurityContextHolder.getContext().getAuthentication() 的代碼。如果從未設置身份驗證，
+ *      Spring 將把請求視為匿名請求。
  *
  * 2. How Do Subsequent Calls Work Without Server-Side State?
+ *    在沒有服務器端狀態的情況下，後續調用如何工作？
  * In a stateless system, each incoming request:
- * 	1.	Arrives With a Token
+ * 在無狀態系統中，每個進入的請求：
+ * 	1.	Arrives With a Token / 帶著令牌到達
  *     The client (often a browser or another service) includes the JWT in an HTTP header (e.g.,
  *     Authorization: Bearer <token>).
- * 	2.	Token Is Parsed and Validated
+ *     客戶端（通常是瀏覽器或其他服務）在 HTTP 標頭中包含 JWT（例如 Authorization: Bearer <token>）。
+ * 	2.	Token Is Parsed and Validated / 令牌被解析和驗證
  *      A filter or an aspect (like in this example) reads the token, validates it (signature, expiration,
  *      claims), and if valid, creates a UsernamePasswordAuthenticationToken (or a similar Authentication
  *      object).
- * 	3.	Security Context Is Set
+ *      過濾器或切面（如本例中）讀取令牌，驗證它（簽名，過期時間，聲明），如果有效，則創建
+ *      UsernamePasswordAuthenticationToken（或類似的 Authentication 對象）。
+ * 	3.	Security Context Is Set / 設置安全上下文
  *     SecurityContextHolder.getContext().setAuthentication(...) is invoked for that request only.
+ *     SecurityContextHolder.getContext().setAuthentication(...) 僅針對該請求調用。
  * 	    •	This means from now until the response is completed, Spring Security sees the user as
  * 	        authenticated.
+ * 	        這意味著從現在到完成響應為止，Spring Security 將用戶視為已驗證。
  * 	    •	Once the request finishes, that context is discarded.
- * 	4.	Next Request
+ * 	        請求完成後，該上下文將被丟棄。
+ * 	4.	Next Request / 下一個請求
  *      The next request must repeat this process: it again includes the JWT, the filter re-validates
- *      the token, sets the new SecurityContext, and so on. There is no “session” to remember anything
+ *      the token, sets the new SecurityContext, and so on. There is no "session" to remember anything
  *      across requests—only the token that the client re-sends each time.
+ *      下一個請求必須重複此過程：它再次包含 JWT，過濾器重新驗證令牌，設置新的 SecurityContext，
+ *      等等。沒有"會話"來記住請求之間的任何內容——只有客戶端每次重新發送的令牌。
  *
  *  3. Key Point: Stateless Means No Server-Side Session
+ *     關鍵點：無狀態意味著沒有服務器端會話
  * 	    •	No HTTP Session: In a truly stateless microservice, you typically disable or ignore the HTTP
- * 	        session. Spring Security’s SessionCreationPolicy.STATELESS ensures Spring does not create
+ * 	        session. Spring Security's SessionCreationPolicy.STATELESS ensures Spring does not create
  * 	        or use an HTTP session. (Check out WebSecurityConfiguration in io.f.a.m.security.core)
+ * 	        無 HTTP 會話：在真正的無狀態微服務中，通常禁用或忽略 HTTP 會話。
+ * 	        Spring Security 的 SessionCreationPolicy.STATELESS 確保 Spring 不創建或使用 HTTP 會話。
+ * 	        （查看 io.f.a.m.security.core 中的 WebSecurityConfiguration）
  * 	    •	Every Request Is Fresh: Authentication details have to be established each time. You do
  * 	        this by parsing the token and setting the security context again.
+ * 	        每個請求都是新的：每次都必須建立身份驗證詳細信息。通過解析令牌並再次設置安全上下文來實現。
  *
- * 	Summary:
+ * 	Summary: / 摘要：
  * 	•	Set the security context in a stateless architecture, but it applies only to the current request.
+ * 	    在無狀態架構中設置安全上下文，但它僅適用於當前請求。
  * 	•	No server-side session is used; instead, each request carries its own credentials (JWT), which
  * 	    are validated anew.
- * 	•	This keeps the service stateless, yet still leverages Spring Security’s request-based authorization
+ * 	    不使用服務器端會話；相反，每個請求攜帶自己的憑證（JWT），這些憑證會重新驗證。
+ * 	•	This keeps the service stateless, yet still leverages Spring Security's request-based authorization
  * 	    checks.
+ * 	    這保持服務無狀態，同時仍然利用 Spring Security 基於請求的授權檢查。
  *
  * @author: Araf Karsh Hamid
  * @version:
@@ -99,19 +126,25 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class UserTokenAuthorization {
 
     // Set Logger -> Lookup will automatically determine the class name.
+    // 設置日誌器 -> 查找將自動確定類名。
     private static final Logger log = getLogger(lookup().lookupClass());
 
     // Autowired using the Constructor
+    // 使用構造函數自動注入
     private final TokenDataFactory tokenFactory;
 
     // Autowired using the Constructor
+    // 使用構造函數自動注入
     private final UserDetailsServiceImpl userDetailsService;
 
     // Autowired using the Constructor
+    // 使用構造函數自動注入
     private final ClaimsManager claimsManager;
 
     /**
      * Autowired using the Constructor
+     * 使用構造函數自動注入
+     * @param tokenFactory
      * @param userService
      * @param claims
      */
@@ -124,6 +157,7 @@ public class UserTokenAuthorization {
 
     /**
      * Validate the Request
+     * 驗證請求
      *
      * @param singleToken
      * @param tokenMode
@@ -135,45 +169,66 @@ public class UserTokenAuthorization {
     public Object validateRequest(boolean singleToken, String tokenMode,
                                   ProceedingJoinPoint joinPoint, int tokenCtg) throws Throwable {
         // Get the request object
+        // 獲取請求對象
         long startTime = System.currentTimeMillis();
         ServletRequestAttributes attributes = (ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         logTime(startTime, "Extracting & Validating Token", request.getRequestURI(), joinPoint);
         // Create Token Data from the TokenDataFactory
+        // 從 TokenDataFactory 創建令牌數據
         final TokenData tokenData = tokenFactory.getTokenData( request.getHeader(AUTH_TOKEN), AUTH_TOKEN, joinPoint.toString());
         // Get the User (Subject) from the Token
+        // 從令牌獲取用戶（主體）
         final String user = getUser(startTime, tokenData, joinPoint);
         log.debug("Validate Request: User Extracted... {} ", user);
         // If the User == NULL then ERROR is thrown from getUser() method itself
+        // 如果用戶為空，則從 getUser() 方法本身拋出錯誤
         // Validate the Token when User is NOT Null
+        // 當用戶不為空時驗證令牌
         UserDetails userDetails = validateToken(startTime, user, tokenMode, tokenData, joinPoint, tokenCtg);
         // Create Authorize Token
+        // 創建授權令牌
         // UsernamePasswordAuthenticationToken: A core Spring Security class representing an
         // authentication request or a fully authenticated user
+        // UsernamePasswordAuthenticationToken：代表身份驗證請求或完全驗證的用戶的核心 Spring Security 類
         // Parameters:
+        // 參數：
         // 1.	principal: Set to userDetails (the authenticated user).
+        // 主體：設置為 userDetails（已驗證的用戶）。
         // 2.	credentials: Passed as null because we already have a validated token (no password needed).
+        // 憑證：傳遞為 null，因為我們已經有一個驗證過的令牌（不需要密碼）。
         // 3.	authorities: The roles/permissions extracted from UserDetails.
+        // 授權：從 UserDetails 提取的角色/權限。
         // setDetails(...): Adds additional info from the HTTP request, such as remote IP or
         // session ID, for audit or security checks.
+        // setDetails(...)：添加來自 HTTP 請求的額外信息，如遠程 IP 或會話 ID，用於審計或安全檢查。
         UsernamePasswordAuthenticationToken authorizeToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
         authorizeToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         // Set the Security Context with current user as Authorized for the request, So it passes
         // the Spring Security Configurations successfully.
+        // 將安全上下文設置為當前用戶已授權此請求，以成功通過 Spring Security 配置。
         // - SecurityContextHolder: The container where Spring Security stores the currently
-        //   authenticated user’s details.
-	    //  - By placing authorizeToken here, downstream parts of the application (controllers,
+        //   authenticated user's details.
+        // - SecurityContextHolder：Spring Security 存儲當前已驗證用戶詳細信息的容器。
+        //  - By placing authorizeToken here, downstream parts of the application (controllers,
         //    services, etc.) can call SecurityContextHolder.getContext().getAuthentication() to obtain:
+        //  - 通過在此處放置 authorizeToken，應用程序的下游部分（控制器、服務等）可以調用
+        //    SecurityContextHolder.getContext().getAuthentication() 來獲得：
         //    - The current user (userDetails).
-	    //    - Roles/authorities.
-	    //    - Whether the user is authenticated.
-        //  - This effectively tells Spring Security, “We have a valid user for this request,” and the
+        //    - 當前用戶（userDetails）。
+        //    - Roles/authorities.
+        //    - 角色/授權。
+        //    - Whether the user is authenticated.
+        //    - 用戶是否已驗證。
+        //  - This effectively tells Spring Security, "We have a valid user for this request," and the
         //     framework will treat subsequent calls as authenticated.
+        //  - 這有效地告訴 Spring Security，"我們有這個請求的有效用戶"，框架將把後續調用視為已驗證。
         SecurityContextHolder.getContext().setAuthentication(authorizeToken);
         logTime(startTime, SUCCESS, "User Authorized for the request",  joinPoint);
         // Check the Tx Token if It's NOT a SINGLE_TOKEN Request
+        // 如果不是 SINGLE_TOKEN 請求，則檢查 Tx 令牌
         if(!singleToken ) {
             validateTxToken(startTime, user, request.getHeader(TX_TOKEN), joinPoint);
         }
@@ -182,6 +237,7 @@ public class UserTokenAuthorization {
 
     /**
      * Returns the user from the Token
+     * 從令牌返回用戶
      *
      * @param startTime
      * @param token
@@ -192,6 +248,7 @@ public class UserTokenAuthorization {
         try {
             String user = JsonWebTokenValidator.getSubjectFromToken(token);
             // Store the user info for logging
+            // 儲存用戶信息用於日誌記錄
             MDC.put("user", user);
             return user;
         } catch (Exception e) {
@@ -202,8 +259,9 @@ public class UserTokenAuthorization {
 
     /**
      * Validate Token
-     * - User
-     * - Expiry Time
+     * 驗證令牌
+     * - User / 用戶
+     * - Expiry Time / 過期時間
      *
      * @param startTime
      * @param user
@@ -219,11 +277,14 @@ public class UserTokenAuthorization {
         String msg = null;
         try {
             // Validate the Token with the User details and Token Expiry
+            // 使用用戶詳細信息和令牌過期時間驗證令牌
             if (JsonWebTokenValidator.validateToken(userDetails.getUsername(), tokenData)) {
                 // Validate the Token Type
+                // 驗證令牌類型
                 String tokenType = JsonWebTokenValidator.getTokenType(tokenData);
                 validateAuthTokenType( startTime,  user,  tokenType, tokenMode,  tokenCtg,  joinPoint);
                 // Verify that the user role name matches the role name defined by the protected resource
+                // 驗證用戶角色名稱是否與受保護資源定義的角色名稱匹配
                 String role = JsonWebTokenValidator.getUserRoleFromToken(tokenData);
                 verifyTheUserRole( role,  tokenMode,  joinPoint);
                 return userDetails;
@@ -239,12 +300,14 @@ public class UserTokenAuthorization {
             throw new AuthorizationException(msg, e);
         } finally {
             // Error is Logged ONLY if msg != NULL
+            // 只有在 msg != NULL 時才記錄錯誤
             logTime(startTime, ERROR, msg, joinPoint);
         }
     }
 
     /**
      * Validate the Token Type
+     * 驗證令牌類型
      *
      * @param startTime
      * @param user
@@ -252,7 +315,7 @@ public class UserTokenAuthorization {
      * @param joinPoint
      */
     private void validateAuthTokenType(long startTime, String user, String tokenType, String tokenMode,
-                                        int tokenCtg, ProceedingJoinPoint joinPoint) {
+                                       int tokenCtg, ProceedingJoinPoint joinPoint) {
         String msg = null;
         try {
             switch(tokenCtg) {
@@ -283,12 +346,14 @@ public class UserTokenAuthorization {
             }
         } finally {
             // Error is Logged ONLY if msg != NULL
+            // 只有在 msg != NULL 時才記錄錯誤
             logTime(startTime, ERROR, msg, joinPoint);
         }
     }
 
     /**
      * Verify the User Role Matches the Claim
+     * 驗證用戶角色是否與聲明匹配
      * @param role
      * @param tokenMode
      * @param joinPoint
@@ -305,6 +370,7 @@ public class UserTokenAuthorization {
                 annotationRole = annotation.role();
             } else {
                 // Default Role in Secure Package Mode
+                // 安全套件模式中的默認角色
                 annotationRole = ROLE_USER;
             }
         } catch (Exception e) {
@@ -313,6 +379,7 @@ public class UserTokenAuthorization {
         }
         log.debug("Required Role = {},  User (Claims) Role = {} ", annotationRole, role);
         // If the Role in the Token is User and Required is Admin then Reject the request
+        // 如果令牌中的角色是用戶而所需角色是管理員，則拒絕請求
         if(role.trim().equalsIgnoreCase(UserRole.USER.toString()) && annotationRole != null
                 && annotationRole.equals(UserRole.ADMIN.toString())) {
             throw new AuthorizationException("Unauthorized Access: Invalid User Role!");
@@ -321,6 +388,7 @@ public class UserTokenAuthorization {
 
     /**
      * Validate Tx Token and Set the Claims in the ClaimsManager
+     * 驗證交易令牌並在 ClaimsManager 中設置聲明
      *
      * @param startTime
      * @param user
@@ -344,6 +412,7 @@ public class UserTokenAuthorization {
 
     /**
      * Validates Token  Type
+     * 驗證令牌類型
      * @param user
      * @return
      */
@@ -360,6 +429,7 @@ public class UserTokenAuthorization {
 
     /**
      * Log Time
+     * 記錄時間
      * @param startTime
      * @param status
      * @param joinPoint
@@ -379,4 +449,4 @@ public class UserTokenAuthorization {
             }
         }
     }
- }
+}
